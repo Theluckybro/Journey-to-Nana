@@ -6,9 +6,11 @@ class_name PlayerWalking
 var dashspeed := float(100)
 var can_dash := bool(false)
 var dash_direction := Vector2(0,0)
+var can_move = true
 
 var player : PlayerMain
 @export var animator : AnimationPlayer
+@onready var ray_cast_2d = $"../../RayCast2D"
 
 func Enter():
 	player = get_tree().get_first_node_in_group("Player") as PlayerMain
@@ -46,6 +48,9 @@ func Move(input_dir : Vector2):
 		# 3. Jika berhenti bergerak, transisi ke Idle
 		if(dashspeed <= 0): # Hanya transisi jika tidak sedang dash
 			Transition("Idle")
+	
+	if player.velocity != Vector2.ZERO:
+		ray_cast_2d.target_position = player.velocity.normalized() * 50
 
 func play_animation_from_direction(direction : Vector2):
 	if direction.x < 0:
@@ -86,3 +91,15 @@ func LessenDash(delta : float):
 func Transition(newstate : String):
 	if(dashspeed <= 0):
 		state_transition.emit(self, newstate)
+
+func _input(event):
+	if can_move:
+		if event.is_action_pressed("Interact"):
+			var target = ray_cast_2d.get_collider()
+			if target != null:
+				if target.is_in_group("NPC"):
+					print("I'm talking to an NPC!")
+					target.start_dialog()
+				if target.is_in_group("Item"):
+					print("I'm talking to an item!")
+					target.start_interact()

@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://bfyldws045av4"]
+
+[ext_resource type="Texture2D" uid="uid://bw36ig60cpuaq" path="res://Art/Sprites/Square.png" id="1_3hs4s"]
+[ext_resource type="Script" uid="uid://civexk8dinhyt" path="res://Scripts/QuestItem.gd" id="1_iihs5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_iihs5"]
+
+[node name="QuestItem" type="Area2D" groups=["Item"]]
+y_sort_enabled = true
+script = ExtResource("1_iihs5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_iihs5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 0.7853982
+scale = Vector2(2, 2)
+texture = ExtResource("1_3hs4s")

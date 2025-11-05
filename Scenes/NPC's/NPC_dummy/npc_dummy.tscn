@@ -1,0 +1,81 @@
+[gd_scene load_steps=11 format=3 uid="uid://d0e6j4w8cvqn"]
+
+[ext_resource type="Script" uid="uid://bdnbihor0sbxp" path="res://Scripts/NPC.gd" id="1_u1l6o"]
+[ext_resource type="Texture2D" uid="uid://c43335w661xmw" path="res://Scenes/NPC's/NPC_dummy/Premade_Character_03.png" id="1_whl2g"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u1l6o"]
+atlas = ExtResource("1_whl2g")
+region = Rect2(288, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eqk7t"]
+atlas = ExtResource("1_whl2g")
+region = Rect2(304, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vo5iu"]
+atlas = ExtResource("1_whl2g")
+region = Rect2(320, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bnqir"]
+atlas = ExtResource("1_whl2g")
+region = Rect2(336, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h3r4i"]
+atlas = ExtResource("1_whl2g")
+region = Rect2(352, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t8l5h"]
+atlas = ExtResource("1_whl2g")
+region = Rect2(368, 32, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lm631"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u1l6o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eqk7t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vo5iu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bnqir")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h3r4i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t8l5h")
+}],
+"loop": true,
+"name": &"IdleDown",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xp408"]
+radius = 6.0
+
+[node name="NPC_dummy" type="CharacterBody2D" groups=["NPC"]]
+y_sort_enabled = true
+script = ExtResource("1_u1l6o")
+npc_id = "npc_1"
+npc_name = "Bagas"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_lm631")
+animation = &"IdleDown"
+frame_progress = 0.9354224
+offset = Vector2(0, -10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_xp408")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -3.0
+offset_top = -48.0
+offset_right = 4.0
+offset_bottom = -13.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "!"
