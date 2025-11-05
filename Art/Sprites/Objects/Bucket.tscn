@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dgw3shdujp1y3"]
+
+[ext_resource type="Texture2D" uid="uid://cng36rmjyanh0" path="res://Art/Sprites/Barang_Indra.png" id="1_io3k5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_io3k5"]
+radius = 9.0
+
+[node name="Bucket" type="StaticBody2D"]
+y_sort_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_io3k5")
+region_enabled = true
+region_rect = Rect2(48, 0, 32, 32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_io3k5")

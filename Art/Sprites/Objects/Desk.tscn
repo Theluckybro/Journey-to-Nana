@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://v23wtnux4k8f"]
+
+[ext_resource type="Texture2D" uid="uid://cng36rmjyanh0" path="res://Art/Sprites/Barang_Indra.png" id="1_xdbrs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ih7wx"]
+size = Vector2(24, 48)
+
+[node name="Desk" type="StaticBody2D"]
+y_sort_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_xdbrs")
+region_enabled = true
+region_rect = Rect2(176, 0, 32, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(4, 0)
+shape = SubResource("RectangleShape2D_ih7wx")

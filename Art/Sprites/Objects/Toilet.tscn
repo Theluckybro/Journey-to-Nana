@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://udk0wvvv4uha"]
+
+[ext_resource type="Texture2D" uid="uid://cng36rmjyanh0" path="res://Art/Sprites/Barang_Indra.png" id="1_dwjcc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_55f1r"]
+size = Vector2(14, 36)
+
+[node name="Toilet" type="StaticBody2D"]
+y_sort_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_dwjcc")
+region_enabled = true
+region_rect = Rect2(32, 0, 16, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -6)
+shape = SubResource("RectangleShape2D_55f1r")

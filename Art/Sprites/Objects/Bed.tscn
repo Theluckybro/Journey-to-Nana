@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://d0jgyou7nvsev"]
+
+[ext_resource type="Texture2D" uid="uid://cng36rmjyanh0" path="res://Art/Sprites/Barang_Indra.png" id="1_8nod3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hfx5v"]
+size = Vector2(53, 83)
+
+[node name="Bed" type="StaticBody2D"]
+y_sort_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_8nod3")
+region_enabled = true
+region_rect = Rect2(112, 0, 64, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-3.5, 4.5)
+shape = SubResource("RectangleShape2D_hfx5v")
