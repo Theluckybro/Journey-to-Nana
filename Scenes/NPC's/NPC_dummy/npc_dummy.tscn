@@ -1,7 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://d0e6j4w8cvqn"]
+[gd_scene load_steps=13 format=3 uid="uid://d0e6j4w8cvqn"]
 
 [ext_resource type="Script" uid="uid://bdnbihor0sbxp" path="res://Scripts/NPC.gd" id="1_u1l6o"]
 [ext_resource type="Texture2D" uid="uid://c43335w661xmw" path="res://Scenes/NPC's/NPC_dummy/Premade_Character_03.png" id="1_whl2g"]
+[ext_resource type="Script" uid="uid://27jdcwmmby1o" path="res://Resources/Dialog/Dialog.gd" id="2_eqk7t"]
+
+[sub_resource type="Resource" id="Resource_vo5iu"]
+script = ExtResource("2_eqk7t")
+metadata/_custom_type_script = "uid://27jdcwmmby1o"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u1l6o"]
 atlas = ExtResource("1_whl2g")
@@ -61,6 +66,7 @@ y_sort_enabled = true
 script = ExtResource("1_u1l6o")
 npc_id = "npc_1"
 npc_name = "Bagas"
+dialog_resource = SubResource("Resource_vo5iu")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_lm631")
