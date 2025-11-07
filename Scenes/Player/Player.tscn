@@ -862,13 +862,12 @@ _data = {
 &"WalkUp": SubResource("Animation_r6t50")
 }
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("sprite") groups=["Player"]]
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
 y_sort_enabled = true
 texture_filter = 1
 floor_stop_on_slope = false
 floor_block_on_wall = false
 script = ExtResource("1_y5oq4")
-sprite = NodePath("AnimatedSprite2D")
 
 [node name="BodyCollisionShape" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_7m131")

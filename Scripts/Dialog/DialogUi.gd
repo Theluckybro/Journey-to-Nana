@@ -1,5 +1,6 @@
-extends Control
+### DialogUI.gd
 
+extends Control
 
 @onready var panel = $CanvasLayer/Panel
 @onready var dialog_speaker = $CanvasLayer/Panel/DialogBox/DialogSpeaker

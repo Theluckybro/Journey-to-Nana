@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=4 uid="uid://dei3j88yw6omf"]
+[gd_scene load_steps=22 format=4 uid="uid://dei3j88yw6omf"]
 
 [ext_resource type="PackedScene" uid="uid://bvg5dny32iw0x" path="res://Scenes/Player/Player.tscn" id="1_v023b"]
 [ext_resource type="PackedScene" uid="uid://d0e6j4w8cvqn" path="res://Scenes/NPC's/NPC_dummy/npc_dummy.tscn" id="2_rcobd"]
@@ -17,8 +17,13 @@
 [ext_resource type="PackedScene" uid="uid://dgw3shdujp1y3" path="res://Art/Sprites/Objects/Bucket.tscn" id="14_5jlu8"]
 [ext_resource type="PackedScene" uid="uid://d0jgyou7nvsev" path="res://Art/Sprites/Objects/Bed.tscn" id="15_bkbvh"]
 [ext_resource type="PackedScene" uid="uid://df5c6rigj2wl8" path="res://Art/Sprites/Objects/Cupboard.tscn" id="16_k7rv1"]
+[ext_resource type="Script" uid="uid://27jdcwmmby1o" path="res://Resources/Dialog/Dialog.gd" id="17_gmoma"]
 [ext_resource type="PackedScene" uid="uid://v23wtnux4k8f" path="res://Art/Sprites/Objects/Desk.tscn" id="18_rcobd"]
 [ext_resource type="PackedScene" uid="uid://udk0wvvv4uha" path="res://Art/Sprites/Objects/Toilet.tscn" id="19_gmoma"]
+
+[sub_resource type="Resource" id="Resource_gt5fq"]
+script = ExtResource("17_gmoma")
+metadata/_custom_type_script = "uid://27jdcwmmby1o"
 
 [node name="Scene_Root" type="Node2D"]
 texture_filter = 1
@@ -139,6 +144,7 @@ position = Vector2(200, 56)
 
 [node name="NPC_dummy" parent="Scene/YSort" instance=ExtResource("2_rcobd")]
 position = Vector2(112, 50)
+dialog_resource = SubResource("Resource_gt5fq")
 
 [node name="QuestItem" parent="Scene/YSort" instance=ExtResource("3_gmoma")]
 position = Vector2(96, 96)

@@ -1,5 +1,6 @@
-extends Control
+### QuestUI.gd
 
+extends Control
 
 @onready var panel = $CanvasLayer/Panel
 @onready var quest_list = $CanvasLayer/Panel/Contents/Details/QuestList
