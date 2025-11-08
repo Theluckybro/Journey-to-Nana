@@ -28,7 +28,7 @@ buses/default_bus_layout=""
 GameManager="*res://Scripts/Managers/GameManager.gd"
 AudioManager="*res://Scripts/Managers/AudioManager.gd"
 MadTalkGlobals="*res://addons/madtalk/runtime/MadTalkGlobals.gd"
-DialogueManager="*res://Scripts/Managers/DialogueManager.gd"
+Global="*res://Scripts/Managers/DialogueManager.gd"
 
 [display]
 

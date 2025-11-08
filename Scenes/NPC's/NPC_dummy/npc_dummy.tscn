@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://d0e6j4w8cvqn"]
+[gd_scene load_steps=12 format=3 uid="uid://d0e6j4w8cvqn"]
 
 [ext_resource type="Script" uid="uid://bdnbihor0sbxp" path="res://Scripts/NPC.gd" id="1_u1l6o"]
 [ext_resource type="Texture2D" uid="uid://c43335w661xmw" path="res://Scenes/NPC's/NPC_dummy/Premade_Character_03.png" id="1_whl2g"]
+[ext_resource type="PackedScene" uid="uid://vg2rwsvqc8a0" path="res://Scenes/Dialog/DialogManager.tscn" id="3_eqk7t"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u1l6o"]
 atlas = ExtResource("1_whl2g")
@@ -79,3 +80,5 @@ offset_bottom = -13.0
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
 text = "!"
+
+[node name="DialogManager" parent="." instance=ExtResource("3_eqk7t")]

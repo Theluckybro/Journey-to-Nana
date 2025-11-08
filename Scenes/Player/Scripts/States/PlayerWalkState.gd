@@ -3,8 +3,6 @@ class_name PlayerWalking
 
 @export var movespeed := int(350)
 
-# --- Variabel Dash Dihapus ---
-
 var player : PlayerMain 
 @export var animator : AnimationPlayer
 
@@ -13,11 +11,11 @@ func Enter():
 	play_animation_from_direction(player.face_direction)
 
 func Update(delta : float):
-	var input_dir = Input.get_vector("MoveLeft", "MoveRight", "MoveUp", "MoveDown").normalized()
+	var input_dir = Vector2.ZERO
+	
+	if player.can_move:
+		input_dir = Input.get_vector("MoveLeft", "MoveRight", "MoveUp", "MoveDown").normalized()
 	Move(input_dir)
-		
-	if Input.is_action_just_pressed("Punch") or Input.is_action_just_pressed("Kick"):
-		Transition("Attacking")
 
 func Move(input_dir : Vector2):
 
@@ -26,7 +24,6 @@ func Move(input_dir : Vector2):
 
 	if(input_dir != Vector2.ZERO):
 		player.face_direction = input_dir
-
 		play_animation_from_direction(input_dir)
 	else:
 		Transition("Idle")

@@ -12,7 +12,7 @@ var face_direction := Vector2.DOWN
 var can_move = true
 
 func _ready():
-	DialogueManager.player = self
+	Global.player = self
 	quest_tracker.visible = false
 
 func _physics_process(delta):
@@ -27,7 +27,7 @@ func _input(event):
 			if target != null:
 				if target.is_in_group("NPC"):
 					print("I'm talking to an NPC!")
-					# todo: set can_move to false
+					can_move = false
 					target.start_dialog()
 				elif target.is_in_group("Item"):
 					print("I'm interacting with an item!")

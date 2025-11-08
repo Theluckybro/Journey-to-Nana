@@ -75,3 +75,5 @@ offset_bottom = 27.0
 grow_horizontal = 0
 theme_override_font_sizes/font_size = 14
 text = "X"
+
+[connection signal="pressed" from="CanvasLayer/Panel/CloseButton" to="." method="_on_close_button_pressed"]

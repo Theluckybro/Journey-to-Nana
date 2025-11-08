@@ -6,6 +6,7 @@ extends CharacterBody2D
 @export var npc_name: String
 
 # Dialog vars
+@onready var dialog_manager = $DialogManager
 @export var dialog_resource: Dialog
 var current_state = "start"
 var current_branch_index = 0
@@ -13,12 +14,14 @@ var current_branch_index = 0
 func _ready():
 	# Load dialog data
 	dialog_resource.load_from_json("res://Resources/Dialog/dialog_data.json")
+	# Initialize npc ref
+	dialog_manager.npc = self
 	
 func start_dialog():
 	var npc_dialogs = dialog_resource.get_npc_dialog(npc_id)
 	if npc_dialogs.is_empty():
 		return
-	# todo: show dialog box
+	dialog_manager.show_dialog(self)
 
 # Get current branch dialog
 func  get_current_dialog():
