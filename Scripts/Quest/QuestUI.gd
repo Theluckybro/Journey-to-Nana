@@ -8,3 +8,10 @@ extends Control
 @onready var quest_description = $CanvasLayer/Panel/Contents/Details/QuestDetails/QuestDescription
 @onready var quest_objectives = $CanvasLayer/Panel/Contents/Details/QuestDetails/QuestObjectives
 @onready var quest_rewards = $CanvasLayer/Panel/Contents/Details/QuestDetails/QuestRewards
+
+func _ready():
+	panel.visible = false
+
+# Show/hide quest log
+func show_hide_log():
+	panel.visible = !panel.visible

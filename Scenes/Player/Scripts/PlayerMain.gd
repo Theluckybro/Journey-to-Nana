@@ -8,6 +8,7 @@ class_name PlayerMain
 @onready var title = $HUD/QuestTracker/Details/Title
 @onready var objectives = $HUD/QuestTracker/Details/Objectives
 @onready var ray_cast_2d = $RayCast2D
+@onready var quest_manager: Node2D = $QuestManager
 var face_direction := Vector2.DOWN
 var can_move = true
 
