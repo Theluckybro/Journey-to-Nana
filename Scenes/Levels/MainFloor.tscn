@@ -57,7 +57,7 @@ script = ExtResource("18_21iup")
 quest_id = "npc_quest_1"
 quest_name = "Happy Days"
 quest_description = "Talk to Bagus about magical potions"
-unlock_id = "npc_1_1"
+unlock_points = Array[String](["npc_1_1", "npc_1_2"])
 objectives = Array[ExtResource("19_scnhh")]([SubResource("Resource_xqul6"), SubResource("Resource_1bhf7")])
 rewards = Array[ExtResource("20_0ipvf")]([SubResource("Resource_21iup")])
 metadata/_custom_type_script = "uid://crg1xlfcui3el"
@@ -86,7 +86,6 @@ script = ExtResource("18_21iup")
 quest_id = "npc_2_quest_1"
 quest_name = "Rotten Wood"
 quest_description = "Ask Bagas if he sold the wood."
-unlock_id = "npc_default"
 objectives = Array[ExtResource("19_scnhh")]([SubResource("Resource_scnhh")])
 rewards = Array[ExtResource("20_0ipvf")]([SubResource("Resource_0ipvf")])
 metadata/_custom_type_script = "uid://crg1xlfcui3el"
@@ -219,6 +218,10 @@ npc_id = "npc_2"
 npc_name = "Bagus"
 dialog_resource = SubResource("Resource_gmoma")
 quests = Array[ExtResource("18_21iup")]([SubResource("Resource_gfc1x")])
+
+[node name="NPC_dummy3" parent="Scene/YSort" instance=ExtResource("2_rcobd")]
+position = Vector2(160, 170)
+npc_id = "npc_3"
 
 [node name="QuestItem" parent="Scene/YSort" instance=ExtResource("3_gmoma")]
 position = Vector2(176, 41)

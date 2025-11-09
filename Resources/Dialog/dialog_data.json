@@ -32,12 +32,16 @@
 					{
 						"state": "end",
 						"text": "Goodbye, adventurer!",
-						"options": {}
+						"options": {
+
+						}
 					},
 					{
 						"state": "exit",
 						"text": "Come back soon adventurer!",
-						"options": {}
+						"options": {
+
+						}
 					}
 				]
 			},
@@ -72,12 +76,16 @@
 					{
 						"state": "end",
 						"text": "Goodbye, adventurer!",
-						"options": {}
+						"options": {
+
+						}
 					},
 					{
 						"state": "exit",
 						"text": "Come back soon!",
-						"options": {}
+						"options": {
+
+						}
 					}
 				]
 			},
@@ -136,17 +144,21 @@
 					{
 						"state": "end",
 						"text": "Farewell, traveler!",
-						"options": {}
+						"options": {
+
+						}
 					},
 					{
 						"state": "exit",
 						"text": "Come back soon!",
-						"options": {}
+						"options": {
+
+						}
 					}
 				]
 			},
 			{
-			"branch_id": "npc_default",
+				"branch_id": "npc_default",
 				"dialogs": [
 					{
 						"state": "start",
@@ -162,7 +174,37 @@
 						"options": {
 							"Go Back": "start"
 						}
+					}
+				]
+			}
+		]
+	},
+	"npc_3": {
+		"trees": [
+			{
+				"branch_id": "npc_3_1",
+				"dialogs": [
+					{
+						"state": "start",
+						"text": "This is a short linear dialog. Press Continue to move on.",
+						"options": {
+
+						}
 					},
+					{
+						"state": "middle",
+						"text": "The story continues without choices.",
+						"options": {
+
+						}
+					},
+					{
+						"state": "end",
+						"text": "Thanks for listening!",
+						"options": {
+
+						}
+					}
 				]
 			}
 		]

@@ -8,7 +8,7 @@ class_name Quest
 @export var quest_name: String
 @export var quest_description: String
 @export var state: String = "not_started"
-@export var unlock_id: String  
+@export var unlock_points: Array[String] = []  # Array of branch_ids where this quest can be offered
 @export var objectives: Array[Objectives] = []
 @export var rewards: Array[Rewards] = []
 
