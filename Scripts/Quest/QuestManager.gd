@@ -47,8 +47,9 @@ func complete_objective(quest_id: String, objective_id: String):
 	var quest = get_quest(quest_id)
 	if quest:
 		quest.complete_objective(objective_id)
-		objective_updated.emit(quest_id, objective_id)
+		objective_updated.emit(quest_id, objective_id)		
 		
 # Show/hide quest log
 func show_hide_log():
 	quest_ui.show_hide_log()
+		

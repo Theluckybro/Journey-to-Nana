@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://d0e6j4w8cvqn" path="res://Scenes/NPC's/NPC_dummy/npc_dummy.tscn" id="2_rcobd"]
 [ext_resource type="PackedScene" uid="uid://bfyldws045av4" path="res://Scenes/QuestItem.tscn" id="3_gmoma"]
 [ext_resource type="PackedScene" uid="uid://cx8kkqawojm0m" path="res://Scenes/Misc/SceneSettings.tscn" id="4_8uhxl"]
-[ext_resource type="Texture2D" uid="uid://bw36ig60cpuaq" path="res://Art/Sprites/Square.png" id="4_gt5fq"]
 [ext_resource type="Texture2D" uid="uid://dyb5iqfj3tmwj" path="res://Art/Sprites/light.png" id="5_numcg"]
 [ext_resource type="TileSet" uid="uid://b3n0bklwwny1b" path="res://Art/TileMap.tres" id="7_n5jbx"]
 [ext_resource type="LabelSettings" uid="uid://da8inon5cmt2r" path="res://Art/Fonts/pixelized_label.tres" id="7_tuycv"]
@@ -12,7 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://b4l1gom0wsk8p" path="res://Scenes/Interactables/area_exit.tscn" id="8_s7mva"]
 [ext_resource type="PackedScene" uid="uid://bt5yicfpmnlwk" path="res://Scenes/Levels/Basement01.tscn" id="10_hj57s"]
 [ext_resource type="Texture2D" uid="uid://cng36rmjyanh0" path="res://Art/Sprites/Barang_Indra.png" id="10_rdp63"]
-[ext_resource type="PackedScene" uid="uid://b6xb8nhlqtuhf" path="res://Scenes/ScoreTracker.tscn" id="11_6cy1t"]
 [ext_resource type="AudioStream" uid="uid://bia7rrlxphfg2" path="res://Art/Audio/corridorsOgg.ogg" id="12_87j7f"]
 [ext_resource type="PackedScene" uid="uid://dgw3shdujp1y3" path="res://Art/Sprites/Objects/Bucket.tscn" id="14_5jlu8"]
 [ext_resource type="PackedScene" uid="uid://d0jgyou7nvsev" path="res://Art/Sprites/Objects/Bed.tscn" id="15_bkbvh"]
@@ -20,6 +18,8 @@
 [ext_resource type="Script" uid="uid://27jdcwmmby1o" path="res://Resources/Dialog/Dialog.gd" id="17_gmoma"]
 [ext_resource type="PackedScene" uid="uid://v23wtnux4k8f" path="res://Art/Sprites/Objects/Desk.tscn" id="18_rcobd"]
 [ext_resource type="PackedScene" uid="uid://udk0wvvv4uha" path="res://Art/Sprites/Objects/Toilet.tscn" id="19_gmoma"]
+[ext_resource type="Texture2D" uid="uid://dth7o8e4qmk38" path="res://Art/Icons/icon5.png" id="19_gt5fq"]
+[ext_resource type="Texture2D" uid="uid://b8dt655ggt2xn" path="res://Art/Icons/icon17.png" id="20_gt5fq"]
 
 [sub_resource type="Resource" id="Resource_gt5fq"]
 script = ExtResource("17_gmoma")
@@ -150,15 +150,19 @@ position = Vector2(200, 56)
 position = Vector2(112, 50)
 dialog_resource = SubResource("Resource_gt5fq")
 
-[node name="QuestItem" parent="Scene/YSort" instance=ExtResource("3_gmoma")]
-position = Vector2(96, 96)
-item_icon = ExtResource("4_gt5fq")
-
 [node name="NPC_dummy2" parent="Scene/YSort" instance=ExtResource("2_rcobd")]
 position = Vector2(52, 130)
 npc_id = "npc_2"
 npc_name = "Bagus"
 dialog_resource = SubResource("Resource_gmoma")
 
-[node name="Score_UI" parent="." instance=ExtResource("11_6cy1t")]
-visible = false
+[node name="QuestItem" parent="Scene/YSort" instance=ExtResource("3_gmoma")]
+position = Vector2(176, 41)
+item_id = "item_potion"
+item_icon = ExtResource("19_gt5fq")
+
+[node name="QuestItem2" parent="Scene/YSort" instance=ExtResource("3_gmoma")]
+position = Vector2(160, 192)
+item_id = "item_key"
+item_quantity = 3
+item_icon = ExtResource("20_gt5fq")

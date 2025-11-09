@@ -1,8 +1,30 @@
-[gd_scene load_steps=12 format=3 uid="uid://d0e6j4w8cvqn"]
+[gd_scene load_steps=20 format=3 uid="uid://d0e6j4w8cvqn"]
 
 [ext_resource type="Script" uid="uid://bdnbihor0sbxp" path="res://Scripts/NPC.gd" id="1_u1l6o"]
 [ext_resource type="Texture2D" uid="uid://c43335w661xmw" path="res://Scenes/NPC's/NPC_dummy/Premade_Character_03.png" id="1_whl2g"]
+[ext_resource type="Script" uid="uid://27jdcwmmby1o" path="res://Resources/Dialog/Dialog.gd" id="2_t8l5h"]
 [ext_resource type="PackedScene" uid="uid://vg2rwsvqc8a0" path="res://Scenes/Dialog/DialogManager.tscn" id="3_eqk7t"]
+[ext_resource type="Script" uid="uid://crg1xlfcui3el" path="res://Resources/Quest/Quests.gd" id="3_lm631"]
+[ext_resource type="Script" uid="uid://bgg2qnyv7e5u7" path="res://Resources/Quest/Objectives.gd" id="4_xp408"]
+[ext_resource type="Script" uid="uid://e4nb0godmmd0" path="res://Resources/Quest/Rewards.gd" id="5_b5hr3"]
+
+[sub_resource type="Resource" id="Resource_yhvee"]
+script = ExtResource("2_t8l5h")
+metadata/_custom_type_script = "uid://27jdcwmmby1o"
+
+[sub_resource type="Resource" id="Resource_sadbx"]
+script = ExtResource("4_xp408")
+metadata/_custom_type_script = "uid://bgg2qnyv7e5u7"
+
+[sub_resource type="Resource" id="Resource_iuvoj"]
+script = ExtResource("5_b5hr3")
+metadata/_custom_type_script = "uid://e4nb0godmmd0"
+
+[sub_resource type="Resource" id="Resource_sfy3s"]
+script = ExtResource("3_lm631")
+objectives = Array[ExtResource("4_xp408")]([SubResource("Resource_sadbx")])
+rewards = Array[ExtResource("5_b5hr3")]([SubResource("Resource_iuvoj")])
+metadata/_custom_type_script = "uid://crg1xlfcui3el"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u1l6o"]
 atlas = ExtResource("1_whl2g")
@@ -62,6 +84,8 @@ y_sort_enabled = true
 script = ExtResource("1_u1l6o")
 npc_id = "npc_1"
 npc_name = "Bagas"
+dialog_resource = SubResource("Resource_yhvee")
+quests = Array[ExtResource("3_lm631")]([SubResource("Resource_sfy3s")])
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_lm631")

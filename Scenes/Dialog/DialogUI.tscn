@@ -20,6 +20,7 @@ script = ExtResource("1_p3dy4")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Panel" type="Panel" parent="CanvasLayer"]
+visible = false
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0

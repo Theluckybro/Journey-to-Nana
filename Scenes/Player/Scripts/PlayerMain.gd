@@ -12,9 +12,18 @@ class_name PlayerMain
 var face_direction := Vector2.DOWN
 var can_move = true
 
+# Dialog & Quest vars
+var selected_quest: Quest = null
+var coin_amount  = 0
+
 func _ready():
 	Global.player = self
 	quest_tracker.visible = false
+	update_coins()
+	
+	# Signal connections
+	quest_manager.quest_updated.connect(_on_quest_updated)
+	quest_manager.objective_updated.connect(_on_objective_updated)
 
 func _physics_process(delta):
 	if velocity != Vector2.ZERO:
@@ -23,15 +32,98 @@ func _physics_process(delta):
 func _input(event):
 	#Interact with NPC/ Quest Item
 	if can_move:
-		if event.is_action_pressed("Interact"):
+		if event.is_action_pressed("ui_interact"):
 			var target = ray_cast_2d.get_collider()
 			if target != null:
 				if target.is_in_group("NPC"):
-					print("I'm talking to an NPC!")
 					can_move = false
 					target.start_dialog()
+					check_quest_objectives(target.npc_id, "talk_to")
 				elif target.is_in_group("Item"):
-					print("I'm interacting with an item!")
-					# todo: check if item is needed for quest
-					# todo: remove item
-					target.start_interact()	
+					if is_item_needed(target.item_id):
+						check_quest_objectives(target.item_id, "collection", target.item_quantity)
+						target.queue_free()
+					else: 
+						print("Item not needed for any active quest.")
+	# Open/close quest log
+		if event.is_action_pressed("ui_quest_menu"):
+			quest_manager.show_hide_log()
+
+# Check if quest item is needed
+func is_item_needed(item_id: String) -> bool:
+	if selected_quest != null:
+		for objective in selected_quest.objectives:
+			if objective.target_id == item_id and objective.target_type == "collection" and not objective.is_completed:
+				return true				
+	return false
+	
+func check_quest_objectives(target_id: String, target_type: String, quantity: int = 1):
+	if selected_quest == null:
+		return
+	
+	# Update objectives
+	var objective_updated = false
+	for objective in selected_quest.objectives:
+		if objective.target_id == target_id and objective.target_type == target_type and not objective.is_completed:
+			print("Completing objective for quest: ", selected_quest.quest_name)
+			selected_quest.complete_objective(objective.id, quantity)
+			objective_updated = true
+			break
+	
+	# Provide rewards
+	if objective_updated:
+		if selected_quest.is_completed():
+			handle_quest_completion(selected_quest)
+	
+		# Update UI
+		update_quest_tracker(selected_quest)
+	
+# Player rewards
+func handle_quest_completion(quest: Quest):
+	for reward in quest.rewards:
+		if reward.reward_type == "coins":
+			coin_amount += reward.reward_amount
+			update_coins()
+	update_quest_tracker(quest)
+	quest_manager.update_quest(quest.quest_id, "completed")
+	
+# Update coin UI
+func update_coins():
+	amount.text = str(coin_amount)
+	
+# Update tracker UI
+func update_quest_tracker(quest: Quest):
+	# if we have an active quest, populate tracker
+	if quest:
+		quest_tracker.visible = true
+		title.text = quest.quest_name	
+		
+		for child in objectives.get_children():
+			objectives.remove_child(child)
+			
+		for objective in quest.objectives:
+			var label = Label.new()
+			label.text = objective.description
+			
+			if objective.is_completed:
+				label.add_theme_color_override("font_color", Color(0, 1, 0))
+			else:
+				label.add_theme_color_override("font_color", Color(1,0, 0))
+				
+			objectives.add_child(label)
+	# no active quest, hide tracker		
+	else:
+		quest_tracker.visible = false
+
+# Update tracker if quest is complete
+func _on_quest_updated(quest_id: String):
+	var quest = quest_manager.get_quest(quest_id)
+	if quest == selected_quest:
+		update_quest_tracker(quest)
+	selected_quest = null
+	
+# Update tracker if objective is complete
+func _on_objective_updated(quest_id: String, objective_id: String):
+	if selected_quest and selected_quest.quest_id == quest_id:
+		update_quest_tracker(selected_quest)
+	selected_quest = null
