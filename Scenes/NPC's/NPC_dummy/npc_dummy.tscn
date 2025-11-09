@@ -97,6 +97,7 @@ offset = Vector2(0, -10)
 shape = SubResource("CircleShape2D_xp408")
 
 [node name="Label" type="Label" parent="."]
+z_index = 2
 offset_left = -3.0
 offset_top = -48.0
 offset_right = 4.0

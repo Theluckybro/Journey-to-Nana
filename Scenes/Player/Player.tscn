@@ -932,7 +932,6 @@ libraries = {
 collide_with_areas = true
 
 [node name="HUD" type="CanvasLayer" parent="."]
-visible = false
 
 [node name="Coins" type="ColorRect" parent="HUD"]
 anchors_preset = 1

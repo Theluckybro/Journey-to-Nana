@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://dei3j88yw6omf"]
+[gd_scene load_steps=33 format=4 uid="uid://dei3j88yw6omf"]
 
 [ext_resource type="PackedScene" uid="uid://bvg5dny32iw0x" path="res://Scenes/Player/Player.tscn" id="1_v023b"]
 [ext_resource type="PackedScene" uid="uid://d0e6j4w8cvqn" path="res://Scenes/NPC's/NPC_dummy/npc_dummy.tscn" id="2_rcobd"]
@@ -16,18 +16,80 @@
 [ext_resource type="PackedScene" uid="uid://d0jgyou7nvsev" path="res://Art/Sprites/Objects/Bed.tscn" id="15_bkbvh"]
 [ext_resource type="PackedScene" uid="uid://df5c6rigj2wl8" path="res://Art/Sprites/Objects/Cupboard.tscn" id="16_k7rv1"]
 [ext_resource type="Script" uid="uid://27jdcwmmby1o" path="res://Resources/Dialog/Dialog.gd" id="17_gmoma"]
+[ext_resource type="Script" uid="uid://crg1xlfcui3el" path="res://Resources/Quest/Quests.gd" id="18_21iup"]
 [ext_resource type="PackedScene" uid="uid://v23wtnux4k8f" path="res://Art/Sprites/Objects/Desk.tscn" id="18_rcobd"]
 [ext_resource type="PackedScene" uid="uid://udk0wvvv4uha" path="res://Art/Sprites/Objects/Toilet.tscn" id="19_gmoma"]
 [ext_resource type="Texture2D" uid="uid://dth7o8e4qmk38" path="res://Art/Icons/icon5.png" id="19_gt5fq"]
+[ext_resource type="Script" uid="uid://bgg2qnyv7e5u7" path="res://Resources/Quest/Objectives.gd" id="19_scnhh"]
+[ext_resource type="Script" uid="uid://e4nb0godmmd0" path="res://Resources/Quest/Rewards.gd" id="20_0ipvf"]
 [ext_resource type="Texture2D" uid="uid://b8dt655ggt2xn" path="res://Art/Icons/icon17.png" id="20_gt5fq"]
 
 [sub_resource type="Resource" id="Resource_gt5fq"]
 script = ExtResource("17_gmoma")
 metadata/_custom_type_script = "uid://27jdcwmmby1o"
 
+[sub_resource type="Resource" id="Resource_xqul6"]
+script = ExtResource("19_scnhh")
+id = "npc_talk_01"
+description = "Talk to Bagus"
+target_id = "npc_2"
+target_type = "talk_to"
+objective_dialog = "The potions can be found on the East Side of the room!"
+metadata/_custom_type_script = "uid://bgg2qnyv7e5u7"
+
+[sub_resource type="Resource" id="Resource_1bhf7"]
+script = ExtResource("19_scnhh")
+id = "obj_collect_01"
+description = "Collect 5 Magical Potions"
+target_id = "item_potion"
+target_type = "collection"
+required_quantity = 5
+metadata/_custom_type_script = "uid://bgg2qnyv7e5u7"
+
+[sub_resource type="Resource" id="Resource_21iup"]
+script = ExtResource("20_0ipvf")
+reward_type = "coins"
+reward_amount = 50
+metadata/_custom_type_script = "uid://e4nb0godmmd0"
+
+[sub_resource type="Resource" id="Resource_yf8yh"]
+script = ExtResource("18_21iup")
+quest_id = "npc_quest_1"
+quest_name = "Happy Days"
+quest_description = "Talk to Bagus about magical potions"
+unlock_id = "npc_1_1"
+objectives = Array[ExtResource("19_scnhh")]([SubResource("Resource_xqul6"), SubResource("Resource_1bhf7")])
+rewards = Array[ExtResource("20_0ipvf")]([SubResource("Resource_21iup")])
+metadata/_custom_type_script = "uid://crg1xlfcui3el"
+
 [sub_resource type="Resource" id="Resource_gmoma"]
 script = ExtResource("17_gmoma")
 metadata/_custom_type_script = "uid://27jdcwmmby1o"
+
+[sub_resource type="Resource" id="Resource_scnhh"]
+script = ExtResource("19_scnhh")
+id = "talk_npc_1"
+description = "Talk to Bagas"
+target_id = "npc_1"
+target_type = "talk_to"
+objective_dialog = "No ... I ate it!"
+metadata/_custom_type_script = "uid://bgg2qnyv7e5u7"
+
+[sub_resource type="Resource" id="Resource_0ipvf"]
+script = ExtResource("20_0ipvf")
+reward_type = "coins"
+reward_amount = 5
+metadata/_custom_type_script = "uid://e4nb0godmmd0"
+
+[sub_resource type="Resource" id="Resource_gfc1x"]
+script = ExtResource("18_21iup")
+quest_id = "npc_2_quest_1"
+quest_name = "Rotten Wood"
+quest_description = "Ask Bagas if he sold the wood."
+unlock_id = "npc_default"
+objectives = Array[ExtResource("19_scnhh")]([SubResource("Resource_scnhh")])
+rewards = Array[ExtResource("20_0ipvf")]([SubResource("Resource_0ipvf")])
+metadata/_custom_type_script = "uid://crg1xlfcui3el"
 
 [node name="Scene_Root" type="Node2D"]
 texture_filter = 1
@@ -149,20 +211,22 @@ position = Vector2(200, 56)
 [node name="NPC_dummy" parent="Scene/YSort" instance=ExtResource("2_rcobd")]
 position = Vector2(112, 50)
 dialog_resource = SubResource("Resource_gt5fq")
+quests = Array[ExtResource("18_21iup")]([SubResource("Resource_yf8yh")])
 
 [node name="NPC_dummy2" parent="Scene/YSort" instance=ExtResource("2_rcobd")]
 position = Vector2(52, 130)
 npc_id = "npc_2"
 npc_name = "Bagus"
 dialog_resource = SubResource("Resource_gmoma")
+quests = Array[ExtResource("18_21iup")]([SubResource("Resource_gfc1x")])
 
 [node name="QuestItem" parent="Scene/YSort" instance=ExtResource("3_gmoma")]
 position = Vector2(176, 41)
 item_id = "item_potion"
+item_quantity = 10
 item_icon = ExtResource("19_gt5fq")
 
 [node name="QuestItem2" parent="Scene/YSort" instance=ExtResource("3_gmoma")]
 position = Vector2(160, 192)
 item_id = "item_key"
-item_quantity = 3
 item_icon = ExtResource("20_gt5fq")

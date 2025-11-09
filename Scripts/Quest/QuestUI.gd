@@ -106,6 +106,7 @@ func _on_quest_updated(quest_id: String):
 	else:
 		update_quest_list()
 	selected_quest = null
+	Global.player.selected_quest = null
 	
 # Trigger to update quest details
 func _on_objectives_updated(quest_id: String, objectives_id: String):
@@ -114,6 +115,7 @@ func _on_objectives_updated(quest_id: String, objectives_id: String):
 	else:
 		clear_quest_details()
 	selected_quest = null
+	Global.player.selected_quest = null
 	
 func _on_close_button_pressed():
 	show_hide_log()
