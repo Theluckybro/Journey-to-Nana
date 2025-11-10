@@ -58,25 +58,49 @@ func is_item_needed(item_id: String) -> bool:
 	return false
 	
 func check_quest_objectives(target_id: String, target_type: String, quantity: int = 1):
-	if selected_quest == null:
-		return
-	
-	# Update objectives
+	# If a specific quest is selected in the UI, only try that one.
+	# Otherwise, try to apply the objective to all active quests.
 	var objective_updated = false
-	for objective in selected_quest.objectives:
-		if objective.target_id == target_id and objective.target_type == target_type and not objective.is_completed:
-			print("Completing objective for quest: ", selected_quest.quest_name)
-			selected_quest.complete_objective(objective.id, quantity)
-			objective_updated = true
-			break
-	
-	# Provide rewards
+	var quests_to_check: Array = []
+	if selected_quest != null:
+		quests_to_check.append(selected_quest)
+	else:
+		# get_active_quests() returns all in-progress quests from the quest manager
+		if quest_manager and quest_manager.has_method("get_active_quests"):
+			quests_to_check = quest_manager.get_active_quests()
+
+	# Track which quests we actually updated so we can report appropriately
+	var updated_quests: Array = []
+
+	# Try to complete matching objectives across the selected/active quests
+	for quest in quests_to_check:
+		for objective in quest.objectives:
+			if objective.target_id == target_id and objective.target_type == target_type and not objective.is_completed:
+				print("Completing objective for quest: ", quest.quest_name)
+				quest.complete_objective(objective.id, quantity)
+				objective_updated = true
+				updated_quests.append(quest)
+				# break inner loop to avoid double-applying to same quest
+				break
+
+	# If any objective updated, handle completions and update UI/state
 	if objective_updated:
-		if selected_quest.is_completed():
-			handle_quest_completion(selected_quest)
-	
-		# Update UI
-		update_quest_tracker(selected_quest)
+		# Handle rewards/completion for any quests that became completed
+		for quest in updated_quests:
+			if quest.is_completed():
+				handle_quest_completion(quest)
+
+		# If the player has a quest selected, update the tracker as before.
+		if selected_quest:
+			update_quest_tracker(selected_quest)
+		else:
+			# Player didn't open the quest log: don't show the selected-quest UI.
+			# Instead print a short progress message for each updated quest.
+			for quest in updated_quests:
+				print("[Quest] Progressed:", quest.quest_name)
+
+	# Return whether any objective was updated (useful for callers to decide to remove items)
+	return objective_updated
 	
 # Player rewards
 func handle_quest_completion(quest: Quest):
@@ -123,7 +147,7 @@ func _on_quest_updated(quest_id: String):
 	selected_quest = null
 	
 # Update tracker if objective is complete
-func _on_objective_updated(quest_id: String, objective_id: String):
+func _on_objective_updated(quest_id: String, _objective_id: String):
 	if selected_quest and selected_quest.quest_id == quest_id:
 		update_quest_tracker(selected_quest)
 	selected_quest = null

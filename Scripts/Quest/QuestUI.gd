@@ -9,13 +9,43 @@ extends Control
 @onready var quest_objectives = $CanvasLayer/Panel/Contents/Details/QuestDetails/QuestObjectives
 @onready var quest_rewards = $CanvasLayer/Panel/Contents/Details/QuestDetails/QuestRewards
 
+# Use LabelSettings resources instead of theme overrides for quest text
+const LABEL_SETTINGS = preload("res://Art/Fonts/pixelized_label.tres")
+const LABEL_SETTINGS_LARGE = preload("res://Art/Fonts/pixelized_label_large.tres")
+const M3X6_PATH = "res://Art/Fonts/m3x6.ttf"
+
 var selected_quest: Quest = null
 var quest_manager
+var custom_label_settings = null
 
 func _ready():
 	panel.visible = false
 	clear_quest_details()
-	
+
+	# Ensure quest description uses the requested TTF at runtime (size 26).
+	# Use LabelSettings on Godot 4, fallback to DynamicFont on Godot 3.
+	var font_res = null
+	if ResourceLoader.exists(M3X6_PATH):
+		font_res = load(M3X6_PATH)
+	if font_res:
+		var ver = Engine.get_version_info()
+		if ver.has("major") and ver["major"] >= 4:
+			custom_label_settings = LabelSettings.new()
+			custom_label_settings.font = font_res
+			# LabelSettings may expose different property names across versions.
+			# Safely check the property's presence via get_property_list().
+			var prop_list = custom_label_settings.get_property_list()
+			var has_font_size := false
+			for p in prop_list:
+				if p.has("name") and p["name"] == "font_size":
+					has_font_size = true
+					break
+			if has_font_size:
+				custom_label_settings.font_size = 26
+			# assign to the quest_description Label
+			if quest_description:
+				quest_description.label_settings = custom_label_settings
+
 	# Quest Manager/UI connection
 	quest_manager = get_parent()
 	quest_manager.quest_updated.connect(_on_quest_updated)
@@ -43,7 +73,14 @@ func update_quest_list():
 	else: 
 		for quest in active_quests:
 			var button = Button.new()
-			button.add_theme_font_size_override("font_size", 20)
+			# Button labels: Buttons don't support LabelSettings directly, use
+			# a font-size override so the button text matches the large style.
+			if custom_label_settings and custom_label_settings.font:
+				# Apply the runtime TTF to the button and use size 30 for the list
+				button.add_theme_font_override("font", custom_label_settings.font)
+				button.add_theme_font_size_override("font_size", 30)
+			elif LABEL_SETTINGS_LARGE:
+				button.add_theme_font_size_override("font_size", 20)
 			button.text = quest.quest_name
 			button.pressed.connect(_on_quest_selected.bind(quest))
 			quest_list.add_child(button)
@@ -63,18 +100,23 @@ func _on_quest_selected(quest: Quest):
 	
 	for objective in quest.objectives:
 		var label = Label.new()
-		label.add_theme_font_size_override("font_size", 20)
+		# Apply reusable LabelSettings resource for consistent font/size
+		if custom_label_settings:
+			label.label_settings = custom_label_settings
+		elif LABEL_SETTINGS:
+			label.label_settings = LABEL_SETTINGS
 		
 		if objective.target_type == "collection":
 			label.text = objective.description + "(" + str(objective.collected_quantity) + "/" + str(objective.required_quantity) + ")"
 		else: 
 			label.text = objective.description
-	
+
+		# Use modulate for text color so we avoid theme overrides
 		if objective.is_completed:
-			label.add_theme_color_override("font_color", Color(0, 1, 0))
+			label.modulate = Color(0, 1, 0)
 		else:
-			label.add_theme_color_override("font_color", Color(1,0, 0))
-			
+			label.modulate = Color(1, 0, 0)
+		
 		quest_objectives.add_child(label)
 	
 	# Populate rewards
@@ -83,8 +125,11 @@ func _on_quest_selected(quest: Quest):
 	
 	for reward in quest.rewards:
 		var label = Label.new()
-		label.add_theme_font_size_override("font_size", 20)
-		label.add_theme_color_override("font_color", Color(0, 0.84, 0))
+		if custom_label_settings:
+			label.label_settings = custom_label_settings
+		elif LABEL_SETTINGS:
+			label.label_settings = LABEL_SETTINGS
+		label.modulate = Color(0, 0.84, 0)
 		label.text = "Rewards: " + reward.reward_type.capitalize() 	+ ": " + str(reward.reward_amount)
 		quest_rewards.add_child(label)
 	
@@ -109,7 +154,7 @@ func _on_quest_updated(quest_id: String):
 	Global.player.selected_quest = null
 	
 # Trigger to update quest details
-func _on_objectives_updated(quest_id: String, objectives_id: String):
+func _on_objectives_updated(quest_id: String, _objectives_id: String):
 	if selected_quest and selected_quest.quest_id == quest_id:
 		_on_quest_selected(selected_quest)
 	else:

@@ -44,8 +44,13 @@ func _on_body_entered(body):
 	if (player and body == player) or (body and body.has_method("is_in_group") and body.is_in_group("Player")):
 		# Use player's API if available
 		if player:
-			if player.is_item_needed(item_id):
-				player.check_quest_objectives(item_id, "collection", item_quantity)
+			# Call the player's check_quest_objectives which will attempt to progress
+			# any matching active quests (it returns true if any objective updated).
+			var collected := false
+			if player.has_method("check_quest_objectives"):
+				collected = player.check_quest_objectives(item_id, "collection", item_quantity)
+			# Only remove the item if it was actually applied to a quest
+			if collected:
 				queue_free()
 			else:
 				print("Item not needed for any active quest.")
