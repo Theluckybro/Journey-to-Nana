@@ -9,6 +9,9 @@ class_name PlayerMain
 @onready var objectives = $HUD/QuestTracker/Details/Objectives
 @onready var ray_cast_2d = $RayCast2D
 @onready var quest_manager: Node2D = $QuestManager
+@onready var hud = $HUD
+const QuestNotificationScene = preload("res://Scenes/Quest/QuestNotification.tscn")
+var quest_notification = null
 var face_direction := Vector2.DOWN
 var can_move = true
 
@@ -16,18 +19,69 @@ var can_move = true
 var selected_quest: Quest = null
 var coin_amount  = 0
 
+func _enter_tree():
+	# Try to attach to the Dialogic autoload as early as possible so we
+	# detect timelines that may have been started during scene initialization.
+	var dlg = get_node_or_null("/root/Dialogic")
+	if dlg:
+		if not dlg.is_connected("timeline_started", Callable(self, "_on_dialogic_timeline_started")):
+			dlg.connect("timeline_started", Callable(self, "_on_dialogic_timeline_started"))
+		if not dlg.is_connected("timeline_ended", Callable(self, "_on_dialogic_timeline_ended")):
+			dlg.connect("timeline_ended", Callable(self, "_on_dialogic_timeline_ended"))
+		print("PlayerMain: connected to Dialogic in _enter_tree()")
+		# If the timeline already started before this node entered the tree,
+		# handle it now.
+		if dlg.has_method("current_timeline") and dlg.current_timeline != null:
+			print("PlayerMain: Dialogic already has running timeline in _enter_tree():", dlg.current_timeline)
+			_on_dialogic_timeline_started()
+	else:
+		print("PlayerMain: Dialogic autoload not found at /root/Dialogic in _enter_tree()")
+
 func _ready():
 	Global.player = self
 	quest_tracker.visible = false
 	update_coins()
-	
 	# Signal connections
 	quest_manager.quest_updated.connect(_on_quest_updated)
 	quest_manager.objective_updated.connect(_on_objective_updated)
 
-func _physics_process(delta):
+	print("PlayerMain: _ready() called")
+
+	# Instance quest notification UI from scene so it can be edited in the editor
+	if QuestNotificationScene:
+		# Prefer the QuestManager as the parent for notifications so the
+		# notification scene can connect to QuestManager signals (same pattern
+		# as QuestUI). If QuestManager already has a child named QuestNotification
+		# use that instance instead of creating a duplicate.
+		var existing = null
+		if quest_manager and quest_manager.has_node("QuestNotification"):
+			existing = quest_manager.get_node_or_null("QuestNotification")
+		if existing:
+			quest_notification = existing
+		else:
+			quest_notification = QuestNotificationScene.instantiate()
+			quest_notification.name = "QuestNotification"
+			if quest_manager:
+				quest_manager.add_child(quest_notification)
+			else:
+				# Fallback: attach to HUD to avoid losing the notification entirely
+				hud.add_child(quest_notification)
+
+func _physics_process(_delta):
+	# Always update the raycast direction so interaction works while standing still.
+	var direction = Vector2.ZERO
+
+	# Prevent physics/movement updates if dialog is playing
+	if not can_move:
+		# Optionally zero velocity so player stops immediately
+		velocity = Vector2.ZERO
+		return
 	if velocity != Vector2.ZERO:
-		ray_cast_2d.target_position = velocity.normalized() * 50
+		direction = velocity.normalized()
+	else:
+		direction = face_direction.normalized()
+
+	ray_cast_2d.target_position = direction * 50
 
 func _input(event):
 	#Interact with NPC/ Quest Item
@@ -36,15 +90,41 @@ func _input(event):
 			var target = ray_cast_2d.get_collider()
 			if target != null:
 				if target.is_in_group("NPC"):
+					print("Interacting with NPC:", target.name)
 					can_move = false
 					target.start_dialog()
 					check_quest_objectives(target.npc_id, "talk_to")
 				elif target.is_in_group("Item"):
+					print("Interacting with Item:", target.name)
 					if is_item_needed(target.item_id):
 						check_quest_objectives(target.item_id, "collection", target.item_quantity)
 						target.queue_free()
 					else: 
 						print("Item not needed for any active quest.")
+				# Generic interactables (e.g. Bucket)
+				else:
+					# The raycast may hit a CollisionShape2D or the StaticBody root. The actual
+					# interactive script is on a child node named "InteractionArea".
+					var interaction_target = target
+					# If collider doesn't expose interact(), try to find the child InteractionArea
+					if not interaction_target.has_method("interact"):
+						if interaction_target.has_node("InteractionArea"):
+							interaction_target = interaction_target.get_node("InteractionArea")
+						elif interaction_target.get_parent() and interaction_target.get_parent().has_node("InteractionArea"):
+							interaction_target = interaction_target.get_parent().get_node("InteractionArea")
+
+					if interaction_target and (interaction_target.has_method("can_interact") or interaction_target.has_method("interact")):
+						print("Interacting with Object:", interaction_target.name)
+						var ok = true
+						if interaction_target.has_method("can_interact"):
+							ok = interaction_target.can_interact()
+						if ok:
+							if interaction_target.has_method("interact"):
+								interaction_target.interact(self)
+							else:
+								print("Target has no interact() method at runtime")
+						else:
+							print("Target cannot be interacted with right now")
 	# Open/close quest log
 		if event.is_action_pressed("ui_quest_menu"):
 			quest_manager.show_hide_log()
@@ -145,9 +225,43 @@ func _on_quest_updated(quest_id: String):
 	if quest == selected_quest:
 		update_quest_tracker(quest)
 	selected_quest = null
+
+	# Show a short notification when a quest is added/updated and is in progress
+	if quest and quest.state == "in_progress" and quest_notification:
+		quest_notification.show_notification(quest.quest_name)
 	
 # Update tracker if objective is complete
 func _on_objective_updated(quest_id: String, _objective_id: String):
 	if selected_quest and selected_quest.quest_id == quest_id:
 		update_quest_tracker(selected_quest)
 	selected_quest = null
+
+
+## Dialogic timeline handlers
+func _on_dialogic_timeline_started() -> void:
+	# Timeline started: prevent player movement
+	var ct = null
+	if Engine.has_singleton("Dialogic"):
+		ct = Dialogic.current_timeline
+	print("PlayerMain: _on_dialogic_timeline_started() called. Dialogic.current_timeline=", ct)
+	if fsm and fsm.current_state:
+		print("PlayerMain: FSM current state before forcing Idle:", fsm.current_state.name)
+	can_move = false
+	velocity = Vector2.ZERO
+	# Mirror the NPC-interaction behavior: ensure the FSM is in Idle so movement/animations stop
+	if fsm and fsm.has_method("force_change_state"):
+		# Force to Idle state if it exists
+		if fsm.states.has("idle"):
+			fsm.force_change_state("Idle")
+		else:
+			# fallback to calling force_change_state anyway
+			fsm.force_change_state("Idle")
+
+func _on_dialogic_timeline_ended() -> void:
+	# Timeline ended: re-enable player movement
+	print("PlayerMain: _on_dialogic_timeline_ended() called")
+	can_move = true
+
+
+
+
