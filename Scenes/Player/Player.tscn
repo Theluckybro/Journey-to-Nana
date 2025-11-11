@@ -779,6 +779,7 @@ theme_override_font_sizes/font_size = 36
 text = "0"
 
 [node name="QuestTracker" type="ColorRect" parent="HUD"]
+visible = false
 offset_right = 300.0
 offset_bottom = 200.0
 color = Color(0.14117648, 0.14117648, 0.14117648, 0.7882353)

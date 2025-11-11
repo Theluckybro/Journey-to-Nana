@@ -1,0 +1,7 @@
+label start
+Hey adventurer! Thanks again for helping me.
+- Say Goodbye
+	jump npc_1_default/exit
+label exit
+Come back soon adventurer!
+[end_timeline]

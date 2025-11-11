@@ -1,0 +1,9 @@
+label start
+This is a short linear dialog. Press Continue to move on.
+[n]
+label middle
+The story continues without choices.
+[n]
+label end
+Thanks for listening!
+[end_timeline]

@@ -1,0 +1,26 @@
+label start
+Hey adventurer! Back so soon?
+- Continue Asking About Town
+	jump npc_1_2/in_progress
+- Receive Quests
+	jump npc_1_2/give_quests
+- Say Goodbye
+	jump npc_1_2/exit
+label in_progress
+I heard that Carl over there makes a mean cat-eye soup.
+- Say Goodbye
+	jump npc_1_2/end
+- Go Back
+	jump npc_1_2/start
+label give_quests
+Sure! If I have anything, you can find it in your Quest Log.
+- Say Goodbye
+	jump npc_1_2/exit
+- Go Back
+	jump npc_1_2/start
+label end
+Goodbye, adventurer!
+[end_timeline]
+label exit
+Come back soon!
+[end_timeline]

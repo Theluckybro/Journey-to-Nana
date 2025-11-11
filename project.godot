@@ -29,17 +29,29 @@ GameManager="*res://Scripts/Managers/GameManager.gd"
 AudioManager="*res://Scripts/Managers/AudioManager.gd"
 Global="*res://Scripts/Managers/DialogueManager.gd"
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
+QuestSpawner="*res://Scripts/Quest/QuestSpawner.gd"
 
 [dialogic]
 
-directories/dch_directory={}
-directories/dtl_directory={
-"npc_1_1": "res://Dialog_timeline/npc_1_1.dtl"
+directories/dch_directory={
+"Indra": "res://DialogTimelines/Characters/Indra.dch"
 }
-layout/style_directory={}
+directories/dtl_directory={
+"gamestart": "res://DialogTimelines/gamestart.dtl",
+"npc_1_1": "res://DialogTimelines/npc_1_1.dtl",
+"npc_1_2": "res://DialogTimelines/npc_1_2.dtl",
+"npc_1_default": "res://DialogTimelines/npc_1_default.dtl",
+"npc_2_1": "res://DialogTimelines/npc_2_1.dtl",
+"npc_2_default": "res://DialogTimelines/npc_2_default.dtl",
+"npc_3_1": "res://DialogTimelines/npc_3_1.dtl"
+}
+layout/style_directory={
+"": "res://Art/DialogStyle.tres",
+"DialogStyle": "res://Art/DialogStyle.tres"
+}
 glossary/default_case_sensitive=true
-layout/style_list=[]
-layout/default_style="Default"
+layout/style_list=["res://Art/DialogStyle.tres"]
+layout/default_style="res://Art/DialogStyle.tres"
 text/letter_speed=0.01
 choices/autofocus_first=true
 choices/delay=0.2
@@ -73,6 +85,7 @@ audio/channel_defaults={
 "volume": 0.0
 }
 }
+variables={}
 
 [display]
 
@@ -94,6 +107,7 @@ enabled=PackedStringArray("res://addons/dialogic/plugin.cfg")
 
 folder_colors={
 "res://Art/": "blue",
+"res://DialogTimelines/": "yellow",
 "res://Resources/": "purple",
 "res://Scenes/": "red",
 "res://Scripts/": "green",

@@ -1,0 +1,26 @@
+label start
+Greetings, traveler! How can I assist you?
+- Ask About Forest
+	jump npc_2_1/in_progress
+- Receive Quests
+	jump npc_2_1/give_quests
+- Say Goodbye
+	jump npc_2_1/exit
+label in_progress
+The forest is home to many mystical creatures.
+- Say Goodbye
+	jump npc_2_1/end
+- Go Back
+	jump npc_2_1/start
+label give_quests
+Okay. I've updated your quest log with things I need done.
+- Say Goodbye
+	jump npc_2_1/exit
+- Go Back
+	jump npc_2_1/start
+label end
+Farewell, traveler!
+[end_timeline]
+label exit
+Come back soon!
+[end_timeline]

@@ -1,0 +1,13 @@
+label start
+I wonder why Bobby is always smelling me...
+- Receive Quests
+	jump npc_2_default/give_quests
+- Say Goodbye
+	jump npc_2_default/exit
+label give_quests
+Okay. I've updated your quest log with things I need done.
+- Go Back
+	jump npc_2_default/start
+label exit
+Come back soon!
+[end_timeline]
