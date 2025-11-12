@@ -1,136 +1,24 @@
-[gd_scene load_steps=8 format=3 uid="uid://dkhkyhfth84w2"]
+[gd_scene load_steps=5 format=3 uid="uid://dkhkyhfth84w2"]
 
 [ext_resource type="Script" uid="uid://dg6s2rdawq01j" path="res://Scripts/Quest/QuestNotification.gd" id="2_script"]
-[ext_resource type="LabelSettings" uid="uid://da8inon5cmt2r" path="res://Art/Fonts/pixelized_label.tres" id="2_utc06"]
+[ext_resource type="FontFile" uid="uid://ci60w53hdbiqe" path="res://Art/Fonts/m3x6.ttf" id="2_utc06"]
+[ext_resource type="Texture2D" uid="uid://e1qx1oeab31" path="res://Art/Icons/icon.svg" id="3_icon"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v1chx"]
-bg_color = Color(0.05490196, 0.16078432, 0.28235295, 1)
-
-[sub_resource type="Animation" id="Animation_udwmw"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CanvasLayer/Panel:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CanvasLayer/Panel/VBoxContainer/QuestAnnouncement:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("CanvasLayer/Panel/VBoxContainer/QuestTitle:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_utc06"]
-resource_name = "show"
-length = 0.18
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CanvasLayer/Panel:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.18),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CanvasLayer/Panel/VBoxContainer/QuestAnnouncement:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.18),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("CanvasLayer/Panel/VBoxContainer/QuestTitle:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.18),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_02d5t"]
-resource_name = "hide"
-length = 0.18
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CanvasLayer/Panel:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.18),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CanvasLayer/Panel/VBoxContainer/QuestAnnouncement:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(-0.10000001, 0.18),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("CanvasLayer/Panel/VBoxContainer/QuestTitle:modulate")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.18),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_ercao"]
-_data = {
-&"RESET": SubResource("Animation_udwmw"),
-&"hide": SubResource("Animation_02d5t"),
-&"show": SubResource("Animation_utc06")
-}
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.05882353, 0.16078432, 0.2784314, 0.9490196)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.019607844, 0.05882353, 0.12156863, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="QuestNotification" type="Control"]
 layout_mode = 3
@@ -143,44 +31,61 @@ script = ExtResource("2_script")
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -170.0
+offset_left = -180.0
 offset_top = 8.0
-offset_right = 130.0
-offset_bottom = 52.0
-grow_horizontal = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+offset_right = 180.0
+offset_bottom = 88.0
+grow_horizontal = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_v1chx")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Panel"]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 14
+anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = -32.0
+offset_right = -8.0
+offset_bottom = 32.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 64
 
-[node name="QuestAnnouncement" type="Label" parent="CanvasLayer/Panel/VBoxContainer"]
+[node name="Icon" type="TextureRect" parent="CanvasLayer/Panel/HBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
 layout_mode = 2
+texture = ExtResource("3_icon")
+expand_mode = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Panel/HBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Panel/HBoxContainer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="QuestAnnouncement" type="Label" parent="CanvasLayer/Panel/HBoxContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_utc06")
+theme_override_font_sizes/font_size = 16
 text = "Quest Started/Finished"
-label_settings = ExtResource("2_utc06")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="QuestTitle" type="Label" parent="CanvasLayer/Panel/VBoxContainer"]
+[node name="QuestTitle" type="Label" parent="CanvasLayer/Panel/HBoxContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_utc06")
+theme_override_font_sizes/font_size = 28
 text = "Quest Title"
-label_settings = ExtResource("2_utc06")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_ercao")
-}
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

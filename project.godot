@@ -13,7 +13,7 @@ config_version=5
 config/name="Journey To Nana"
 config/description="This 2D Pixelart, TopDown action Starter Project include all the basics you need to get started creating a game."
 config/version="1.5"
-run/main_scene="res://Scenes/Levels/MainFloor.tscn"
+run/main_scene="uid://c3v3oyal32qg4"
 config/features=PackedStringArray("4.5", "Forward Plus")
 boot_splash/use_filter=false
 boot_splash/image="res://Art/Icons/icon.png"
@@ -30,6 +30,7 @@ AudioManager="*res://Scripts/Managers/AudioManager.gd"
 Global="*res://Scripts/Managers/DialogueManager.gd"
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 QuestSpawner="*res://Scripts/Quest/QuestSpawner.gd"
+SceneHistory="*res://Scripts/SceneHistory.gd"
 
 [dialogic]
 
@@ -92,7 +93,6 @@ variables={}
 window/size/viewport_width=640
 window/size/viewport_height=360
 window/stretch/mode="viewport"
-window/stretch/aspect="expand"
 window/stretch/scale_mode="integer"
 
 [dotnet]

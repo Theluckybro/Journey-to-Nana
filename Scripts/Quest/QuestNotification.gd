@@ -1,14 +1,15 @@
 extends Control
 
 # Small controller for the QuestNotification scene.
-# Usage: call show_notification("text") to display the notification for the configured time.
+# Uses tweens for show/hide animations (Godot 4).
 
 @onready var panel = $CanvasLayer/Panel
-@onready var announcement_label = $CanvasLayer/Panel/VBoxContainer/QuestAnnouncement
-@onready var title_label = $CanvasLayer/Panel/VBoxContainer/QuestTitle
+@onready var icon = $CanvasLayer/Panel/HBoxContainer/Icon
+@onready var announcement_label = $CanvasLayer/Panel/HBoxContainer/CenterContainer/VBoxContainer/QuestAnnouncement
+@onready var title_label = $CanvasLayer/Panel/HBoxContainer/CenterContainer/VBoxContainer/QuestTitle
 @onready var timer = $Timer
-@onready var anim_player = $AnimationPlayer
 var quest_manager = null
+var _active_tween: Tween = null
 
 func _ready():
 	# start hidden (guard nodes in case the scene structure differs)
@@ -36,19 +37,13 @@ func _ready():
 		var ct = title_label.modulate
 		ct.a = 0.0
 		title_label.modulate = ct
+	# (no shadow) start state already set on panel/labels above
 
-	# If an AnimationPlayer exists, ensure we don't double-hide via callbacks.
-	# We'll prefer playing 'show'/'hide' animations if they exist.
-	if anim_player:
-		# ensure no lingering connections
-		if anim_player.is_connected("animation_finished", Callable(self, "_on_animation_finished")):
-			anim_player.disconnect("animation_finished", Callable(self, "_on_animation_finished"))
-		anim_player.connect("animation_finished", Callable(self, "_on_animation_finished"))
+	# ensure icon scale default
+	if icon:
+		icon.scale = Vector2.ONE
 
-	# If this notification is added as a child of the QuestManager (like QuestUI),
-	# connect to its signals so the notification can show automatically when a
-	# quest becomes in_progress. The scene should be attached as a child of
-	# QuestManager in the editor (we don't modify the .tscn here).
+	# Connect to quest manager signals if parent provides them
 	if get_parent():
 		quest_manager = get_parent()
 		if quest_manager and quest_manager.has_method("get_quest"):
@@ -67,43 +62,47 @@ func show_notification(text: String, announcement: String = "Quest Started") -> 
 	if panel:
 		panel.visible = true
 
-	# Use AnimationPlayer if available and has the 'show' animation; otherwise fallback to tween
-	if anim_player and anim_player.has_animation("show"):
-		# Ensure nodes are visible before playing (animation drives alpha)
-		if panel:
-			panel.visible = true
-		if announcement_label:
-			announcement_label.visible = true
-		if title_label:
-			title_label.visible = true
-		anim_player.play("show")
-	else:
-		var tween = create_tween()
-		if panel:
-			tween.tween_property(panel, "modulate:a", 1.0, 0.18)
-		if announcement_label:
-			tween.tween_property(announcement_label, "modulate:a", 1.0, 0.18)
-		if title_label:
-			tween.tween_property(title_label, "modulate:a", 1.0, 0.18)
+	# Use tweens for the entrance animation. Kill any previous tween to avoid
+	# overlapping animations (which can cause the shadow to linger).
+	if _active_tween:
+		_active_tween.kill()
+	_active_tween = create_tween()
+	var t = _active_tween
+	t.tween_property(panel, "modulate:a", 1.0, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	if announcement_label:
+		t.tween_property(announcement_label, "modulate:a", 1.0, 0.25)
+	if title_label:
+		t.tween_property(title_label, "modulate:a", 1.0, 0.25)
+	if icon:
+		# small pop animation for the icon
+		icon.scale = Vector2(0.92, 0.92)
+		t.tween_property(icon, "scale", Vector2(1.08, 1.08), 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		t.tween_property(icon, "scale", Vector2(1, 1), 0.08).set_delay(0.12)
 
 	if timer:
 		timer.start()
 
+	# Clear the active tween reference once the entrance animation finishes
+	t.tween_callback(Callable(self, "_clear_active_tween"))
+
 
 func _on_timer_timeout() -> void:
-	# If AnimationPlayer has a 'hide' animation, play it and wait for the
-	# animation_finished callback to hide nodes. Otherwise fallback to tween.
-	if anim_player and anim_player.has_animation("hide"):
-		anim_player.play("hide")
-	else:
-		var tween = create_tween()
-		if panel:
-			tween.tween_property(panel, "modulate:a", 0.0, 0.18)
-		if announcement_label:
-			tween.tween_property(announcement_label, "modulate:a", 0.0, 0.18)
-		if title_label:
-			tween.tween_property(title_label, "modulate:a", 0.0, 0.18)
-		tween.tween_callback(Callable(self, "_hide_nodes"))
+	# Hide using tweens then call _hide_nodes
+	# Stop any running tween first, then create a new one for hiding.
+	if _active_tween:
+		_active_tween.kill()
+	_active_tween = create_tween()
+	var t = _active_tween
+	t.tween_property(panel, "modulate:a", 0.0, 0.18).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	if announcement_label:
+		t.tween_property(announcement_label, "modulate:a", 0.0, 0.18)
+	if title_label:
+		t.tween_property(title_label, "modulate:a", 0.0, 0.18)
+	# Ensure we hide nodes when the fade-out completes, and clear the
+	# active tween reference afterwards so future animations start cleanly.
+	t.tween_callback(Callable(self, "_hide_nodes"))
+	t.tween_callback(Callable(self, "_clear_active_tween"))
+
 
 func _hide_nodes() -> void:
 	if panel:
@@ -112,6 +111,13 @@ func _hide_nodes() -> void:
 		announcement_label.visible = false
 	if title_label:
 		title_label.visible = false
+	# hide nodes when animation completes
+
+
+func _clear_active_tween() -> void:
+	# Helper to clear the stored tween reference after it finishes/was killed
+	_active_tween = null
+
 
 func _on_quest_updated(quest_id: String) -> void:
 	# Called by QuestManager when a quest changes. If the quest is newly in

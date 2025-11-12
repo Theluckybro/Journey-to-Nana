@@ -10,7 +10,7 @@ const ObjectiveScript = preload("res://Resources/Quest/Objectives.gd")
 func spawn_get_ready_quest():
 	var q = QuestScript.new()
 	q.quest_id = "get_ready_001"
-	q.quest_name = "Bersiap-siap"
+	q.quest_name = "Siap-siap"
 	q.quest_description = "Bersiap-siap untuk berangkat kuliah."
 	# mark quest as in_progress so it appears in the quest tracker immediately
 	q.state = "in_progress"

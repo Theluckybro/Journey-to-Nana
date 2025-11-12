@@ -84,6 +84,7 @@ func _physics_process(_delta):
 	ray_cast_2d.target_position = direction * 50
 
 func _input(event):
+	# Input is handled here (pause is handled globally by PauseManager autoload)
 	#Interact with NPC/ Quest Item
 	if can_move:
 		if event.is_action_pressed("ui_interact"):
