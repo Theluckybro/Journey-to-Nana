@@ -20,10 +20,10 @@ func _on_gamestart_ended():
 
 func _on_dialogic_signal(argument: Variant) -> void:
     # Timeline emits Dialogic.signal_event with the argument we placed in the timeline.
-    if typeof(argument) == TYPE_STRING and argument == "spawn_bath":
+    if typeof(argument) == TYPE_STRING and argument == "get_ready":
         if Engine.has_singleton("QuestSpawner"):
-            QuestSpawner.spawn_bath_quest()
+            QuestSpawner.spawn_get_ready_quest()
         else:
             var Spawner = load("res://Scripts/Quest/QuestSpawner.gd")
             var sp = Spawner.new()
-            sp.spawn_bath_quest()
+            sp.spawn_get_ready_quest()

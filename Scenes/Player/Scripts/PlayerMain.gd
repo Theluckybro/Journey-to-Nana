@@ -188,7 +188,6 @@ func handle_quest_completion(quest: Quest):
 		if reward.reward_type == "coins":
 			coin_amount += reward.reward_amount
 			update_coins()
-	update_quest_tracker(quest)
 	quest_manager.update_quest(quest.quest_id, "completed")
 	
 # Update coin UI
@@ -199,6 +198,11 @@ func update_coins():
 func update_quest_tracker(quest: Quest):
 	# if we have an active quest, populate tracker
 	if quest:
+		# Ensure tracker visible and fully opaque when showing
+		if quest_tracker:
+			var mq = quest_tracker.modulate
+			mq.a = 1.0
+			quest_tracker.modulate = mq
 		quest_tracker.visible = true
 		title.text = quest.quest_name	
 		
@@ -215,15 +219,48 @@ func update_quest_tracker(quest: Quest):
 				label.add_theme_color_override("font_color", Color(1,0, 0))
 				
 			objectives.add_child(label)
-	# no active quest, hide tracker		
+	# no active quest, fade out tracker
 	else:
+		hide_quest_tracker_fade()
+
+
+func hide_quest_tracker_fade(duration: float = 0.28) -> void:
+	# Fade out the quest tracker and then hide it. If it's already hidden, do nothing.
+	if not quest_tracker or not quest_tracker.visible:
+		return
+	# Start a tween to fade the control's modulate alpha to 0, then hide and reset alpha
+	var tw = create_tween()
+	# tween_property returns a PropertyTweener; call tween_callback on the SceneTreeTween
+	tw.tween_property(quest_tracker, "modulate:a", 0.0, duration)
+	tw.tween_callback(Callable(self, "_on_hide_tracker_finished"))
+
+
+func _on_hide_tracker_finished() -> void:
+	if quest_tracker:
 		quest_tracker.visible = false
+		# Reset alpha back to 1 for the next show
+		var mq = quest_tracker.modulate
+		mq.a = 1.0
+		quest_tracker.modulate = mq
 
 # Update tracker if quest is complete
 func _on_quest_updated(quest_id: String):
 	var quest = quest_manager.get_quest(quest_id)
-	if quest == selected_quest:
-		update_quest_tracker(quest)
+	# If the quest still exists and it's the selected one, update the tracker.
+	if quest != null:
+		if quest == selected_quest:
+			update_quest_tracker(quest)
+		# If the quest changed to completed, hide the tracker (user requested it)
+		if quest.state == "completed":
+			# Ensure tracker hides after completion
+			update_quest_tracker(null)
+			print("PlayerMain: Quest completed - hiding tracker for", quest.quest_name)
+	else:
+		# Quest was removed from QuestManager (likely completed) -> hide tracker
+		update_quest_tracker(null)
+		print("PlayerMain: Quest removed/finished - hiding tracker for id=", quest_id)
+
+	# Reset selection
 	selected_quest = null
 
 	# Show a short notification when a quest is added/updated and is in progress
@@ -261,7 +298,3 @@ func _on_dialogic_timeline_ended() -> void:
 	# Timeline ended: re-enable player movement
 	print("PlayerMain: _on_dialogic_timeline_ended() called")
 	can_move = true
-
-
-
-

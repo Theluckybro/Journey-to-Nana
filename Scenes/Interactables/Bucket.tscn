@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dgw3shdujp1y3"]
 
-[ext_resource type="Texture2D" path="res://Art/Sprites/Barang_Indra.png" id="1"]
-[ext_resource type="Script" path="res://Scripts/Interactables/BucketInteract.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://cng36rmjyanh0" path="res://Art/Sprites/Barang_Indra.png" id="1"]
+[ext_resource type="Script" uid="uid://bwsoamyelpka5" path="res://Scripts/Interactables/BucketInteract.gd" id="2"]
 
 [sub_resource type="CircleShape2D" id="1"]
 radius = 9.0
@@ -10,15 +10,15 @@ radius = 9.0
 y_sort_enabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource(1)
+texture = ExtResource("1")
 region_enabled = true
 region_rect = Rect2(48, 0, 32, 32)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource(1)
+shape = SubResource("1")
 
 [node name="InteractionArea" type="Area2D" parent="."]
-script = ExtResource(2)
+script = ExtResource("2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
-shape = SubResource(1)
+shape = SubResource("1")
