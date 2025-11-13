@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Journey To Nana"
+config/name="Journey To Nanas"
 config/description="This 2D Pixelart, TopDown action Starter Project include all the basics you need to get started creating a game."
 config/version="1.5"
 run/main_scene="uid://c3v3oyal32qg4"
@@ -39,6 +39,7 @@ directories/dch_directory={
 }
 directories/dtl_directory={
 "gamestart": "res://DialogTimelines/gamestart.dtl",
+"interactables": "res://DialogTimelines/interactables.dtl",
 "npc_1_1": "res://DialogTimelines/npc_1_1.dtl",
 "npc_1_2": "res://DialogTimelines/npc_1_2.dtl",
 "npc_1_default": "res://DialogTimelines/npc_1_default.dtl",
@@ -92,7 +93,7 @@ variables={}
 
 window/size/viewport_width=640
 window/size/viewport_height=360
-window/stretch/mode="viewport"
+window/stretch/mode="canvas_items"
 window/stretch/scale_mode="integer"
 
 [dotnet]
@@ -115,6 +116,10 @@ folder_colors={
 "res://Shader/": "teal",
 "res://addons/": "gray"
 }
+
+[gui]
+
+theme/default_font_multichannel_signed_distance_field=true
 
 [input]
 

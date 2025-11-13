@@ -6,10 +6,9 @@ var paused: bool = false
 func _ready():
 	Dialogic.signal_event.connect(_on_dialogic_signal, CONNECT_ONE_SHOT)
 
-	# Mulai timeline gamestart (memastikan layout/dialog scene di-load)
 	Dialogic.start("gamestart")
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Escape"):
 		pauseMenu()
 

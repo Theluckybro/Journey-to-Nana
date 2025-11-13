@@ -20,22 +20,20 @@ var selected_quest: Quest = null
 var coin_amount  = 0
 
 func _enter_tree():
-	# Try to attach to the Dialogic autoload as early as possible so we
-	# detect timelines that may have been started during scene initialization.
-	var dlg = get_node_or_null("/root/Dialogic")
-	if dlg:
-		if not dlg.is_connected("timeline_started", Callable(self, "_on_dialogic_timeline_started")):
-			dlg.connect("timeline_started", Callable(self, "_on_dialogic_timeline_started"))
-		if not dlg.is_connected("timeline_ended", Callable(self, "_on_dialogic_timeline_ended")):
-			dlg.connect("timeline_ended", Callable(self, "_on_dialogic_timeline_ended"))
-		print("PlayerMain: connected to Dialogic in _enter_tree()")
-		# If the timeline already started before this node entered the tree,
-		# handle it now.
-		if dlg.has_method("current_timeline") and dlg.current_timeline != null:
-			print("PlayerMain: Dialogic already has running timeline in _enter_tree():", dlg.current_timeline)
-			_on_dialogic_timeline_started()
-	else:
-		print("PlayerMain: Dialogic autoload not found at /root/Dialogic in _enter_tree()")
+	# Connect to Dialogic autoload signals using the global name for brevity
+	if not Dialogic.is_connected("timeline_started", Callable(self, "_on_dialogic_timeline_started")):
+		Dialogic.connect("timeline_started", Callable(self, "_on_dialogic_timeline_started"))
+	if not Dialogic.is_connected("timeline_ended", Callable(self, "_on_dialogic_timeline_ended")):
+		Dialogic.connect("timeline_ended", Callable(self, "_on_dialogic_timeline_ended"))
+	# Listen for timeline-emitted signal events
+	if not Dialogic.is_connected("signal_event", Callable(self, "_on_dialogic_signal")):
+		Dialogic.connect("signal_event", Callable(self, "_on_dialogic_signal"))
+	print("PlayerMain: connected to Dialogic in _enter_tree()")
+	# If the timeline already started before this node entered the tree,
+	# handle it now.
+	if Dialogic.has_method("current_timeline") and Dialogic.current_timeline != null:
+		print("PlayerMain: Dialogic already has running timeline in _enter_tree():", Dialogic.current_timeline)
+		_on_dialogic_timeline_started()
 
 func _ready():
 	Global.player = self
@@ -275,27 +273,8 @@ func _on_objective_updated(quest_id: String, _objective_id: String):
 	selected_quest = null
 
 
-## Dialogic timeline handlers
 func _on_dialogic_timeline_started() -> void:
-	# Timeline started: prevent player movement
-	var ct = null
-	if Engine.has_singleton("Dialogic"):
-		ct = Dialogic.current_timeline
-	print("PlayerMain: _on_dialogic_timeline_started() called. Dialogic.current_timeline=", ct)
-	if fsm and fsm.current_state:
-		print("PlayerMain: FSM current state before forcing Idle:", fsm.current_state.name)
 	can_move = false
-	velocity = Vector2.ZERO
-	# Mirror the NPC-interaction behavior: ensure the FSM is in Idle so movement/animations stop
-	if fsm and fsm.has_method("force_change_state"):
-		# Force to Idle state if it exists
-		if fsm.states.has("idle"):
-			fsm.force_change_state("Idle")
-		else:
-			# fallback to calling force_change_state anyway
-			fsm.force_change_state("Idle")
 
 func _on_dialogic_timeline_ended() -> void:
-	# Timeline ended: re-enable player movement
-	print("PlayerMain: _on_dialogic_timeline_ended() called")
 	can_move = true

@@ -1,7 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://coendijoa6uo2"]
+[gd_scene load_steps=5 format=3 uid="uid://coendijoa6uo2"]
 
 [ext_resource type="Script" uid="uid://exoo3uf4mdw2" path="res://Scripts/Misc/Settings.gd" id="1_merj5"]
+[ext_resource type="Theme" uid="uid://c4kkjsbtgcu3y" path="res://Scenes/Misc/Menu/Menu.tres" id="2_4o1np"]
 [ext_resource type="FontFile" uid="uid://ci60w53hdbiqe" path="res://Art/Fonts/m3x6.ttf" id="2_ct2ev"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_4o1np"]
+font = ExtResource("2_ct2ev")
+font_size = 108
+font_color = Color(0.78039217, 0.8784314, 0.78039217, 1)
+shadow_size = 6
+shadow_color = Color(0.03137255, 0.09019608, 0.039215688, 0.6)
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -12,43 +20,55 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_merj5")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="Label" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 136.0
+grow_horizontal = 2
+text = "Settings"
+label_settings = SubResource("LabelSettings_4o1np")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 14
 anchor_top = 0.5
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -240.0
-offset_top = -100.0
-offset_right = 240.0
-offset_bottom = 100.0
+offset_left = 80.0
+offset_top = -44.0
+offset_right = -80.0
+offset_bottom = 156.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_4o1np")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="Video" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Video" type="Button" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_ct2ev")
 theme_override_font_sizes/font_size = 40
 text = "Video"
 
-[node name="Audio" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Audio" type="Button" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_ct2ev")
 theme_override_font_sizes/font_size = 40
 text = "Audio"
 
-[node name="Back" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Back" type="Button" parent="CenterContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_ct2ev")
 theme_override_font_sizes/font_size = 40
 text = "Back"
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Video" to="." method="_on_video_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Audio" to="." method="_on_audio_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Video" to="." method="_on_video_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Audio" to="." method="_on_audio_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Back" to="." method="_on_back_pressed"]

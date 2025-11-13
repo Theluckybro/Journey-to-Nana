@@ -10,7 +10,7 @@ func Enter():
 	player = get_tree().get_first_node_in_group("Player") as PlayerMain
 	play_animation_from_direction(player.face_direction)
 
-func Update(delta : float):
+func Update(_delta : float):
 	var input_dir = Vector2.ZERO
 	
 	if player.can_move:

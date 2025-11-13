@@ -3,10 +3,10 @@ extends Control
 # Small controller for the QuestNotification scene.
 # Uses tweens for show/hide animations (Godot 4).
 
-@onready var panel = $CanvasLayer/Panel
-@onready var icon = $CanvasLayer/Panel/HBoxContainer/Icon
-@onready var announcement_label = $CanvasLayer/Panel/HBoxContainer/CenterContainer/VBoxContainer/QuestAnnouncement
-@onready var title_label = $CanvasLayer/Panel/HBoxContainer/CenterContainer/VBoxContainer/QuestTitle
+@onready var panel = $CanvasLayer/PanelContainer
+@onready var icon = $CanvasLayer/PanelContainer/HBoxContainer/Icon
+@onready var announcement_label = $CanvasLayer/PanelContainer/HBoxContainer/CenterContainer/VBoxContainer/QuestAnnouncement
+@onready var title_label = $CanvasLayer/PanelContainer/HBoxContainer/CenterContainer/VBoxContainer/QuestTitle
 @onready var timer = $Timer
 var quest_manager = null
 var _active_tween: Tween = null

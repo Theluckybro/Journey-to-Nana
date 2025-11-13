@@ -1,12 +1,22 @@
-[gd_scene load_steps=5 format=3 uid="uid://ddrvugbwb21qg"]
+[gd_scene load_steps=6 format=3 uid="uid://ddrvugbwb21qg"]
 
 [ext_resource type="Script" uid="uid://c0orig1xffhmd" path="res://Scripts/Misc/PauseMenu.gd" id="1_8n5fv"]
-[ext_resource type="Shader" uid="uid://drlcj5nnaj5qe" path="res://Shader/PauseMenu.gdshader" id="2_i13e8"]
 [ext_resource type="FontFile" uid="uid://ci60w53hdbiqe" path="res://Art/Fonts/m3x6.ttf" id="3_jbyyi"]
+[ext_resource type="Theme" uid="uid://c4kkjsbtgcu3y" path="res://Scenes/Misc/Menu/Menu.tres" id="3_swgfc"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_jbyyi"]
-shader = ExtResource("2_i13e8")
-shader_parameter/amount = 3.0000001425
+[sub_resource type="LabelSettings" id="LabelSettings_jbyyi"]
+font = ExtResource("3_jbyyi")
+font_size = 108
+font_color = Color(0.78, 0.88, 0.78, 1)
+shadow_size = 6
+shadow_color = Color(0.03, 0.09, 0.04, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.5)
 
 [node name="PauseMenu" type="Control"]
 layout_mode = 3
@@ -17,50 +27,156 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_8n5fv")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_jbyyi")
+[node name="Label" type="Label" parent="."]
 layout_mode = 0
 offset_right = 640.0
-offset_bottom = 360.0
+offset_bottom = 136.0
+text = "GAME IS PAUSED"
+label_settings = SubResource("LabelSettings_jbyyi")
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 140.0
+offset_top = 136.0
+offset_right = 500.0
+offset_bottom = 336.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="CenterContainer" type="CenterContainer" parent="Panel"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -240.0
-offset_top = -100.0
-offset_right = 240.0
-offset_bottom = 100.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("3_swgfc")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="MainButtons" type="VBoxContainer" parent="Panel/CenterContainer"]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_constants/separation = 12
 alignment = 1
 
-[node name="Resume" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Resume" type="Button" parent="Panel/CenterContainer/MainButtons"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_jbyyi")
 theme_override_font_sizes/font_size = 40
 text = "Resume"
 
-[node name="Settings" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Settings" type="Button" parent="Panel/CenterContainer/MainButtons"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_jbyyi")
 theme_override_font_sizes/font_size = 40
 text = "Settings"
 
-[node name="Quit" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="Quit" type="Button" parent="Panel/CenterContainer/MainButtons"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_jbyyi")
 theme_override_font_sizes/font_size = 40
 text = "Exit to Main Menu
 "
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Resume" to="." method="_on_resume_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[node name="SettingsMenu" type="VBoxContainer" parent="Panel/CenterContainer"]
+visible = false
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Video" type="Button" parent="Panel/CenterContainer/SettingsMenu"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_jbyyi")
+theme_override_font_sizes/font_size = 40
+text = "Video"
+
+[node name="Audio" type="Button" parent="Panel/CenterContainer/SettingsMenu"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_jbyyi")
+theme_override_font_sizes/font_size = 40
+text = "Audio"
+
+[node name="Back" type="Button" parent="Panel/CenterContainer/SettingsMenu"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_jbyyi")
+theme_override_font_sizes/font_size = 40
+text = "Back"
+
+[node name="VideoMenu" type="VBoxContainer" parent="Panel/CenterContainer"]
+visible = false
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="ResolutionsLabel" type="Label" parent="Panel/CenterContainer/VideoMenu"]
+layout_mode = 2
+text = "Screen Resolution"
+
+[node name="Resolutions" type="OptionButton" parent="Panel/CenterContainer/VideoMenu"]
+layout_mode = 2
+selected = 0
+item_count = 4
+popup/item_0/text = "640x360"
+popup/item_0/id = 0
+popup/item_1/text = "1280x720"
+popup/item_1/id = 1
+popup/item_2/text = "1600x900"
+popup/item_2/id = 2
+popup/item_3/text = "1920x1080"
+popup/item_3/id = 3
+
+[node name="FullscreenLabel" type="Label" parent="Panel/CenterContainer/VideoMenu"]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="Fullscreen" type="CheckBox" parent="Panel/CenterContainer/VideoMenu"]
+layout_mode = 2
+
+[node name="Back to Settings" type="Button" parent="Panel/CenterContainer/VideoMenu"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_jbyyi")
+theme_override_font_sizes/font_size = 40
+text = "Back"
+
+[node name="AudioMenu" type="VBoxContainer" parent="Panel/CenterContainer"]
+visible = false
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="VolumeLabel" type="Label" parent="Panel/CenterContainer/AudioMenu"]
+layout_mode = 2
+text = "Volume"
+
+[node name="Volume" type="HSlider" parent="Panel/CenterContainer/AudioMenu"]
+layout_mode = 2
+value = 50.0
+
+[node name="MuteLabel" type="Label" parent="Panel/CenterContainer/AudioMenu"]
+layout_mode = 2
+text = "Mute"
+
+[node name="Mute" type="CheckBox" parent="Panel/CenterContainer/AudioMenu"]
+layout_mode = 2
+
+[node name="Back to Settings" type="Button" parent="Panel/CenterContainer/AudioMenu"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_jbyyi")
+theme_override_font_sizes/font_size = 40
+text = "Back"
+
+[connection signal="pressed" from="Panel/CenterContainer/MainButtons/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Panel/CenterContainer/MainButtons/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="Panel/CenterContainer/MainButtons/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Panel/CenterContainer/SettingsMenu/Video" to="." method="_on_video_pressed"]
+[connection signal="pressed" from="Panel/CenterContainer/SettingsMenu/Audio" to="." method="_on_audio_pressed"]
+[connection signal="pressed" from="Panel/CenterContainer/SettingsMenu/Back" to="." method="_on_back_pressed"]
+[connection signal="item_selected" from="Panel/CenterContainer/VideoMenu/Resolutions" to="." method="_on_resolutions_item_selected"]
+[connection signal="toggled" from="Panel/CenterContainer/VideoMenu/Fullscreen" to="." method="_on_fullscreen_toggled"]
+[connection signal="pressed" from="Panel/CenterContainer/VideoMenu/Back to Settings" to="." method="_on_back_to_settings_pressed"]
+[connection signal="value_changed" from="Panel/CenterContainer/AudioMenu/Volume" to="." method="_on_volume_value_changed"]
+[connection signal="toggled" from="Panel/CenterContainer/AudioMenu/Mute" to="." method="_on_mute_toggled"]
+[connection signal="pressed" from="Panel/CenterContainer/AudioMenu/Back to Settings" to="." method="_on_back_to_settings_pressed"]

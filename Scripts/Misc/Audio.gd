@@ -1,30 +1,21 @@
 extends Control
 
-# Map slider 0..100 to a decibel range.
-# - Slider 0 -> MIN_DB (effectively silent)
-# - Slider 50 -> 0 dB (default audible level)
-# - Slider 100 -> MAX_DB (mild boost)
 const MIN_DB: float = -80.0
 const MAX_DB: float = 3.0
 
 
 func _ready() -> void:
-	# Auto-start audio stream player if present
 	if has_node("AudioStreamPlayer"):
 		$AudioStreamPlayer.play()
 
-	# Apply slider default and initial volume mapping
 	if has_node("MarginContainer/VBoxContainer/Volume"):
 		var vol_slider = $MarginContainer/VBoxContainer/Volume
-		# Ensure slider has a sensible default; use 50 if the .tscn didn't set it
 		if vol_slider.value == 0.0:
 			vol_slider.value = 50.0
 		_on_volume_value_changed(vol_slider.value)
 
 
 func _on_volume_value_changed(value: float) -> void:
-	# Use a piecewise mapping so 50 -> 0 dB (default)
-	# 0..50 maps MIN_DB..0, 50..100 maps 0..MAX_DB
 	var db: float = 0.0
 	if value <= 50.0:
 		var t_low: float = clamp(value / 50.0, 0.0, 1.0)

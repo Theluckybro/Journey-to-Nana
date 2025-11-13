@@ -1,37 +1,30 @@
 extends Area2D
 
-# BucketInteract.gd
 @export var interaction_id: String = "bath"
 @export var interaction_type: String = "action"
 @export var interaction_quantity: int = 1
 
-func _ready():
-	if Engine.is_editor_hint():
-		return
+var _initiating_player: Node = null
 
 func interact(by_player: Node = null) -> void:
 	if Engine.is_editor_hint():
 		return
 
 	var player = by_player
-	if player == null:
-		if Global and Global.player:
-			player = Global.player
+	if player == null and Global and Global.player:
+		player = Global.player
 
 	if player == null:
-		printerr("BucketInteract.interact: no player provided or found via Global.player")
 		return
 
-	# Defer to player's check_quest_objectives so quest logic behaves consistently
-	if player and player.has_method("check_quest_objectives"):
-		var applied = player.check_quest_objectives(interaction_id, interaction_type, interaction_quantity)
-	elif Global and Global.player and Global.player.quest_manager:
-		# Fallback: if player API missing but quest_manager exists, attempt a safer call
-		printerr("BucketInteract: player.check_quest_objectives() not available; no safe apply performed")
-	else:
-		printerr("BucketInteract: quest_manager/player not available")
+	if player == Global.player or (player.has_method("is_in_group") and player.is_in_group("Player")):
+		_initiating_player = player
+		Dialogic.start("interactables", "bucket")
+		if not Dialogic.is_connected("signal_event", Callable(self, "_on_dialogic_signal")):
+			Dialogic.connect("signal_event", Callable(self, "_on_dialogic_signal"))
+		return
 
-func can_interact() -> bool:
-	"""Helper for player code: returns whether this object can currently be interacted with.
-	For now it always returns true, but you can add checks (cooldowns, states, inventory, etc.)."""
-	return true
+func _on_dialogic_signal(argument: String):
+	if argument == "bucket_yes":
+		print("Player chose to take a bath")
+		_initiating_player.check_quest_objectives(interaction_id, interaction_type, interaction_quantity)

@@ -1,0 +1,12 @@
+label bucket
+Ember ini bisa dipakai mandi.
+- Mandi
+	[signal arg="bucket_yes"]
+- Tidak sekarang
+[end_timeline]
+label cupboard
+Kamu bisa ganti baju di lemari ini.
+- Ganti Baju
+	[signal arg="cupboard_yes"]
+- Tidak sekarang
+[end_timeline]
