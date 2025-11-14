@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://bt5yicfpmnlwk"]
+[gd_scene load_steps=12 format=4 uid="uid://wxvk3c0pubsc"]
 
 [ext_resource type="PackedScene" uid="uid://cx8kkqawojm0m" path="res://Scenes/Misc/SceneSettings.tscn" id="1_4stwf"]
 [ext_resource type="TileSet" uid="uid://b3n0bklwwny1b" path="res://Art/TileMap.tres" id="2_wbjck"]
@@ -8,9 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://ckp2r52hlcfxn" path="res://Scenes/NPC's/Npc_OfficeWorker/npc_officeworker_scene.tscn" id="5_wxx7c"]
 [ext_resource type="PackedScene" uid="uid://b6xb8nhlqtuhf" path="res://Scenes/ScoreTracker.tscn" id="7_hbxrs"]
 [ext_resource type="AudioStream" uid="uid://b1lr5ey8e6pu3" path="res://Art/Audio/BasementOgg.ogg" id="8_u2hwu"]
-[ext_resource type="PackedScene" uid="uid://b4l1gom0wsk8p" path="res://Scenes/Interactables/area_exit.tscn" id="10_eko0k"]
+[ext_resource type="PackedScene" uid="uid://bqnu7kc86ydhm" path="res://Scenes/Interactables/area_exit.tscn" id="10_eko0k"]
 [ext_resource type="PackedScene" uid="uid://c5btk4icxp61c" path="res://Scenes/Levels/VictoryScreen.tscn" id="11_h37ha"]
-[ext_resource type="PackedScene" uid="uid://ceoo6gamb4olk" path="res://Scenes/Interactables/Area_Blocker.tscn" id="11_xe2ch"]
+[ext_resource type="PackedScene" uid="uid://ccda0gcqe1th8" path="res://Scenes/Interactables/Area_Blocker.tscn" id="11_xe2ch"]
 
 [node name="Basement01" type="Node2D"]
 

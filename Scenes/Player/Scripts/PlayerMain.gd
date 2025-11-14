@@ -14,13 +14,10 @@ const QuestNotificationScene = preload("res://Scenes/Quest/QuestNotification.tsc
 var quest_notification = null
 var face_direction := Vector2.DOWN
 var can_move = true
-
-# Dialog & Quest vars
 var selected_quest: Quest = null
 var coin_amount  = 0
 
 func _enter_tree():
-	# Connect to Dialogic autoload signals using the global name for brevity
 	if not Dialogic.is_connected("timeline_started", Callable(self, "_on_dialogic_timeline_started")):
 		Dialogic.connect("timeline_started", Callable(self, "_on_dialogic_timeline_started"))
 	if not Dialogic.is_connected("timeline_ended", Callable(self, "_on_dialogic_timeline_ended")):

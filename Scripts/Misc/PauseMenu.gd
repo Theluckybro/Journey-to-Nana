@@ -34,6 +34,10 @@ func _ready() -> void:
 			vol_slider2.value = 50.0
 		_on_volume_value_changed(vol_slider2.value)
 
+	_reset_to_main_buttons()
+	if not is_connected("visibility_changed", Callable(self, "_on_visibility_changed")):
+		connect("visibility_changed", Callable(self, "_on_visibility_changed"))
+
 
 func _on_resume_pressed() -> void:
 	main.pauseMenu()
@@ -45,6 +49,9 @@ func _on_settings_pressed() -> void:
 
 
 func _on_quit_pressed() -> void:
+	get_tree().paused = false
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	Dialogic.end_timeline(true)
 	get_tree().change_scene_to_file("res://Scenes/Misc/Menu/MainMenu.tscn")
 
 
@@ -117,3 +124,32 @@ func _on_volume_value_changed(value: float) -> void:
 
 func _on_mute_toggled(toggled_on: bool) -> void:
 	AudioServer.set_bus_mute(0, toggled_on)
+
+
+func _on_visibility_changed() -> void:
+	# When the pause menu becomes visible, reset UI to main buttons
+	if visible:
+		_reset_to_main_buttons()
+
+
+func _reset_to_main_buttons() -> void:
+	# Prefer the Panel/CenterContainer path used elsewhere in the scene.
+	# Use has_node checks to avoid errors if the layout differs.
+	if has_node("Panel/CenterContainer/MainButtons"):
+		$Panel/CenterContainer/MainButtons.visible = true
+	if has_node("Panel/CenterContainer/SettingsMenu"):
+		$Panel/CenterContainer/SettingsMenu.visible = false
+	if has_node("Panel/CenterContainer/VideoMenu"):
+		$Panel/CenterContainer/VideoMenu.visible = false
+	if has_node("Panel/CenterContainer/AudioMenu"):
+		$Panel/CenterContainer/AudioMenu.visible = false
+
+	# Some layouts may have these nodes at the top-level in the Pause menu.
+	if has_node("MainButtons"):
+		$MainButtons.visible = true
+	if has_node("SettingsMenu"):
+		$SettingsMenu.visible = false
+	if has_node("VideoMenu"):
+		$VideoMenu.visible = false
+	if has_node("AudioMenu"):
+		$AudioMenu.visible = false

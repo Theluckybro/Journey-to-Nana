@@ -1,7 +1,11 @@
 extends Node2D
 
 @onready var pause_menu = $UI/PauseMenu
+# Note: Make sure the PauseMenu node's "Process" -> "Process Mode" (in the Inspector)
+# is set to "When Paused" so the UI can receive input while the scene tree is paused.
 var paused: bool = false
+var entered: bool = false
+@export var destination_scene= "res://Scenes/Outside.tscn"
 
 func _ready():
 	Dialogic.signal_event.connect(_on_dialogic_signal, CONNECT_ONE_SHOT)
@@ -11,14 +15,27 @@ func _ready():
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Escape"):
 		pauseMenu()
+	
+	if entered:
+		get_tree().change_scene_to_file(destination_scene)
+
+func _on_door_body_entered(_body: PlayerMain) -> void:
+	entered = true
+
+func _on_door_body_exited(_body: PlayerMain) -> void:
+	entered = false
 
 func pauseMenu():
 	if paused:
+		# Unpause: hide the menu, capture mouse, resume the tree
 		pause_menu.hide()
-		Engine.time_scale = 1
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		get_tree().paused = false
 	else:
+		# Pause: show the menu, show mouse, pause the tree
 		pause_menu.show()
-		Engine.time_scale = 0
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		get_tree().paused = true
 
 	paused = !paused
 

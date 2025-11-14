@@ -9,7 +9,9 @@ size = Vector2(24, 48)
 y_sort_enabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-8, -10)
 texture = ExtResource("1_xdbrs")
+offset = Vector2(8, 10)
 region_enabled = true
 region_rect = Rect2(176, 0, 32, 48)
 

@@ -48,12 +48,12 @@ directories/dtl_directory={
 "npc_3_1": "res://DialogTimelines/npc_3_1.dtl"
 }
 layout/style_directory={
-"": "res://Art/DialogStyle.tres",
-"DialogStyle": "res://Art/DialogStyle.tres"
+"": "res://Art/Layouts/DialogStyle.tres",
+"DialogStyle": "res://Art/Layouts/DialogStyle.tres"
 }
 glossary/default_case_sensitive=true
-layout/style_list=["res://Art/DialogStyle.tres"]
-layout/default_style="res://Art/DialogStyle.tres"
+layout/style_list=["res://Art/Layouts/DialogStyle.tres"]
+layout/default_style="res://Art/Layouts/DialogStyle.tres"
 text/letter_speed=0.01
 choices/autofocus_first=true
 choices/delay=0.2
@@ -196,8 +196,6 @@ dialogic_default_action={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
 anti_aliasing/screen_space_roughness_limiter/enabled=false
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 2d/snap/snap_2d_transforms_to_pixel=true

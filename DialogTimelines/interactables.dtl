@@ -1,12 +1,12 @@
 label bucket
-Ember ini bisa dipakai mandi.
-- Mandi
+Mau mandi?
+- Ya
 	[signal arg="bucket_yes"]
-- Tidak sekarang
+- Nanti dulu
 [end_timeline]
 label cupboard
-Kamu bisa ganti baju di lemari ini.
-- Ganti Baju
+Mau ganti baju?
+- Ya
 	[signal arg="cupboard_yes"]
-- Tidak sekarang
+- Nanti dulu
 [end_timeline]

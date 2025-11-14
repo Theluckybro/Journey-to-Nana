@@ -1,17 +1,20 @@
-[gd_scene load_steps=8 format=3 uid="uid://c3v3oyal32qg4"]
+[gd_scene load_steps=7 format=3 uid="uid://c3v3oyal32qg4"]
 
 [ext_resource type="Script" uid="uid://cw6cysbxwmio2" path="res://Scripts/MainMenu.gd" id="1_w4t74"]
 [ext_resource type="FontFile" uid="uid://ci60w53hdbiqe" path="res://Art/Fonts/m3x6.ttf" id="2_kobal"]
 [ext_resource type="Theme" uid="uid://c4kkjsbtgcu3y" path="res://Scenes/Misc/Menu/Menu.tres" id="3_kobal"]
-[ext_resource type="Script" uid="uid://ggad5d2uo3xt" path="res://Scripts/TitleAnimator.gd" id="4_qckww"]
 [ext_resource type="Shader" uid="uid://b5jkhl4y3al1b" path="res://Shader/TitleShader.gdshader" id="4_title_shader"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_78xdv"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qckww"]
 shader = ExtResource("4_title_shader")
-shader_parameter/shine_progress = 0.230000010925
-shader_parameter/shine_width = 0.70000003325
-shader_parameter/shine_color = Color(1, 1, 1, 0.7)
-shader_parameter/shine_softness = 0.0
+shader_parameter/angle = -0.5
+shader_parameter/thickness = 10.0
+shader_parameter/scale = 1.0
+shader_parameter/shear = Vector2(0, -0.4)
+shader_parameter/slices = 4
+shader_parameter/outline = true
+shader_parameter/outline_width = 2.0
+shader_parameter/show_bound = false
 
 [sub_resource type="LabelSettings" id="LabelSettings_78xdv"]
 font = ExtResource("2_kobal")
@@ -22,6 +25,7 @@ shadow_size = 6
 shadow_color = Color(0.03137255, 0.09019608, 0.039215688, 0.6)
 
 [node name="Menu" type="Control"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -40,20 +44,16 @@ grow_vertical = 2
 color = Color(0, 0.69411767, 0, 0.42352942)
 
 [node name="Title" type="Label" parent="."]
-material = SubResource("ShaderMaterial_78xdv")
+material = SubResource("ShaderMaterial_qckww")
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 136.0
 grow_horizontal = 2
-text = "Journey to Nana"
+text = "Game Title"
 label_settings = SubResource("LabelSettings_78xdv")
 horizontal_alignment = 1
 vertical_alignment = 1
-script = ExtResource("4_qckww")
-float_amount = 4.0
-wave_speed = 5.0
-amplitude_variation = 1.0
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 1

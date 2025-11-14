@@ -53,7 +53,9 @@ func _on_option_selected(option):
 # hide dialog box
 func hide_dialog():
 	panel.visible = false
-	Global.player.can_move = true
+	# Only modify player movement if a player exists (avoid Nil errors during startup)
+	if Global.player:
+		Global.player.can_move = true
 	has_continue = false
 
 

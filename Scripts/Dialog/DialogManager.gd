@@ -1,22 +1,17 @@
-### DialogManager.gd
-
 extends Node2D
 
 @onready var dialog_ui = $DialogUI
 
 var npc: Node = null
 
-# Show dialog with data
-func show_dialog(npc, text = "", options = {}):
+func show_dialog(target_npc, text = "", options = {}):
+	npc = target_npc
 	if text != "":
-		# Show empty box
 		dialog_ui.show_dialog(npc.npc_name, text, options)
 	else:
-		# Show quest related dialogs
 		var quest_dialog = npc.get_quest_dialog()
 		if quest_dialog["text"] != "":
 			dialog_ui.show_dialog(npc.npc_name, quest_dialog["text"], quest_dialog["options"])
-		# Show non quest related dialogs
 		else:
 			var dialog = npc.get_current_dialog()
 			if dialog == null:

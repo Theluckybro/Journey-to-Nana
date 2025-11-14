@@ -21,8 +21,10 @@ func _ready():
 	dialog_resource.load_from_json("res://Resources/Dialog/dialog_data.json")
 	# Initialize npc ref
 	dialog_manager.npc = self
-	# Get quest manager
-	quest_manager = Global.player.quest_manager
+	if Global.player:
+		quest_manager = Global.player.quest_manager
+	else:
+		print("Warning: Global.player is nil in NPC._ready(); quest_manager will be nil until player exists")
 	print("NPC Ready. Quests loaded: ", quests.size())
 	
 func start_dialog():
@@ -56,13 +58,19 @@ func offer_quest(quest_id: String):
 	for quest in quests:
 		if quest.quest_id == quest_id and quest.state == "not_started":
 			quest.state = "in_progress"
-			quest_manager.add_quest(quest)
+			if quest_manager:
+				quest_manager.add_quest(quest)
+			else:
+				print("Warning: quest_manager is nil, cannot add quest at this time")
 			return
 	
 	print("Quest not found or started already")
 
 # Returns quest dialog
 func get_quest_dialog() -> Dictionary:
+	# If quest_manager isn't available yet, return empty dialog
+	if not quest_manager:
+		return {"text": "", "options": {}}
 	var active_quests = quest_manager.get_active_quests()
 	for quest in active_quests:
 		for objective in quest.objectives:

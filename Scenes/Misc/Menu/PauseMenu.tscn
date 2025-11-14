@@ -1,8 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://ddrvugbwb21qg"]
+[gd_scene load_steps=8 format=3 uid="uid://ddrvugbwb21qg"]
 
 [ext_resource type="Script" uid="uid://c0orig1xffhmd" path="res://Scripts/Misc/PauseMenu.gd" id="1_8n5fv"]
 [ext_resource type="FontFile" uid="uid://ci60w53hdbiqe" path="res://Art/Fonts/m3x6.ttf" id="3_jbyyi"]
 [ext_resource type="Theme" uid="uid://c4kkjsbtgcu3y" path="res://Scenes/Misc/Menu/Menu.tres" id="3_swgfc"]
+[ext_resource type="Shader" uid="uid://drlcj5nnaj5qe" path="res://Shader/PauseMenu.gdshader" id="4_41ho1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_swgfc"]
+shader = ExtResource("4_41ho1")
+shader_parameter/amount = 1.0000000475
 
 [sub_resource type="LabelSettings" id="LabelSettings_jbyyi"]
 font = ExtResource("3_jbyyi")
@@ -19,6 +24,8 @@ content_margin_bottom = 10.0
 bg_color = Color(0, 0, 0, 0.5)
 
 [node name="PauseMenu" type="Control"]
+process_mode = 3
+z_index = 1000
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,6 +33,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_8n5fv")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_swgfc")
+layout_mode = 0
+offset_left = -432.0
+offset_top = -155.0
+offset_right = 898.0
+offset_bottom = 527.0
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
