@@ -5,31 +5,38 @@ extends Node2D
 # is set to "When Paused" so the UI can receive input while the scene tree is paused.
 var paused: bool = false
 var entered: bool = false
-@export var destination_scene= "res://Scenes/Outside.tscn"
+@export var destination_scene= "res://Scenes/Levels/Classroom.tscn"
 
 func _ready():
 	Dialogic.signal_event.connect(_on_dialogic_signal, CONNECT_ONE_SHOT)
-
 	Dialogic.start("gamestart")
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Escape"):
 		pauseMenu()
 	
-	if entered:
+	if entered == true:
 		get_tree().change_scene_to_file(destination_scene)
+		entered = false
 
-func _on_door_body_entered(_body: PlayerMain) -> void:
-	entered = true
+func _on_door_body_entered(body) -> void:
+	if body is PlayerMain:
+		# Set facing for the next scene and mark the door as entered
+		get_tree().set_meta("next_player_facing", Vector2.UP)
+		entered = true
 
-func _on_door_body_exited(_body: PlayerMain) -> void:
-	entered = false
+func _on_door_body_exited(body) -> void:
+	if body is PlayerMain:
+		entered = false
+
 
 func pauseMenu():
 	if paused:
 		# Unpause: hide the menu, capture mouse, resume the tree
 		pause_menu.hide()
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		# Keep the cursor visible when unpausing so the player can still see the cursor
+		# (changed from MOUSE_MODE_CAPTURED to MOUSE_MODE_VISIBLE as requested)
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		get_tree().paused = false
 	else:
 		# Pause: show the menu, show mouse, pause the tree

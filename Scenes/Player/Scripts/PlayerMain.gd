@@ -18,6 +18,24 @@ var selected_quest: Quest = null
 var coin_amount  = 0
 
 func _enter_tree():
+	# Apply any requested facing as early as possible so child nodes (like the FSM)
+	# see the correct facing during their _ready()/initialization.
+	if get_tree().has_meta("next_player_facing"):
+		var nf = get_tree().get_meta("next_player_facing")
+		if nf is Vector2:
+			face_direction = nf
+		elif typeof(nf) == TYPE_STRING:
+			match nf:
+				"up":
+					face_direction = Vector2.UP
+				"down":
+					face_direction = Vector2.DOWN
+				"left":
+					face_direction = Vector2.LEFT
+				"right":
+					face_direction = Vector2.RIGHT
+		# Clear meta so it's not reused unintentionally
+		get_tree().set_meta("next_player_facing", null)
 	if not Dialogic.is_connected("timeline_started", Callable(self, "_on_dialogic_timeline_started")):
 		Dialogic.connect("timeline_started", Callable(self, "_on_dialogic_timeline_started"))
 	if not Dialogic.is_connected("timeline_ended", Callable(self, "_on_dialogic_timeline_ended")):
@@ -25,7 +43,6 @@ func _enter_tree():
 	# Listen for timeline-emitted signal events
 	if not Dialogic.is_connected("signal_event", Callable(self, "_on_dialogic_signal")):
 		Dialogic.connect("signal_event", Callable(self, "_on_dialogic_signal"))
-	print("PlayerMain: connected to Dialogic in _enter_tree()")
 	# If the timeline already started before this node entered the tree,
 	# handle it now.
 	if Dialogic.has_method("current_timeline") and Dialogic.current_timeline != null:
@@ -39,8 +56,6 @@ func _ready():
 	# Signal connections
 	quest_manager.quest_updated.connect(_on_quest_updated)
 	quest_manager.objective_updated.connect(_on_objective_updated)
-
-	print("PlayerMain: _ready() called")
 
 	# Instance quest notification UI from scene so it can be edited in the editor
 	if QuestNotificationScene:

@@ -25,7 +25,6 @@ func _ready():
 		quest_manager = Global.player.quest_manager
 	else:
 		print("Warning: Global.player is nil in NPC._ready(); quest_manager will be nil until player exists")
-	print("NPC Ready. Quests loaded: ", quests.size())
 	
 func start_dialog():
 	var npc_dialogs = dialog_resource.get_npc_dialog(npc_id)
