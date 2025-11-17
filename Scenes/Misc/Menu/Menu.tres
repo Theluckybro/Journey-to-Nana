@@ -78,6 +78,6 @@ Button/styles/focus = SubResource("StyleBoxFlat_bqyjc")
 Button/styles/hover = SubResource("StyleBoxFlat_purple")
 Button/styles/normal = SubResource("StyleBoxFlat_button")
 Button/styles/pressed = SubResource("StyleBoxFlat_green")
-Label/font_sizes/font_size = 24
+Label/font_sizes/font_size = 38
 Label/fonts/font = ExtResource("1_bqyjc")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_i0bb4")

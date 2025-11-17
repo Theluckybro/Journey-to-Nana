@@ -77,6 +77,10 @@ alignment = 1
 layout_mode = 2
 text = "New Game"
 
+[node name="Continue" type="Button" parent="CenterContainer/MainButtons"]
+layout_mode = 2
+text = "Continue"
+
 [node name="Settings" type="Button" parent="CenterContainer/MainButtons"]
 layout_mode = 2
 text = "Settings"
@@ -86,5 +90,6 @@ layout_mode = 2
 text = "Quit"
 
 [connection signal="pressed" from="CenterContainer/MainButtons/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="CenterContainer/MainButtons/Continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="CenterContainer/MainButtons/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="CenterContainer/MainButtons/Quit" to="." method="_on_quit_pressed"]

@@ -80,6 +80,12 @@ theme_override_fonts/font = ExtResource("3_jbyyi")
 theme_override_font_sizes/font_size = 40
 text = "Resume"
 
+[node name="Save" type="Button" parent="Panel/CenterContainer/MainButtons"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_jbyyi")
+theme_override_font_sizes/font_size = 40
+text = "Save"
+
 [node name="Settings" type="Button" parent="Panel/CenterContainer/MainButtons"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_jbyyi")
@@ -184,6 +190,7 @@ theme_override_font_sizes/font_size = 40
 text = "Back"
 
 [connection signal="pressed" from="Panel/CenterContainer/MainButtons/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="Panel/CenterContainer/MainButtons/Save" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="Panel/CenterContainer/MainButtons/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="Panel/CenterContainer/MainButtons/Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="Panel/CenterContainer/SettingsMenu/Video" to="." method="_on_video_pressed"]

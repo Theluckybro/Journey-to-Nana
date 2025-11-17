@@ -138,7 +138,7 @@ func _input(event):
 							print("Target cannot be interacted with right now")
 	# Open/close quest log
 		if event.is_action_pressed("ui_quest_menu"):
-			quest_manager.show_hide_log()
+			quest_manager.show_quest_log()
 
 # Check if quest item is needed
 func is_item_needed(item_id: String) -> bool:
