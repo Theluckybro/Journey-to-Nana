@@ -1,9 +1,10 @@
-[gd_scene load_steps=29 format=4 uid="uid://dei3j88yw6omf"]
+[gd_scene load_steps=30 format=4 uid="uid://dei3j88yw6omf"]
 
 [ext_resource type="Script" uid="uid://cb10ongwg7ld3" path="res://Scripts/MainFloorController.gd" id="1_scnhh"]
 [ext_resource type="PackedScene" uid="uid://bvg5dny32iw0x" path="res://Scenes/Player/Player.tscn" id="1_v023b"]
 [ext_resource type="PackedScene" uid="uid://d0e6j4w8cvqn" path="res://Scenes/NPC's/NPC_dummy/npc_dummy.tscn" id="2_rcobd"]
 [ext_resource type="PackedScene" uid="uid://bfyldws045av4" path="res://Scenes/QuestItem.tscn" id="3_gmoma"]
+[ext_resource type="Script" uid="uid://tydsv634mowu" path="res://Scripts/SceneTrigger.gd" id="6_rcobd"]
 [ext_resource type="TileSet" uid="uid://b3n0bklwwny1b" path="res://Art/TileMap.tres" id="7_n5jbx"]
 [ext_resource type="Texture2D" uid="uid://cng36rmjyanh0" path="res://Art/Sprites/Barang_Indra.png" id="10_rdp63"]
 [ext_resource type="AudioStream" uid="uid://bia7rrlxphfg2" path="res://Art/Audio/corridorsOgg.ogg" id="12_87j7f"]
@@ -88,7 +89,7 @@ objectives = Array[ExtResource("19_scnhh")]([SubResource("Resource_scnhh")])
 rewards = Array[ExtResource("20_0ipvf")]([SubResource("Resource_0ipvf")])
 metadata/_custom_type_script = "uid://crg1xlfcui3el"
 
-[node name="Scene_Root" type="Node2D"]
+[node name="MainFloor" type="Node2D"]
 process_mode = 3
 y_sort_enabled = true
 texture_filter = 1
@@ -139,6 +140,8 @@ item_quantity = 10
 item_icon = ExtResource("19_gt5fq")
 
 [node name="Door" type="Area2D" parent="Scene"]
+script = ExtResource("6_rcobd")
+destination_scene = "Classroom"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Scene/Door"]
 position = Vector2(192, 227)
@@ -191,6 +194,11 @@ offset = Vector2(7, 9)
 region_enabled = true
 region_rect = Rect2(0, 48, 48, 48)
 
+[node name="Spawn" type="Node2D" parent="Scene"]
+
+[node name="Classroom" type="Marker2D" parent="Scene/Spawn"]
+position = Vector2(192, 216)
+
 [node name="UI" type="CanvasLayer" parent="."]
 process_mode = 3
 layer = 2
@@ -198,5 +206,4 @@ layer = 2
 [node name="PauseMenu" parent="UI" instance=ExtResource("25_0ipvf")]
 visible = false
 
-[connection signal="body_entered" from="Scene/Door" to="." method="_on_door_body_entered"]
-[connection signal="body_exited" from="Scene/Door" to="." method="_on_door_body_exited"]
+[connection signal="body_entered" from="Scene/Door" to="Scene/Door" method="_on_body_entered"]

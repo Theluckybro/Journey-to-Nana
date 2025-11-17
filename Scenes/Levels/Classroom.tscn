@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dhccq5u2ah6hk" path="res://Scripts/Classroom.gd" id="1_2k8v8"]
 [ext_resource type="PackedScene" uid="uid://ddrvugbwb21qg" path="res://Scenes/Misc/Menu/PauseMenu.tscn" id="1_bi0u8"]
 [ext_resource type="TileSet" uid="uid://b3n0bklwwny1b" path="res://Art/TileMap.tres" id="1_wmxoe"]
-[ext_resource type="PackedScene" uid="uid://bvg5dny32iw0x" path="res://Scenes/Player/Player.tscn" id="2_ujtfe"]
+[ext_resource type="Script" uid="uid://tydsv634mowu" path="res://Scripts/SceneTrigger.gd" id="4_2k8v8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2f7d2"]
 size = Vector2(32, 6)
@@ -36,6 +36,8 @@ volume_db = -1.0
 autoplay = true
 
 [node name="Door" type="Area2D" parent="Scene"]
+script = ExtResource("4_2k8v8")
+destination_scene = "MainFloor"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Scene/Door"]
 position = Vector2(400, 403)
@@ -43,10 +45,12 @@ shape = SubResource("RectangleShape2D_2f7d2")
 
 [node name="Characters" type="Node2D" parent="Scene"]
 
-[node name="Player" parent="Scene/Characters" instance=ExtResource("2_ujtfe")]
-position = Vector2(400, 392)
-
 [node name="Objects" type="Node2D" parent="Scene"]
+
+[node name="Spawn" type="Node2D" parent="Scene"]
+
+[node name="MainFloor" type="Marker2D" parent="Scene/Spawn"]
+position = Vector2(400, 392)
 
 [node name="UI" type="CanvasLayer" parent="."]
 process_mode = 3
@@ -55,5 +59,4 @@ layer = 2
 [node name="PauseMenu" parent="UI" instance=ExtResource("1_bi0u8")]
 visible = false
 
-[connection signal="body_entered" from="Scene/Door" to="." method="_on_door_body_entered"]
-[connection signal="body_exited" from="Scene/Door" to="." method="_on_door_body_exited"]
+[connection signal="body_entered" from="Scene/Door" to="Scene/Door" method="_on_body_entered"]

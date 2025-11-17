@@ -52,8 +52,10 @@ func _on_quit_pressed() -> void:
 	get_tree().paused = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	Dialogic.end_timeline(true)
-	get_tree().change_scene_to_file("res://Scenes/Misc/Menu/MainMenu.tscn")
+	if get_tree().has_meta("gamestart_played"):
+			get_tree().set_meta("gamestart_played", null)
 
+	get_tree().change_scene_to_file("res://Scenes/Misc/Menu/MainMenu.tscn")
 
 func _on_back_pressed() -> void:
 	$Panel/CenterContainer/SettingsMenu.visible = false
