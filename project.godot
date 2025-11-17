@@ -31,7 +31,7 @@ Global="*res://Scripts/Managers/DialogueManager.gd"
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 QuestSpawner="*res://Scripts/Quest/QuestSpawner.gd"
 SceneHistory="*res://Scripts/SceneHistory.gd"
-SceneTransition="*res://Scripts/Managers/SceneTransition.gd"
+SceneTransition="*res://Scenes/Levels/SceneTransition.tscn"
 
 [dialogic]
 

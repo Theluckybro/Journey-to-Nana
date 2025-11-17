@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=3 uid="uid://dvi4hj5d14r0p"]
+
+[ext_resource type="Script" uid="uid://bey3ki83cp1nw" path="res://Scripts/Managers/SceneTransition.gd" id="1_akmkk"]
+[ext_resource type="Shader" uid="uid://bsvuvc24ytyaa" path="res://Shader/SceneTransition.gdshader" id="2_r7e0a"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rmwb1"]
+shader = ExtResource("2_r7e0a")
+shader_parameter/spacing = 15.0
+shader_parameter/animation_progress = 0.0
+shader_parameter/dot_size = 1.0
+shader_parameter/dot_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_rmwb1"]
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TransitionColor:material:shader_parameter/animation_progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_akmkk"]
+resource_name = "transition_out"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TransitionColor:material:shader_parameter/animation_progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vb74d"]
+_data = {
+&"RESET": SubResource("Animation_rmwb1"),
+&"transition_out": SubResource("Animation_akmkk")
+}
+
+[node name="SceneTransition" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_akmkk")
+
+[node name="TransitionColor" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_rmwb1")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="TransitionAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_vb74d")
+}
