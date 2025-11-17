@@ -16,8 +16,6 @@ func Enter():
 		animator.play("IdleUp")
 	else:
 		animator.play("IdleDown")
-		
-	# Hapus kode lama: animator.play("Idle")
 	pass
 	
 func Update(_delta : float):

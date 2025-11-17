@@ -30,8 +30,22 @@ func change_scene(player_node: Node, destination_scene: String, _facing: Vector2
 	animation_player.play("transition_out")
 	await animation_player.animation_finished
 
+	if player and _facing != null:
+		if _facing is Vector2:
+			player.face_direction = _facing
+
+		if player.fsm and player.fsm.current_state:
+			var enter_call = Callable(player.fsm.current_state, "Enter")
+			enter_call.call()
+
 	if parent:
 		parent.remove_child(player)
+
+	# Also set tree meta as a fallback for newly-instanced PlayerMain
+	if _facing != null:
+		get_tree().set_meta("next_player_facing", _facing)
+	
+	
 
 	var full_path = scene_path + destination_scene + ".tscn"
 	get_tree().call_deferred("change_scene_to_file", full_path)

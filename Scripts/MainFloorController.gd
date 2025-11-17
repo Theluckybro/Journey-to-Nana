@@ -7,6 +7,7 @@ func _ready():
 		get_tree().set_meta("gamestart_played", true)
 
 	setup_level()
+	
 
 func _on_gamestart_ended():
 	if Engine.has_singleton("QuestSpawner"):
