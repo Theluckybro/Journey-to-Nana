@@ -44,109 +44,39 @@ func _on_resume_pressed() -> void:
 
 
 func _on_save_pressed() -> void:
-	var version: int = SaveLoad.contents_to_save.get("version", 0)
-	version += 1
-	SaveLoad.contents_to_save["version"] = version
-	print("Saving game state, version ", version)
+	SaveLoad.SaveFileData.version += 1
+	print("Saving game, version %d" % SaveLoad.SaveFileData.version)
 
-	# Scene/navigation state: save a scene file path (string) rather than a live Node
-	var current_scene_node = main.get_tree().current_scene
-	var current_scene_path: String = ""
+	SaveLoad.SaveFileData.position = main.player.global_position
+	print("Player position saved: ", SaveLoad.SaveFileData.position)
 
-	if typeof(current_scene_node) == TYPE_STRING:
-		current_scene_path = current_scene_node
-	elif current_scene_node:
-		current_scene_path = current_scene_node.get_scene_file_path()
-	else:
-		# fallback to last known scene name
-		current_scene_path = SceneTransition.last_scene_name
+	SaveLoad.SaveFileData.face_direction = main.player.face_direction
+	print("Player face direction saved: ", SaveLoad.SaveFileData.face_direction)
 
-	SaveLoad.contents_to_save["scene"]["current_scene"] = current_scene_path
-	SaveLoad.contents_to_save["scene"]["last_scene"] = SceneTransition.last_scene_name
-	print("Current scene: ", SaveLoad.contents_to_save["scene"]["current_scene"])
-	print("Last scene: ", SaveLoad.contents_to_save["scene"]["last_scene"])
+	SaveLoad.SaveFileData.coin_amount = main.player.coin_amount
+	print("Player coin amount saved: ", SaveLoad.SaveFileData.coin_amount)
+
+	SaveLoad.SaveFileData.current_scene = main.get_tree().current_scene.get_scene_file_path()
+	print("Current scene saved: ", SaveLoad.SaveFileData.current_scene)
+
+	SaveLoad.SaveFileData.last_scene = SceneTransition.last_scene_name
+	print("Last scene saved: ", SaveLoad.SaveFileData.last_scene)
+
 	
-	# Player state (prefer global reference if available)
-	var player_ref = null
-	if Engine.has_singleton("Global") and Global and Global.player:
-		player_ref = Global.player
-	elif main and main.has_node("Scene/Characters/Player"):
-		player_ref = main.get_node("Scene/Characters/Player")
-
-	if player_ref:
-		SaveLoad.contents_to_save["player"]["position"] = player_ref.global_position
-		SaveLoad.contents_to_save["player"]["face_direction"] = player_ref.face_direction
-		SaveLoad.contents_to_save["player"]["can_move"] = player_ref.can_move
-		SaveLoad.contents_to_save["player"]["coin_amount"] = player_ref.coin_amount
-		print("Player position: ", player_ref.global_position)
-		print("Player face direction: ", player_ref.face_direction)
-		print("Player can move: ", player_ref.can_move)
-		print("Player coin amount: ", player_ref.coin_amount)
-
-	# Global game state
-	SaveLoad.contents_to_save["game"]["money"] = GameManager.money
-	print("Game money: ", GameManager.money)
-
-	# Quests: capture id, state and minimal objective progress from player's quest manager
-	var active = player_ref.quest_manager.get_active_quests()
-	# Save the active quests as plain Dictionaries (ids + minimal progress)
-	# to avoid storing runtime Resource instances which become EncodedObjectAsID
-	# when serialized/deserialized via FileAccess.store_var/get_var.
-	if typeof(active) == TYPE_ARRAY:
-		SaveLoad.contents_to_save["quests"] = _serialize_quests(active)
+	# Save a single Quest resource (prefer selected quest, otherwise first active quest)
+	var active: Quest = null
+	if main.player.selected_quest != null:
+		active = main.player.selected_quest
 	else:
-		SaveLoad.contents_to_save["quests"] = []
-	print("Saved quests: ", SaveLoad.contents_to_save["quests"])
+		var active_quests = main.player.quest_manager.get_active_quests()
+		if active_quests.size() > 0:
+			active = active_quests[0]
 
-	# Audio settings: prefer UI slider value when present, otherwise derive from AudioServer
-	var vol_val: float = -1.0
-	if has_node("CenterContainer/AudioMenu/MarginContainer/VBoxContainer/Volume"):
-		vol_val = $CenterContainer/AudioMenu/MarginContainer/VBoxContainer/Volume.value
-	elif has_node("MarginContainer/VBoxContainer/Volume"):
-		vol_val = $MarginContainer/VBoxContainer/Volume.value
+	print("active_quest: ", active)
+	SaveLoad.SaveFileData.active_quest = active
 
-	if vol_val < 0.0:
-		var db: float = 0.0
-		if AudioServer.has_method("get_bus_volume_db"):
-			db = AudioServer.get_bus_volume_db(0)
-		# Invert the mapping used by the slider handler in this file
-		if db <= 0.0:
-			var t_low: float = clamp((db - MIN_DB) / (0.0 - MIN_DB), 0.0, 1.0)
-			vol_val = lerp(0.0, 50.0, t_low)
-		else:
-			var t_high: float = clamp((db - 0.0) / (MAX_DB - 0.0), 0.0, 1.0)
-			vol_val = lerp(50.0, 100.0, t_high)
-
-	var is_muted: bool = false
-	# Prefer reading a UI mute control if present
-	if has_node("CenterContainer/AudioMenu/MarginContainer/VBoxContainer/Mute"):
-		var mnode = $CenterContainer/AudioMenu/MarginContainer/VBoxContainer/Mute
-		if mnode is Button:
-			is_muted = mnode.pressed
-		elif mnode.has_method("is_pressed"):
-			is_muted = mnode.is_pressed()
-	elif has_node("MarginContainer/VBoxContainer/Mute"):
-		var mnode2 = $MarginContainer/VBoxContainer/Mute
-		if mnode2 is Button:
-			is_muted = mnode2.pressed
-		elif mnode2.has_method("is_pressed"):
-			is_muted = mnode2.is_pressed()
-
-	SaveLoad.contents_to_save["audio"]["volume"] = vol_val
-	SaveLoad.contents_to_save["audio"]["mute"] = is_muted
-
-	# Video/display settings
-	var mode := DisplayServer.window_get_mode()
-	var mode_str: String = "windowed"
-	if mode == DisplayServer.WINDOW_MODE_FULLSCREEN:
-		mode_str = "fullscreen"
-	SaveLoad.contents_to_save["video"]["mode"] = mode_str
-	SaveLoad.contents_to_save["video"]["window_size"] = DisplayServer.window_get_size()
-
-	# Finally write save file
 	SaveLoad._save()
-	print("Game saved.")
-
+	
 
 func _on_settings_pressed() -> void:
 	$Panel/CenterContainer/MainButtons.visible = false
@@ -260,28 +190,3 @@ func _reset_to_main_buttons() -> void:
 		$VideoMenu.visible = false
 	if has_node("AudioMenu"):
 		$AudioMenu.visible = false
-
-
-func _serialize_quests(quests_array: Array) -> Array:
-	var out: Array = []
-	for q in quests_array:
-		if q == null:
-			continue
-		var qdict: Dictionary = {
-			"quest_id": q.quest_id if q.has_method("get") or true else "",
-			"state": q.state if q.has_method("get") or true else "",
-			"quest_name": q.quest_name if q.has_method("get") or true else "",
-			"quest_description": q.quest_description if q.has_method("get") or true else "",
-			"objectives": []
-		}
-		# capture minimal objective progress
-		if q.objectives and typeof(q.objectives) == TYPE_ARRAY:
-			for obj in q.objectives:
-				var od: Dictionary = {
-					"id": obj.id if obj != null and obj.has_method("get") or true else "",
-					"collected_quantity": obj.collected_quantity if obj != null and obj.has_method("get") or true else 0,
-					"is_completed": obj.is_completed if obj != null and obj.has_method("get") or true else false
-				}
-				qdict["objectives"].append(od)
-		out.append(qdict)
-	return out

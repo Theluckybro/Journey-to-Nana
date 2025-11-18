@@ -41,7 +41,6 @@ func change_scene(player_node: Node, destination_scene: String, _facing: Vector2
 	if parent:
 		parent.remove_child(player)
 
-	# Also set tree meta as a fallback for newly-instanced PlayerMain
 	if _facing != null:
 		get_tree().set_meta("next_player_facing", _facing)
 	

@@ -5,16 +5,27 @@ class_name LevelController
 var paused: bool = false
 @onready var player = get_node_or_null("Scene/Characters/Player")
 @onready var spawn = $Scene/Spawn
+@onready var characters = $Scene/Characters
 @export var destination_scene: String = ""
 
 func setup_level() -> void:
+	print("Setting up level: ", get_tree().get_current_scene().name)
 	if SceneTransition.player:
 		if player:
 			player.queue_free()
 
 		player = SceneTransition.player
-		add_child(player)
-
+		characters.add_child(player)
+		position_player()
+		return
+	elif characters.has_node("Player"):
+		player = characters.get_node("Player") as PlayerMain
+		position_player()
+		return
+	var PlayerScene = preload("res://Scenes/Player/Player.tscn")
+	player = PlayerScene.instantiate()
+	player.name = "Player"
+	characters.add_child(player)
 	position_player()
 
 func _process(_delta: float) -> void:

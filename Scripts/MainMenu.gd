@@ -8,26 +8,20 @@ func _on_new_game_pressed() -> void:
 
 
 func _on_continue_pressed() -> void:
-	# Load saved data (populate SaveLoad.contents) then restore global settings
 	SaveLoad._load()
-	var version: int = SaveLoad.contents_to_save.get("version", 1)
-	print("Loaded save data, version ", version)
+	var version: int = SaveLoad.SaveFileData.version
+	print("Loaded save file version: %d" % version)
 
-	var current_scene = SaveLoad.contents_to_save["scene"].get("current_scene", "")
-	var last_scene = SaveLoad.contents_to_save["scene"].get("last_scene", "")
-	print("Current scene from save: ", current_scene)
-	print("Last scene from save: ", last_scene)
-	if current_scene == "":
-		return
+	var current_scene: String = SaveLoad.SaveFileData.current_scene
+	get_tree().set_meta("gamestart_played", true)
+	get_tree().change_scene_to_file(current_scene)
+	print("Continuing to scene: ", current_scene)
+	
+	SceneTransition.last_scene_name = SaveLoad.SaveFileData.last_scene
+	print("last scene: ", SceneTransition.last_scene_name)
 
-	# Change to the saved scene, then wait one frame so the new scene is fully ready
-	var tree = get_tree()
-	tree.change_scene_to_file(current_scene)
-	if SaveLoad and SaveLoad.has_method("restore_to_scene"):
-		SaveLoad.restore_to_scene()
-	else:
-		print("Warning: SaveLoad.restore_to_scene not available; saved state won't be restored here.")
-
+	SaveLoad.restore_to_scene()
+	
 
 
 
