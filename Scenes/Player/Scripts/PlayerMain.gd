@@ -10,6 +10,8 @@ class_name PlayerMain
 @onready var ray_cast_2d = $RayCast2D
 @onready var quest_manager: Node2D = $QuestManager
 @onready var hud = $HUD
+@onready var interact_prompt = $InteractPrompt
+@onready var interact_label = $InteractPrompt/Label
 const QuestNotificationScene = preload("res://Scenes/Quest/QuestNotification.tscn")
 var quest_notification = null
 var face_direction := Vector2.DOWN
@@ -50,12 +52,49 @@ func _enter_tree():
 		_on_dialogic_timeline_started()
 
 func _ready():
-	Global.player = self
 	quest_tracker.visible = false
+	Global.player = self
+	if SaveLoad.SaveFileData.current_scene == get_tree().current_scene.get_scene_file_path():
+		await get_tree().process_frame
+		global_position = SaveLoad.SaveFileData.position
+		print("Restoring player position to: ", global_position)
+		face_direction = SaveLoad.SaveFileData.face_direction
+		var enter_call = Callable(fsm.current_state, "Enter")
+		enter_call.call_deferred()
+		coin_amount = SaveLoad.SaveFileData.coin_amount
+
+		var qm = get_node_or_null("QuestManager")
+		if qm != null:
+			# 1. Matikan notifikasi sementara
+			quest_notification = qm.get_node_or_null("QuestNotification")
+			if quest_notification:
+				quest_notification.notifications_enabled = false
+			
+			# 2. Masukkan semua quest (Sistem akan diam karena dimatikan)
+			for quest_res in SaveLoad.SaveFileData.active_quests:
+				qm.load_active_quest(quest_res)
+				print("Restored quest (Silent): ", quest_res.quest_name)
+			
+			# 3. Aktifkan kembali notifikasi
+			if quest_notification:
+				quest_notification.notifications_enabled = true
+			
+			# 4. Set ulang Selected Quest (Tracker)
+			if SaveLoad.SaveFileData.selected_quest_id != "":
+				var target_quest = qm.get_quest(SaveLoad.SaveFileData.selected_quest_id)
+				if target_quest:
+					selected_quest = target_quest
+					update_quest_tracker(target_quest)
+					if qm.has_method("set_selected_quest_id"):
+						qm.set_selected_quest_id(target_quest.quest_id)
+		else:
+			print("restore_to_scene: QuestManager not found on player")
 	update_coins()
 	# Signal connections
 	quest_manager.quest_updated.connect(_on_quest_updated)
 	quest_manager.objective_updated.connect(_on_objective_updated)
+	if interact_prompt:
+		interact_prompt.visible = false
 
 	# Instance quest notification UI from scene so it can be edited in the editor
 	if QuestNotificationScene:
@@ -92,6 +131,21 @@ func _physics_process(_delta):
 		direction = face_direction.normalized()
 
 	ray_cast_2d.target_position = direction * 50
+	check_interaction_prompt()
+
+func check_interaction_prompt():
+	if not can_move:
+		interact_prompt.visible = false
+		return
+	
+	if ray_cast_2d.is_colliding():
+		var target = ray_cast_2d.get_collider()
+		if target and (target.is_in_group("NPC") or target.is_in_group("Item") or target.is_in_group("Interactable")):
+			interact_prompt.visible = true
+			interact_prompt.global_position = target.global_position + Vector2(0, 0)
+			return
+
+	interact_prompt.visible = false
 
 func _input(event):
 	# Input is handled here (pause is handled globally by PauseManager autoload)
@@ -106,99 +160,79 @@ func _input(event):
 					target.start_dialog()
 					check_quest_objectives(target.npc_id, "talk_to")
 				elif target.is_in_group("Item"):
-					print("Interacting with Item:", target.name)
-					if is_item_needed(target.item_id):
-						check_quest_objectives(target.item_id, "collection", target.item_quantity)
-						target.queue_free()
-					else: 
-						print("Item not needed for any active quest.")
-				# Generic interactables (e.g. Bucket)
-				else:
-					# The raycast may hit a CollisionShape2D or the StaticBody root. The actual
-					# interactive script is on a child node named "InteractionArea".
-					var interaction_target = target
-					# If collider doesn't expose interact(), try to find the child InteractionArea
-					if not interaction_target.has_method("interact"):
-						if interaction_target.has_node("InteractionArea"):
-							interaction_target = interaction_target.get_node("InteractionArea")
-						elif interaction_target.get_parent() and interaction_target.get_parent().has_node("InteractionArea"):
-							interaction_target = interaction_target.get_parent().get_node("InteractionArea")
-
-					if interaction_target and (interaction_target.has_method("can_interact") or interaction_target.has_method("interact")):
-						print("Interacting with Object:", interaction_target.name)
-						var ok = true
-						if interaction_target.has_method("can_interact"):
-							ok = interaction_target.can_interact()
-						if ok:
-							if interaction_target.has_method("interact"):
-								interaction_target.interact(self)
-							else:
-								print("Target has no interact() method at runtime")
-						else:
-							print("Target cannot be interacted with right now")
+					print("Interacting with Item (Manual):", target.name)
+					try_collect_item(target)
+				elif target.is_in_group("Interactable"):
+					print("Interacting with Interactable:", target.name)
+					if target.has_method("interact"):
+						target.interact(self)
 	# Open/close quest log
 		if event.is_action_pressed("ui_quest_menu"):
 			quest_manager.show_quest_log()
 
-# Check if quest item is needed
+# Fungsi ini dipanggil oleh RayCast (Manual) DAN oleh QuestItem (Otomatis Injak)
+func try_collect_item(item_node) -> void:
+	# Pastikan item masih ada (valid)
+	if not is_instance_valid(item_node):
+		return
+		
+	if is_item_needed(item_node.item_id):
+		check_quest_objectives(item_node.item_id, "collection", item_node.item_quantity)
+		# Hapus item dari world
+		item_node.queue_free()
+		print("Collected item: ", item_node.name)
+	else:
+		# Opsional: Print debug hanya jika manual interact
+		# print("Item not needed for any active quest.")
+		pass
+
+# Cek ke semua quest yang sedang aktif (in_progress)
 func is_item_needed(item_id: String) -> bool:
-	if selected_quest != null:
-		for objective in selected_quest.objectives:
+	var active_quests = quest_manager.get_active_quests() # Ambil semua quest aktif
+	
+	for quest in active_quests:
+		for objective in quest.objectives:
+			# Cek apakah ada objektif yang butuh item ini DAN belum selesai
 			if objective.target_id == item_id and objective.target_type == "collection" and not objective.is_completed:
-				return true				
+				return true
 	return false
 	
+# Update quest mana saja yang cocok
 func check_quest_objectives(target_id: String, target_type: String, quantity: int = 1):
-	# If a specific quest is selected in the UI, only try that one.
-	# Otherwise, try to apply the objective to all active quests.
-	var objective_updated = false
-	var quests_to_check: Array = []
-	if selected_quest != null:
-		quests_to_check.append(selected_quest)
-	else:
-		# get_active_quests() returns all in-progress quests from the quest manager
-		if quest_manager and quest_manager.has_method("get_active_quests"):
-			quests_to_check = quest_manager.get_active_quests()
-
-	# Track which quests we actually updated so we can report appropriately
-	var updated_quests: Array = []
-
-	# Try to complete matching objectives across the selected/active quests
-	for quest in quests_to_check:
+	var active_quests = quest_manager.get_active_quests()
+	
+	for quest in active_quests:
 		for objective in quest.objectives:
 			if objective.target_id == target_id and objective.target_type == target_type and not objective.is_completed:
-				print("Completing objective for quest: ", quest.quest_name)
+				print("Updating objective for quest: ", quest.quest_name)
+				
+				# 1. Update datanya
 				quest.complete_objective(objective.id, quantity)
-				objective_updated = true
-				updated_quests.append(quest)
-				# break inner loop to avoid double-applying to same quest
-				break
 
-	# If any objective updated, handle completions and update UI/state
-	if objective_updated:
-		# Handle rewards/completion for any quests that became completed
-		for quest in updated_quests:
-			if quest.is_completed():
-				handle_quest_completion(quest)
+				quest_manager.objective_updated.emit(quest.quest_id, objective.id)
+				
+				# 2. Cek apakah quest ini langsung selesai?
+				if quest.is_completed():
+					handle_quest_completion(quest)
+				
+				# 3. Update Tracker HANYA jika quest ini kebetulan sedang ditampilkan di layar
+				elif selected_quest != null and selected_quest.quest_id == quest.quest_id:
+					update_quest_tracker(selected_quest)
+				
+				# PENTING: Return (berhenti) agar 1 item tidak menghitung untuk 2 quest sekaligus.
+				# (Kecuali kamu mau 1 item bisa menyelesaikan banyak quest sekaligus, hapus 'return' ini)
+				return
 
-		# If the player has a quest selected, update the tracker as before.
-		if selected_quest:
-			update_quest_tracker(selected_quest)
-		else:
-			# Player didn't open the quest log: don't show the selected-quest UI.
-			# Instead print a short progress message for each updated quest.
-			for quest in updated_quests:
-				print("[Quest] Progressed:", quest.quest_name)
-
-	# Return whether any objective was updated (useful for callers to decide to remove items)
-	return objective_updated
-	
 # Player rewards
 func handle_quest_completion(quest: Quest):
 	for reward in quest.rewards:
 		if reward.reward_type == "coins":
 			coin_amount += reward.reward_amount
 			update_coins()
+		if reward.reward_type == "affection":
+			SaveLoad.add_affection(reward.reward_amount)
+			if quest_notification:
+				quest_notification.show_notification("Affection +"+str(reward.reward_amount))
 	quest_manager.update_quest(quest.quest_id, "completed")
 	
 # Update coin UI
@@ -232,19 +266,7 @@ func update_quest_tracker(quest: Quest):
 			objectives.add_child(label)
 	# no active quest, fade out tracker
 	else:
-		hide_quest_tracker_fade()
-
-
-func hide_quest_tracker_fade(duration: float = 0.28) -> void:
-	# Fade out the quest tracker and then hide it. If it's already hidden, do nothing.
-	if not quest_tracker or not quest_tracker.visible:
-		return
-	# Start a tween to fade the control's modulate alpha to 0, then hide and reset alpha
-	var tw = create_tween()
-	# tween_property returns a PropertyTweener; call tween_callback on the SceneTreeTween
-	tw.tween_property(quest_tracker, "modulate:a", 0.0, duration)
-	tw.tween_callback(Callable(self, "_on_hide_tracker_finished"))
-
+		quest_tracker.visible = false
 
 func _on_hide_tracker_finished() -> void:
 	if quest_tracker:
@@ -257,32 +279,34 @@ func _on_hide_tracker_finished() -> void:
 # Update tracker if quest is complete
 func _on_quest_updated(quest_id: String):
 	var quest = quest_manager.get_quest(quest_id)
-	# If the quest still exists and it's the selected one, update the tracker.
+	
 	if quest != null:
-		if quest == selected_quest:
+		# Update tracker hanya jika quest yang berubah adalah quest yang sedang dilihat
+		if selected_quest and selected_quest.quest_id == quest_id:
 			update_quest_tracker(quest)
-		# If the quest changed to completed, hide the tracker (user requested it)
+			
+		# Jika quest selesai, baru kita sembunyikan trackernya (opsional)
 		if quest.state == "completed":
-			# Ensure tracker hides after completion
-			update_quest_tracker(null)
-			print("PlayerMain: Quest completed - hiding tracker for", quest.quest_name)
-	else:
-		# Quest was removed from QuestManager (likely completed) -> hide tracker
-		update_quest_tracker(null)
-		print("PlayerMain: Quest removed/finished - hiding tracker for id=", quest_id)
+			if selected_quest and selected_quest.quest_id == quest_id:
+				update_quest_tracker(null)
+				selected_quest = null # Reset hanya jika selesai
+			print("PlayerMain: Quest completed - ", quest.quest_name)
+			
+			# Tampilkan notifikasi selesai (opsional jika punya UI notifikasi)
+			if quest_notification:
+				quest_notification.show_notification("Completed: " + quest.quest_name)
 
-	# Reset selection
-	selected_quest = null
-
-	# Show a short notification when a quest is added/updated and is in progress
+	# Hapus baris 'selected_quest = null' yang ada di kode lama!
+	
+	# Logic notifikasi quest baru (biarkan seperti semula)
 	if quest and quest.state == "in_progress" and quest_notification:
-		quest_notification.show_notification(quest.quest_name)
+		# Opsional: Tambahkan cek agar tidak spam notif saat load game
+		pass
 	
 # Update tracker if objective is complete
 func _on_objective_updated(quest_id: String, _objective_id: String):
 	if selected_quest and selected_quest.quest_id == quest_id:
 		update_quest_tracker(selected_quest)
-	selected_quest = null
 
 
 func _on_dialogic_timeline_started() -> void:
@@ -290,3 +314,8 @@ func _on_dialogic_timeline_started() -> void:
 
 func _on_dialogic_timeline_ended() -> void:
 	can_move = true
+
+func _on_quest_tracker_button_pressed() -> void:
+	quest_tracker.visible = false
+	selected_quest = null
+	update_quest_tracker(null)

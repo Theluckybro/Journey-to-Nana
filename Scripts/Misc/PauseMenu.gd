@@ -44,38 +44,7 @@ func _on_resume_pressed() -> void:
 
 
 func _on_save_pressed() -> void:
-	SaveLoad.SaveFileData.version += 1
-	print("Saving game, version %d" % SaveLoad.SaveFileData.version)
-
-	SaveLoad.SaveFileData.position = main.player.global_position
-	print("Player position saved: ", SaveLoad.SaveFileData.position)
-
-	SaveLoad.SaveFileData.face_direction = main.player.face_direction
-	print("Player face direction saved: ", SaveLoad.SaveFileData.face_direction)
-
-	SaveLoad.SaveFileData.coin_amount = main.player.coin_amount
-	print("Player coin amount saved: ", SaveLoad.SaveFileData.coin_amount)
-
-	SaveLoad.SaveFileData.current_scene = main.get_tree().current_scene.get_scene_file_path()
-	print("Current scene saved: ", SaveLoad.SaveFileData.current_scene)
-
-	SaveLoad.SaveFileData.last_scene = SceneTransition.last_scene_name
-	print("Last scene saved: ", SaveLoad.SaveFileData.last_scene)
-
-	
-	# Save a single Quest resource (prefer selected quest, otherwise first active quest)
-	var active: Quest = null
-	if main.player.selected_quest != null:
-		active = main.player.selected_quest
-	else:
-		var active_quests = main.player.quest_manager.get_active_quests()
-		if active_quests.size() > 0:
-			active = active_quests[0]
-
-	print("active_quest: ", active)
-	SaveLoad.SaveFileData.active_quest = active
-
-	SaveLoad._save()
+	SaveLoad.save_game()
 	
 
 func _on_settings_pressed() -> void:

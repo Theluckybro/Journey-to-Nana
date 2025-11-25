@@ -8,7 +8,7 @@ class_name Quest
 @export var quest_name: String
 @export var quest_description: String
 @export var state: String = "not_started"
-@export var unlock_points: Array[String] = []  # Array of branch_ids where this quest can be offered
+@export var unlock_points: Array[String] = []
 @export var objectives: Array[Objectives] = []
 @export var rewards: Array[Rewards] = []
 
@@ -23,12 +23,16 @@ func is_completed() -> bool:
 func complete_objective(objective_id: String, quantity: int = 1):
 	for objective in objectives:
 		if objective.id == objective_id:
-			if objective.target_type == "collection":
+			if objective.required_quantity > 1:
 				objective.collected_quantity += quantity
+				print("Objective Progress: ", objective.collected_quantity, "/", objective.required_quantity)
+				
 				if objective.collected_quantity >= objective.required_quantity:
+					objective.collected_quantity = objective.required_quantity
 					objective.is_completed = true
 			else:
 				objective.is_completed = true
+			
 			break
 	if is_completed():
 		state = "completed"

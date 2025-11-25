@@ -53,7 +53,17 @@ func set_dialog_state(state):
 # Offer quest at required branch
 func offer_quest(quest_id: String):
 	print("Attempting to offer quest: ", quest_id)
-	
+	# If quest_manager wasn't available at _ready(), try to resolve it now.
+	if not quest_manager:
+		if Global.player and is_instance_valid(Global.player) and Global.player.quest_manager:
+			quest_manager = Global.player.quest_manager
+		else:
+			var cs = get_tree().current_scene
+			if cs:
+				var player_node = cs.get_node_or_null("Scene/Characters/Player")
+				if player_node and player_node.quest_manager:
+					quest_manager = player_node.quest_manager
+
 	for quest in quests:
 		if quest.quest_id == quest_id and quest.state == "not_started":
 			quest.state = "in_progress"

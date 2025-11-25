@@ -1,3 +1,4 @@
+### QuestNotification.gd
 extends Control
 
 # Small controller for the QuestNotification scene.
@@ -10,6 +11,7 @@ extends Control
 @onready var timer = $Timer
 var quest_manager = null
 var _active_tween: Tween = null
+var notifications_enabled: bool = true
 
 func _ready():
 	# start hidden (guard nodes in case the scene structure differs)
@@ -120,6 +122,9 @@ func _clear_active_tween() -> void:
 
 
 func _on_quest_updated(quest_id: String) -> void:
+	# Cek dulu, kalau dimatikan, jangan lakukan apa-apa (return)
+	if not notifications_enabled:
+		return
 	# Called by QuestManager when a quest changes. If the quest is newly in
 	# progress, show a short notification for the player.
 	if not quest_manager:

@@ -4,55 +4,77 @@ const save_location = "user://SaveFile.tres"
 
 var SaveFileData: SaveDataResource = SaveDataResource.new()
 
-func _ready() -> void:
-	_load()
+func save_game():
+	var player = get_tree().get_first_node_in_group("Player")
+	if player:
+		SaveFileData.position = player.global_position
+		SaveFileData.face_direction = player.face_direction
+		SaveFileData.coin_amount = player.coin_amount
+	
+		if player.selected_quest:
+			SaveFileData.selected_quest_id = player.selected_quest.quest_id
+		else:
+			SaveFileData.selected_quest_id = ""
 
-func _save():
+		var all_active = player.quest_manager.get_active_quests()
+		SaveFileData.active_quests = all_active
+	else:
+		print("save_game: Player not found in scene tree")
+	
+	SaveFileData.current_scene = get_tree().current_scene.get_scene_file_path()
+
 	ResourceSaver.save(SaveFileData, save_location)
+	print("Game saved to ", save_location)
 
-func _load():
+func load_game():
 	if FileAccess.file_exists(save_location):
 		SaveFileData = ResourceLoader.load(save_location).duplicate(true)
-
-func restore_to_scene():
-	var tree = get_tree()
-	var max_wait_frames: int = 10
-	var waited: int = 0
-	var current_scene = tree.current_scene
-	print("Restoring to scene: ", current_scene)
-	while current_scene == null and waited < max_wait_frames:
-		print("Waiting for current scene to be ready...")
-		await tree.process_frame
-		waited += 1
-		current_scene = tree.current_scene
-	# Ensure the current scene is ready
-	if current_scene == null:
-		print("restore_to_scene: current_scene not ready after waiting; aborting restore")
-		return
-	print("Current scene ready: ", current_scene.name)
-
-
-	var player = current_scene.get_node_or_null("Scene/Characters/Player")
-	
-	print("Restoring player state...")
-	print("Player: ", player)
-
-	player.global_position = SaveFileData.position
-	print(" Player position restored to: ", player.global_position)
-
-	player.face_direction = SaveFileData.face_direction
-	var enter_call = Callable(player.fsm.current_state, "Enter")
-	enter_call.call_deferred()
-	print(" Player face direction restored to: ", player.face_direction)
-
-	player.coin_amount = SaveFileData.coin_amount
-	print(" Player coin amount restored to: ", player.coin_amount)
-
-	# Restore active quest into the player's QuestManager if present
-	var qm = player.get_node_or_null("QuestManager")
-	if qm != null:
-		qm.load_from_save(SaveFileData)
-		qm.load_active_quest(SaveFileData.active_quest)
-		print("Active quest restored into QuestManager: ", SaveFileData.active_quest)
+		if Dialogic.VAR:
+			Dialogic.VAR.set_variable("affection", SaveFileData.affection)
+		call_deferred("_switch_to_loaded_scene")
+		return true
 	else:
-		print("restore_to_scene: QuestManager not found on player; skipping quest restore")
+		print("No save file found at ", save_location)
+		return false
+
+func _switch_to_loaded_scene():
+	get_tree().change_scene_to_file(SaveFileData.current_scene)
+
+func new_game():
+	SaveFileData = SaveDataResource.new()
+	var starting_scene = "res://Scenes/Levels/MainFloor.tscn"
+	get_tree().change_scene_to_file(starting_scene)
+	print("Starting new game at ", starting_scene)
+
+func check_flag(flag_name: String) -> bool:
+	if SaveFileData.flags.has(flag_name):
+		return SaveFileData.flags[flag_name]
+	return false
+
+func set_flag(flag_name: String, value: bool = true):
+	SaveFileData.flags[flag_name] = value
+
+func add_affection(amount: int):
+	SaveFileData.affection += amount
+	
+	if SaveFileData.affection < 0:
+		SaveFileData.affection = 0
+		
+	print("Affection Updated: ", SaveFileData.affection)
+	
+	if Dialogic.VAR:
+		Dialogic.VAR.set_variable("affection", SaveFileData.affection)
+	
+	if Global.player:
+		var popup = load("res://Art/Sprites/UI/heart_popup.tscn").instantiate()
+		Global.player.add_child(popup)
+		popup.position = Vector2(0, -25)
+
+func add_affection_once(flag_id: String, amount: int):
+	if check_flag(flag_id):
+		print("Afeksi untuk ", flag_id, " sudah pernah diambil.")
+		return
+
+	add_affection(amount)
+	set_flag(flag_id, true)
+	print("Afeksi bertambah ", amount, " dari ", flag_id)

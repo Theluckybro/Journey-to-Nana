@@ -69,3 +69,7 @@ func complete_objective(quest_id: String, objective_id: String):
 						
 func show_quest_log():
 	quest_ui.show_hide_log()
+
+func set_selected_quest_id(id: String):
+	if quest_ui.has_method("select_quest_by_id"):
+		quest_ui.select_quest_by_id(id)

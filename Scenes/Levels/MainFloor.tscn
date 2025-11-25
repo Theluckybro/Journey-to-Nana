@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=4 uid="uid://dei3j88yw6omf"]
+[gd_scene load_steps=33 format=4 uid="uid://dei3j88yw6omf"]
 
 [ext_resource type="Script" uid="uid://cb10ongwg7ld3" path="res://Scripts/MainFloorController.gd" id="1_scnhh"]
 [ext_resource type="PackedScene" uid="uid://bvg5dny32iw0x" path="res://Scenes/Player/Player.tscn" id="1_v023b"]
@@ -8,12 +8,12 @@
 [ext_resource type="TileSet" uid="uid://b3n0bklwwny1b" path="res://Art/TileMap.tres" id="7_n5jbx"]
 [ext_resource type="Texture2D" uid="uid://cng36rmjyanh0" path="res://Art/Sprites/Barang_Indra.png" id="10_rdp63"]
 [ext_resource type="AudioStream" uid="uid://bia7rrlxphfg2" path="res://Art/Audio/corridorsOgg.ogg" id="12_87j7f"]
-[ext_resource type="PackedScene" uid="uid://dgw3shdujp1y3" path="res://Scenes/Interactables/Bucket.tscn" id="14_5jlu8"]
 [ext_resource type="PackedScene" uid="uid://d0jgyou7nvsev" path="res://Art/Sprites/Objects/Bed.tscn" id="15_bkbvh"]
-[ext_resource type="PackedScene" uid="uid://df5c6rigj2wl8" path="res://Scenes/Interactables/Cupboard.tscn" id="16_k7rv1"]
 [ext_resource type="Script" uid="uid://27jdcwmmby1o" path="res://Resources/Dialog/Dialog.gd" id="17_gmoma"]
 [ext_resource type="Script" uid="uid://crg1xlfcui3el" path="res://Resources/Quest/Quests.gd" id="18_21iup"]
-[ext_resource type="PackedScene" uid="uid://v23wtnux4k8f" path="res://Art/Sprites/Objects/Desk.tscn" id="18_rcobd"]
+[ext_resource type="Script" uid="uid://xq6d81cym8jh" path="res://Scripts/Interactables/InteractableObject.gd" id="18_gmoma"]
+[ext_resource type="Script" uid="uid://dcoek24m5fsqv" path="res://Scripts/Quest/QuestSpawner.gd" id="18_gt5fq"]
+[ext_resource type="Resource" uid="uid://eshgyai4iff3" path="res://Resources/Quest/get_ready.tres" id="19_bolhi"]
 [ext_resource type="PackedScene" uid="uid://udk0wvvv4uha" path="res://Art/Sprites/Objects/Toilet.tscn" id="19_gmoma"]
 [ext_resource type="Texture2D" uid="uid://dth7o8e4qmk38" path="res://Art/Icons/icon5.png" id="19_gt5fq"]
 [ext_resource type="Script" uid="uid://bgg2qnyv7e5u7" path="res://Resources/Quest/Objectives.gd" id="19_scnhh"]
@@ -89,6 +89,15 @@ objectives = Array[ExtResource("19_scnhh")]([SubResource("Resource_scnhh")])
 rewards = Array[ExtResource("20_0ipvf")]([SubResource("Resource_0ipvf")])
 metadata/_custom_type_script = "uid://crg1xlfcui3el"
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_rcobd"]
+radius = 9.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rdp63"]
+size = Vector2(24, 79)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rcobd"]
+size = Vector2(24, 49)
+
 [node name="MainFloor" type="Node2D"]
 process_mode = 3
 y_sort_enabled = true
@@ -134,7 +143,7 @@ autoplay = true
 y_sort_enabled = true
 
 [node name="QuestItem" parent="Scene/QuestItem" instance=ExtResource("3_gmoma")]
-position = Vector2(176, 41)
+position = Vector2(176, 51)
 item_id = "item_potion"
 item_quantity = 10
 item_icon = ExtResource("19_gt5fq")
@@ -172,17 +181,8 @@ npc_id = "npc_3"
 [node name="Objects" type="Node2D" parent="Scene"]
 y_sort_enabled = true
 
-[node name="Bucket" parent="Scene/Objects" instance=ExtResource("14_5jlu8")]
-position = Vector2(144, 48)
-
 [node name="Bed" parent="Scene/Objects" instance=ExtResource("15_bkbvh")]
 position = Vector2(48, 176)
-
-[node name="Cupboard" parent="Scene/Objects" instance=ExtResource("16_k7rv1")]
-position = Vector2(32, 73)
-
-[node name="Desk" parent="Scene/Objects" instance=ExtResource("18_rcobd")]
-position = Vector2(192, 152)
 
 [node name="Toilet" parent="Scene/Objects" instance=ExtResource("19_gmoma")]
 position = Vector2(200, 56)
@@ -194,10 +194,70 @@ offset = Vector2(7, 9)
 region_enabled = true
 region_rect = Rect2(0, 48, 48, 48)
 
+[node name="Bucket" type="StaticBody2D" parent="Scene/Objects" groups=["Interactable"]]
+y_sort_enabled = true
+position = Vector2(143, 45)
+script = ExtResource("18_gmoma")
+interaction_id = "bath"
+interaction_type = "action"
+timeline_label = "bucket"
+confirm_signal = "bucket_yes"
+
+[node name="Sprite2D" type="Sprite2D" parent="Scene/Objects/Bucket"]
+texture = ExtResource("10_rdp63")
+region_enabled = true
+region_rect = Rect2(48, 0, 32, 32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Scene/Objects/Bucket"]
+shape = SubResource("CircleShape2D_rcobd")
+
+[node name="Cupboard" type="StaticBody2D" parent="Scene/Objects" groups=["Interactable"]]
+y_sort_enabled = true
+position = Vector2(29, 49)
+script = ExtResource("18_gmoma")
+interaction_id = "cupboard"
+interaction_type = "action"
+timeline_label = "cupboard"
+confirm_signal = "cupboard_yes"
+
+[node name="Sprite2D" type="Sprite2D" parent="Scene/Objects/Cupboard"]
+position = Vector2(0, 49)
+texture = ExtResource("10_rdp63")
+offset = Vector2(3, -26)
+region_enabled = true
+region_rect = Rect2(80, 0, 32, 80)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Scene/Objects/Cupboard"]
+position = Vector2(-1, 23)
+shape = SubResource("RectangleShape2D_rdp63")
+
+[node name="Desk" type="StaticBody2D" parent="Scene/Objects" groups=["Interactable"]]
+y_sort_enabled = true
+script = ExtResource("18_gmoma")
+interaction_id = "desk"
+interaction_type = "action"
+timeline_label = "desk"
+confirm_signal = "desk_yes"
+
+[node name="Sprite2D" type="Sprite2D" parent="Scene/Objects/Desk"]
+position = Vector2(184, 142)
+texture = ExtResource("10_rdp63")
+offset = Vector2(8, 10)
+region_enabled = true
+region_rect = Rect2(176, 0, 32, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Scene/Objects/Desk"]
+position = Vector2(196, 151.5)
+shape = SubResource("RectangleShape2D_rcobd")
+
 [node name="Spawn" type="Node2D" parent="Scene"]
 
 [node name="Classroom" type="Marker2D" parent="Scene/Spawn"]
 position = Vector2(192, 216)
+
+[node name="QuestSpawner" type="Node2D" parent="Scene"]
+script = ExtResource("18_gt5fq")
+available_quests = Array[ExtResource("18_21iup")]([ExtResource("19_bolhi")])
 
 [node name="UI" type="CanvasLayer" parent="."]
 process_mode = 3

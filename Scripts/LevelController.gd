@@ -11,21 +11,32 @@ var paused: bool = false
 func setup_level() -> void:
 	print("Setting up level: ", get_tree().get_current_scene().name)
 	if SceneTransition.player:
-		if player:
-			player.queue_free()
+		var existing_placeholder = characters.get_node_or_null("Player")
+		
+		if existing_placeholder:
+			characters.remove_child(existing_placeholder) 
+			existing_placeholder.queue_free()
 
 		player = SceneTransition.player
+		if player.get_parent():
+			player.get_parent().remove_child(player)
+		player.name = "Player"
 		characters.add_child(player)
+		Global.player = player
 		position_player()
+		SceneTransition.player = null
 		return
 	elif characters.has_node("Player"):
 		player = characters.get_node("Player") as PlayerMain
+		player.name = "Player"
+		Global.player = player
 		position_player()
 		return
 	var PlayerScene = preload("res://Scenes/Player/Player.tscn")
 	player = PlayerScene.instantiate()
 	player.name = "Player"
 	characters.add_child(player)
+	Global.player = player
 	position_player()
 
 func _process(_delta: float) -> void:

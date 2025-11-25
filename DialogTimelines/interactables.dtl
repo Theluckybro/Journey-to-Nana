@@ -10,3 +10,21 @@ Mau ganti baju?
 	[signal arg="cupboard_yes"]
 - Nanti dulu
 [end_timeline]
+label desk
+Di ujung meja terdapat tumpukan surat yang belum dibuka.
+label letter_choices
+Mau baca surat yang mana?
+- Surat Warna Merah
+	Isi surat merah....
+	do SaveLoad.add_affection_once("read_letter_red", 5)
+	jump interactables/letter_choices
+- Surat Warna Ungu
+	Isi surat ungu....
+	do SaveLoad.add_affection_once("read_letter_purple", 5)
+	jump interactables/letter_choices
+- Surat Warna Krem
+	Isi surat krem...
+	do SaveLoad.add_affection_once("read_letter_cream", 5)
+	jump interactables/letter_choices
+- Sudahi membaca
+	[end_timeline]

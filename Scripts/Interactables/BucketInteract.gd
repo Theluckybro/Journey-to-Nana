@@ -1,3 +1,4 @@
+### BUcketInteract.gd
 extends Area2D
 
 @export var interaction_id: String = "bath"

@@ -8,9 +8,9 @@
 y_sort_enabled = true
 script = ExtResource("1_iihs5")
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 10)
 shape = SubResource("CircleShape2D_iihs5")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-offset = Vector2(0, 10)
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://cot2sac56p7a2"]
+
+[ext_resource type="Script" uid="uid://xq6d81cym8jh" path="res://Scripts/Interactables/InteractableObject.gd" id="1_v2rio"]
+
+[node name="Interactables" type="StaticBody2D" groups=["Interactable"]]
+y_sort_enabled = true
+script = ExtResource("1_v2rio")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]

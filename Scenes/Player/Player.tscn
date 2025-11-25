@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=3 uid="uid://bvg5dny32iw0x"]
+[gd_scene load_steps=75 format=3 uid="uid://bvg5dny32iw0x"]
 
 [ext_resource type="Script" uid="uid://tebhoiujprhs" path="res://Scenes/Player/Scripts/PlayerMain.gd" id="1_y5oq4"]
 [ext_resource type="Texture2D" uid="uid://10a8po2xc1e3" path="res://Scenes/Player/Sprite/SpriteIndra.png" id="16_8rd5p"]
@@ -659,6 +659,44 @@ _data = {
 &"WalkUp": SubResource("Animation_r6t50")
 }
 
+[sub_resource type="Animation" id="Animation_ji083"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 5)]
+}
+
+[sub_resource type="Animation" id="Animation_825xp"]
+resource_name = "float"
+loop_mode = 2
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-15, -40), Vector2(-15, -45), Vector2(-15, -40)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0kmp4"]
+_data = {
+&"RESET": SubResource("Animation_ji083"),
+&"float": SubResource("Animation_825xp")
+}
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 y_sort_enabled = true
 texture_filter = 1
@@ -769,4 +807,44 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 
+[node name="QuestTrackerButton" type="Button" parent="HUD/QuestTracker"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -8.0
+offset_bottom = 8.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 16
+text = "X"
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="HUD"]
+offset_right = 40.0
+offset_bottom = 40.0
+
 [node name="QuestManager" parent="." instance=ExtResource("26_8t5qx")]
+
+[node name="InteractPrompt" type="Node2D" parent="."]
+visible = false
+top_level = true
+z_index = 10
+position = Vector2(0, 5)
+
+[node name="Label" type="Label" parent="InteractPrompt"]
+offset_top = 5.0
+offset_right = 30.0
+offset_bottom = 35.0001
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+text = "E"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="InteractPrompt"]
+libraries = {
+&"": SubResource("AnimationLibrary_0kmp4")
+}
+autoplay = "float"
+
+[connection signal="pressed" from="HUD/QuestTracker/QuestTrackerButton" to="." method="_on_quest_tracker_button_pressed"]

@@ -27,7 +27,7 @@ buses/default_bus_layout=""
 
 GameManager="*res://Scripts/Managers/GameManager.gd"
 AudioManager="*res://Scripts/Managers/AudioManager.gd"
-Global="*res://Scripts/Managers/DialogueManager.gd"
+Global="*res://Scripts/Managers/Global.gd"
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 QuestSpawner="*res://Scripts/Quest/QuestSpawner.gd"
 SceneHistory="*res://Scripts/SceneHistory.gd"
@@ -89,12 +89,20 @@ audio/channel_defaults={
 "volume": 0.0
 }
 }
-variables={}
+variables={
+"affection": 0.0,
+"letter": {
+"read_cream": false,
+"read_purple": false,
+"read_red": false
+}
+}
 
 [display]
 
 window/size/viewport_width=640
 window/size/viewport_height=360
+window/size/always_on_top=true
 window/stretch/mode="canvas_items"
 window/stretch/scale_mode="integer"
 

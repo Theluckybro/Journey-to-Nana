@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="Quest" load_steps=6 format=3 uid="uid://eshgyai4iff3"]
+
+[ext_resource type="Script" uid="uid://bgg2qnyv7e5u7" path="res://Resources/Quest/Objectives.gd" id="1_ktutc"]
+[ext_resource type="Script" uid="uid://e4nb0godmmd0" path="res://Resources/Quest/Rewards.gd" id="2_6u0c5"]
+[ext_resource type="Script" uid="uid://crg1xlfcui3el" path="res://Resources/Quest/Quests.gd" id="3_maip7"]
+
+[sub_resource type="Resource" id="Resource_6gls6"]
+script = ExtResource("1_ktutc")
+id = "bath_obj_1"
+description = "Pergi ke kamar mandi buat mandi!"
+target_id = "bath"
+target_type = "action"
+required_quantity = 1
+metadata/_custom_type_script = "uid://bgg2qnyv7e5u7"
+
+[sub_resource type="Resource" id="Resource_py4fb"]
+script = ExtResource("1_ktutc")
+id = "cupboard_obj_1"
+description = "Ganti baju di lemari pakaian"
+target_id = "cupboard"
+target_type = "action"
+metadata/_custom_type_script = "uid://bgg2qnyv7e5u7"
+
+[resource]
+script = ExtResource("3_maip7")
+quest_id = "get_ready_001"
+quest_name = "Siap-siap"
+quest_description = "Bersiap-siap untuk berangkat kuliah."
+objectives = Array[ExtResource("1_ktutc")]([SubResource("Resource_6gls6"), SubResource("Resource_py4fb")])
+metadata/_custom_type_script = "uid://crg1xlfcui3el"
