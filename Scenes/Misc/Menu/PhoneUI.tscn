@@ -1,0 +1,156 @@
+[gd_scene load_steps=10 format=3 uid="uid://c60l4fi0dime3"]
+
+[ext_resource type="Texture2D" uid="uid://dewhganvlfw06" path="res://Art/Sprites/UI/Phone UI.png" id="1_n5600"]
+[ext_resource type="Texture2D" uid="uid://hkg0x0sss8cu" path="res://Art/Sprites/UI/Wallpaper UI.png" id="2_eaby3"]
+[ext_resource type="Texture2D" uid="uid://43idjg6m8swn" path="res://Art/Sprites/UI/Stopify.png" id="3_e37fv"]
+[ext_resource type="FontFile" uid="uid://n5t25ojgy2nb" path="res://Art/Fonts/ByteBounce.ttf" id="4_gfsgr"]
+[ext_resource type="Texture2D" uid="uid://doynwyq7n1no7" path="res://Art/Sprites/UI/Whastapp.png" id="5_cvvk5"]
+[ext_resource type="Texture2D" uid="uid://bgjkyrhglrsa5" path="res://Art/Sprites/UI/Instangram.png" id="6_gfsgr"]
+[ext_resource type="Texture2D" uid="uid://bnfhfsn2pevnm" path="res://Art/Sprites/UI/Camera.png" id="7_cvvk5"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_mpfrw"]
+font = ExtResource("4_gfsgr")
+font_size = 13
+
+[sub_resource type="LabelSettings" id="LabelSettings_7vxvj"]
+font = ExtResource("4_gfsgr")
+font_size = 32
+
+[node name="PhoneBody" type="TextureRect"]
+offset_left = 513.0
+offset_top = 105.0
+offset_right = 641.0
+offset_bottom = 361.0
+texture = ExtResource("1_n5600")
+
+[node name="Screen" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Wallpaper" type="TextureRect" parent="Screen"]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_eaby3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Screen"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.07300001
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -0.060001373
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Stopify" type="TextureRect" parent="Screen/VBoxContainer"]
+custom_minimum_size = Vector2(80, 32)
+layout_mode = 2
+texture = ExtResource("3_e37fv")
+
+[node name="Label" type="Label" parent="Screen/VBoxContainer/Stopify"]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 6.9999943
+offset_right = 51.0
+offset_bottom = 15.999994
+text = "Stopify"
+label_settings = SubResource("LabelSettings_mpfrw")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Clock" type="Label" parent="Screen/VBoxContainer"]
+custom_minimum_size = Vector2(96, 32)
+layout_mode = 2
+text = "00:00"
+label_settings = SubResource("LabelSettings_7vxvj")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Screen/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_right = 6
+
+[node name="Apps" type="GridContainer" parent="Screen/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 4
+columns = 2
+
+[node name="Whastapp" type="VBoxContainer" parent="Screen/VBoxContainer/MarginContainer/Apps"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="Button" type="Button" parent="Screen/VBoxContainer/MarginContainer/Apps/Whastapp"]
+custom_minimum_size = Vector2(37, 37)
+layout_mode = 2
+icon = ExtResource("5_cvvk5")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="Label" type="Label" parent="Screen/VBoxContainer/MarginContainer/Apps/Whastapp"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 7
+text = "Whastapp"
+horizontal_alignment = 1
+
+[node name="Instangram" type="VBoxContainer" parent="Screen/VBoxContainer/MarginContainer/Apps"]
+custom_minimum_size = Vector2(32, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="Button" type="Button" parent="Screen/VBoxContainer/MarginContainer/Apps/Instangram"]
+custom_minimum_size = Vector2(37, 37)
+layout_mode = 2
+icon = ExtResource("6_gfsgr")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="Label" type="Label" parent="Screen/VBoxContainer/MarginContainer/Apps/Instangram"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 4
+text = "Instangram"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Camera" type="VBoxContainer" parent="Screen/VBoxContainer/MarginContainer/Apps"]
+custom_minimum_size = Vector2(16, 24)
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Button" type="Button" parent="Screen/VBoxContainer/MarginContainer/Apps/Camera"]
+custom_minimum_size = Vector2(37, 37)
+layout_mode = 2
+icon = ExtResource("7_cvvk5")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Label" type="Label" parent="Screen/VBoxContainer/MarginContainer/Apps/Camera"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 6
+text = "Camera"
+horizontal_alignment = 1
+vertical_alignment = 1
