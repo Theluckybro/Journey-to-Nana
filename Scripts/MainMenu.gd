@@ -2,7 +2,7 @@ extends Control
 
 func _ready() -> void:
 	if not FileAccess.file_exists(SaveLoad.save_location):
-		$ContinueButton.disabled = true
+		%Continue.disabled = true
 
 func _on_new_game_pressed() -> void:
 	SaveLoad.new_game()
