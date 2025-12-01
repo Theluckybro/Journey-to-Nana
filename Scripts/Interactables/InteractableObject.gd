@@ -38,8 +38,9 @@ func _on_dialogic_signal(argument: String):
 		print("Interaction confirmed: ", interaction_id)
 		
 		if _initiating_player:
-			# Kirim progress ke sistem quest Player
+			if argument == "bucket_yes": 
+				await _initiating_player.play_shower_cutscene()
 			_initiating_player.check_quest_objectives(interaction_id, interaction_type, interaction_quantity)
+			_initiating_player.can_move = true
 		
-		# Opsional: Putus koneksi signal setelah selesai agar rapi
 		Dialogic.signal_event.disconnect(_on_dialogic_signal)

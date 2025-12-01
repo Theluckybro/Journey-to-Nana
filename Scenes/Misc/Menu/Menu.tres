@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://c4kkjsbtgcu3y"]
+[gd_resource type="Theme" load_steps=9 format=3 uid="uid://c4kkjsbtgcu3y"]
 
 [ext_resource type="FontFile" uid="uid://ci60w53hdbiqe" path="res://Art/Fonts/m3x6.ttf" id="1_bqyjc"]
 
@@ -48,6 +48,12 @@ bg_color = Color(0.15, 0.15, 0.15, 1)
 shadow_color = Color(0.03, 0.09, 0.04, 0.6)
 shadow_size = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kh1u4"]
+bg_color = Color(0.6901961, 0.9529412, 0.69803923, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x7lg1"]
+bg_color = Color(0.72156864, 0.81960785, 0.72156864, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i0bb4"]
 content_margin_left = 10.0
 content_margin_top = 10.0
@@ -78,6 +84,8 @@ Button/styles/focus = SubResource("StyleBoxFlat_bqyjc")
 Button/styles/hover = SubResource("StyleBoxFlat_purple")
 Button/styles/normal = SubResource("StyleBoxFlat_button")
 Button/styles/pressed = SubResource("StyleBoxFlat_green")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_kh1u4")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_x7lg1")
 Label/font_sizes/font_size = 38
 Label/fonts/font = ExtResource("1_bqyjc")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_i0bb4")

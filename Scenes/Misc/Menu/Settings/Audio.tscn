@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://r8cyiw5q63db"]
+[gd_scene load_steps=5 format=3 uid="uid://r8cyiw5q63db"]
 
 [ext_resource type="Script" uid="uid://cnn8dlbg1xrwr" path="res://Scripts/Misc/Audio.gd" id="1_51pxs"]
+[ext_resource type="Theme" uid="uid://c4kkjsbtgcu3y" path="res://Scenes/Misc/Menu/Menu.tres" id="2_y3at2"]
 [ext_resource type="FontFile" uid="uid://ci60w53hdbiqe" path="res://Art/Fonts/m3x6.ttf" id="2_yub02"]
 [ext_resource type="AudioStream" uid="uid://b1lr5ey8e6pu3" path="res://Art/Audio/BasementOgg.ogg" id="3_yub02"]
 
@@ -26,6 +27,7 @@ offset_right = 240.0
 offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_y3at2")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
@@ -38,10 +40,7 @@ text = "Volume"
 
 [node name="Volume" type="HSlider" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-min_value = 0.0
-max_value = 100.0
 value = 50.0
-step = 1.0
 
 [node name="MuteLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

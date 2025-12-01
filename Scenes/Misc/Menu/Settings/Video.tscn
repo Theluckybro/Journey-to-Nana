@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://3yh3a1txrrnj"]
+[gd_scene load_steps=4 format=3 uid="uid://3yh3a1txrrnj"]
 
 [ext_resource type="Script" uid="uid://cfdeos64kymrw" path="res://Scripts/Misc/Video.gd" id="1_r1wr0"]
+[ext_resource type="Theme" uid="uid://c4kkjsbtgcu3y" path="res://Scenes/Misc/Menu/Menu.tres" id="2_q80i1"]
 [ext_resource type="FontFile" uid="uid://ci60w53hdbiqe" path="res://Art/Fonts/m3x6.ttf" id="2_vjik3"]
 
 [node name="Video" type="Control"]
@@ -25,6 +26,7 @@ offset_right = 240.0
 offset_bottom = 100.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_q80i1")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2

@@ -122,22 +122,17 @@ func _clear_active_tween() -> void:
 
 
 func _on_quest_updated(quest_id: String) -> void:
-	# Cek dulu, kalau dimatikan, jangan lakukan apa-apa (return)
 	if not notifications_enabled:
 		return
-	# Called by QuestManager when a quest changes. If the quest is newly in
-	# progress, show a short notification for the player.
 	if not quest_manager:
 		return
 	if not quest_manager.has_method("get_quest"):
 		return
 	var quest = quest_manager.get_quest(quest_id)
-	# quest_updated is emitted when a quest changes state. Show different
-	# announcements depending on the new state. Note: update_quest emits
-	# quest_updated before it removes a completed quest, so get_quest should
-	# still return the quest here.
 	if quest:
-		if quest.state == "in_progress":
-			show_notification(quest.quest_name, "Quest Started")
-		elif quest.state == "completed":
+		if quest.state == "completed":
 			show_notification(quest.quest_name, "Quest Completed")
+		elif quest.state == "in_progress":
+			if quest.has_method("is_completed") and quest.is_completed():
+				return 
+			show_notification(quest.quest_name, "Quest Started")

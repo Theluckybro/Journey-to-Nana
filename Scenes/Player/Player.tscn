@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://bvg5dny32iw0x"]
+[gd_scene load_steps=76 format=3 uid="uid://bvg5dny32iw0x"]
 
 [ext_resource type="Script" uid="uid://tebhoiujprhs" path="res://Scenes/Player/Scripts/PlayerMain.gd" id="1_y5oq4"]
 [ext_resource type="Texture2D" uid="uid://10a8po2xc1e3" path="res://Scenes/Player/Sprite/SpriteIndra.png" id="16_8rd5p"]
@@ -697,6 +697,10 @@ _data = {
 &"float": SubResource("Animation_825xp")
 }
 
+[sub_resource type="Curve" id="Curve_825xp"]
+_data = [Vector2(0, 0.57303375), 0.0, 0.0, 0, 0, Vector2(0.99999, 0.3595506), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 y_sort_enabled = true
 texture_filter = 1
@@ -846,5 +850,18 @@ libraries = {
 &"": SubResource("AnimationLibrary_0kmp4")
 }
 autoplay = "float"
+
+[node name="ShowerParticles" type="CPUParticles2D" parent="."]
+z_index = 1
+position = Vector2(0, -18)
+emitting = false
+amount = 50
+lifetime = 0.25
+emission_shape = 3
+emission_rect_extents = Vector2(10, 1)
+scale_amount_min = 2.0
+scale_amount_max = 2.0
+scale_amount_curve = SubResource("Curve_825xp")
+color = Color(5.77569e-06, 0.90367943, 0.9065029, 1)
 
 [connection signal="pressed" from="HUD/QuestTracker/QuestTrackerButton" to="." method="_on_quest_tracker_button_pressed"]

@@ -12,6 +12,7 @@ class_name PlayerMain
 @onready var hud = $HUD
 @onready var interact_prompt = $InteractPrompt
 @onready var interact_label = $InteractPrompt/Label
+@onready var shower_particles = $ShowerParticles
 const QuestNotificationScene = preload("res://Scenes/Quest/QuestNotification.tscn")
 var quest_notification = null
 var face_direction := Vector2.DOWN
@@ -169,6 +170,17 @@ func _input(event):
 	# Open/close quest log
 		if event.is_action_pressed("ui_quest_menu"):
 			quest_manager.show_quest_log()
+	
+	if event.is_action_pressed("hide_interface"):
+		var layout = Dialogic.Styles.get_layout_node()
+		if layout:
+			for layer in layout.get_children():
+				if layer is Node:
+					var textbox = layer.find_child("DialogicNode_DialogText", true, false)
+					if textbox:
+						layer.visible = not layer.visible
+						break
+
 
 # Fungsi ini dipanggil oleh RayCast (Manual) DAN oleh QuestItem (Otomatis Injak)
 func try_collect_item(item_node) -> void:
@@ -319,3 +331,12 @@ func _on_quest_tracker_button_pressed() -> void:
 	quest_tracker.visible = false
 	selected_quest = null
 	update_quest_tracker(null)
+
+func play_shower_cutscene() -> void:
+	can_move = false
+	if shower_particles:
+		shower_particles.emitting = true
+	await get_tree().create_timer(5.0).timeout
+	shower_particles.emitting = false
+	await get_tree().create_timer(0.3).timeout
+	can_move = true

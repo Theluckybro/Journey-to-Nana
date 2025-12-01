@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="DialogicStyle" load_steps=19 format=3 uid="uid://b106j60yeirov"]
+[gd_resource type="Resource" script_class="DialogicStyle" load_steps=21 format=3 uid="uid://b106j60yeirov"]
 
 [ext_resource type="PackedScene" uid="uid://cqpb3ie51rwl5" path="res://addons/dialogic/Modules/DefaultLayoutParts/Base_Default/default_layout_base.tscn" id="1_ss0rn"]
 [ext_resource type="Script" uid="uid://bwg6yncmh2cml" path="res://addons/dialogic/Resources/dialogic_style_layer.gd" id="2_bcfx6"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bvxqmeu1wwyd6" path="res://Art/Layouts/CenteredChoices/custom_centered_choices.tscn" id="7_ss0rn"]
 [ext_resource type="PackedScene" uid="uid://cvgf4c6gg0tsy" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_TextInput/text_input_layer.tscn" id="8_pwc1a"]
 [ext_resource type="PackedScene" uid="uid://lx24i8fl6uo" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_History/history_layer.tscn" id="9_d67sn"]
+[ext_resource type="PackedScene" uid="uid://cy1y14inwkplb" path="res://addons/dialogic/Modules/DefaultLayoutParts/Layer_VN_Portraits/vn_portrait_layer.tscn" id="10_bcfx6"]
 [ext_resource type="Script" uid="uid://dv08k6ljua6fm" path="res://addons/dialogic/Resources/dialogic_style.gd" id="10_xrr11"]
 
 [sub_resource type="Resource" id="Resource_ss0rn"]
@@ -61,10 +62,14 @@ scene = ExtResource("8_pwc1a")
 script = ExtResource("2_bcfx6")
 scene = ExtResource("9_d67sn")
 
+[sub_resource type="Resource" id="Resource_d67sn"]
+script = ExtResource("2_bcfx6")
+scene = ExtResource("10_bcfx6")
+
 [resource]
 script = ExtResource("10_xrr11")
 name = "DialogStyle"
-layer_list = Array[String](["10", "11", "12", "13", "14", "15", "16"])
+layer_list = Array[String](["10", "11", "17", "12", "13", "14", "15", "16"])
 layer_info = {
 "": SubResource("Resource_ss0rn"),
 "10": SubResource("Resource_bcfx6"),
@@ -73,6 +78,7 @@ layer_info = {
 "13": SubResource("Resource_rbsov"),
 "14": SubResource("Resource_j0sgw"),
 "15": SubResource("Resource_hvi7u"),
-"16": SubResource("Resource_pwc1a")
+"16": SubResource("Resource_pwc1a"),
+"17": SubResource("Resource_d67sn")
 }
-metadata/_latest_layer = "14"
+metadata/_latest_layer = "17"
