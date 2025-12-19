@@ -6,7 +6,6 @@
 size = Vector2(53, 83)
 
 [node name="Bed" type="StaticBody2D"]
-y_sort_enabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_8nod3")

@@ -1,14 +1,22 @@
 extends "res://Scripts/LevelController.gd"
 
 @onready var quest_spawner: QuestSpawnerNode = $Scene/QuestSpawner
+@onready var sleep_spot: Marker2D = $Scene/Spawn/SleepSpot
+@onready var wake_up_spot: Marker2D = $Scene/Spawn/WakeUpSpot
 
 func _ready():
-	if not SaveLoad.check_flag("gamestart_played"):
-		Dialogic.signal_event.connect(_on_dialogic_signal, CONNECT_ONE_SHOT)
-		Dialogic.start("gamestart")
-		SaveLoad.set_flag("gamestart_played", true)
+	var play_intro := not SaveLoad.check_flag("gamestart_played")
 
 	setup_level()
+
+	if play_intro:
+		_prepare_intro_cutscene()
+
+		if not Dialogic.signal_event.is_connected(Callable(self, "_on_dialogic_signal")):
+			Dialogic.signal_event.connect(_on_dialogic_signal)
+
+		Dialogic.start("gamestart")
+		SaveLoad.set_flag("gamestart_played", true)
 	
 
 func _on_gamestart_ended():
@@ -20,8 +28,55 @@ func _on_gamestart_ended():
 		sp.spawn_bath_quest()
 
 func _on_dialogic_signal(argument: Variant) -> void:
-	if typeof(argument) == TYPE_STRING and argument == "get_ready":
-		if quest_spawner:
-			quest_spawner.spawn_quest_by_id("get_ready_001")
-		else:
-			print("Error: Node QuestSpawner tidak ditemukan di Scene MainFloor")
+	if typeof(argument) != TYPE_STRING:
+		return
+
+	match argument:
+		"wake_up":
+			_wake_player_from_bed()
+		"get_ready":
+			if quest_spawner:
+				quest_spawner.spawn_quest_by_id("get_ready_001")
+			else:
+				print("Error: Node QuestSpawner tidak ditemukan di Scene MainFloor")
+
+func _prepare_intro_cutscene() -> void:
+	if not player:
+		return
+
+	player.can_move = false
+	player.velocity = Vector2.ZERO
+	player.face_direction = Vector2.DOWN
+
+	if sleep_spot:
+		player.global_position = sleep_spot.global_position
+
+	player.set_sleep_pose()
+	
+func _wake_player_from_bed() -> void:
+	if not player:
+		return
+
+	player.can_move = false
+	player.velocity = Vector2.ZERO
+
+	var target_pos: Vector2 = player.global_position
+	if wake_up_spot:
+		target_pos = wake_up_spot.global_position
+	else:
+		target_pos += Vector2(24, 0)
+
+	var sprite = player.get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
+
+	player.play_idle_right()
+
+	var tween := create_tween()
+	tween.tween_property(player, "global_position", target_pos, 0.5).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	if sprite:
+		var initial_sprite_pos = sprite.position
+		tween.parallel().tween_property(sprite, "position:y", -15.0, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tween.tween_property(sprite, "position:y", initial_sprite_pos.y, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_callback(func():
+		player.face_direction = Vector2.RIGHT
+	)
+	player.can_move = true

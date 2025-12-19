@@ -1,8 +1,18 @@
-Indra: *Menggeliat* Hah...  udah pagi?
+Indra: Z[pause=0.3]z[pause=0.3]z[pause=0.3]... [aa=0.5]
+Indra: Z[pause=0.3]z[pause=0.3]z[pause=0.3]... [aa=0.5]
+Indra: Z[pause=0.3]z[pause=0.3]z[pause=0.3]... [aa=0.5]
+audio "res://Art/Audio/Effects/AlarmAudio.mp3"
+[wait time="6.12"]
 
-Indra: *Melihat jam di dinding* Aduh udah mau jam 7. Kuliah hari pertama lagi.
+Indra: (Terbangun) Hah?! Jam berapa ini?
+Indra: Brisik banget...
 
-Indra: Kepalaku masih agak pusing, baru juga bangun, tapi aku harus cepat siap-siap terus berangkat.
+[signal arg="wake_up"]
+
+Indra: Satu hari lagi. Panas lagi. Kuliah lagi.
+
+Indra: Males banget mandi, tapi mau gimana lagi.
+Indra: Yok harus siap-siap!
 
 [signal arg="get_ready"]
 [end_timeline]

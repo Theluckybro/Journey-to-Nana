@@ -21,8 +21,6 @@ var selected_quest: Quest = null
 var coin_amount  = 0
 
 func _enter_tree():
-	# Apply any requested facing as early as possible so child nodes (like the FSM)
-	# see the correct facing during their _ready()/initialization.
 	if get_tree().has_meta("next_player_facing"):
 		var nf = get_tree().get_meta("next_player_facing")
 		if nf is Vector2:
@@ -37,17 +35,13 @@ func _enter_tree():
 					face_direction = Vector2.LEFT
 				"right":
 					face_direction = Vector2.RIGHT
-		# Clear meta so it's not reused unintentionally
 		get_tree().set_meta("next_player_facing", null)
 	if not Dialogic.is_connected("timeline_started", Callable(self, "_on_dialogic_timeline_started")):
 		Dialogic.connect("timeline_started", Callable(self, "_on_dialogic_timeline_started"))
 	if not Dialogic.is_connected("timeline_ended", Callable(self, "_on_dialogic_timeline_ended")):
 		Dialogic.connect("timeline_ended", Callable(self, "_on_dialogic_timeline_ended"))
-	# Listen for timeline-emitted signal events
 	if not Dialogic.is_connected("signal_event", Callable(self, "_on_dialogic_signal")):
 		Dialogic.connect("signal_event", Callable(self, "_on_dialogic_signal"))
-	# If the timeline already started before this node entered the tree,
-	# handle it now.
 	if Dialogic.has_method("current_timeline") and Dialogic.current_timeline != null:
 		print("PlayerMain: Dialogic already has running timeline in _enter_tree():", Dialogic.current_timeline)
 		_on_dialogic_timeline_started()
@@ -116,6 +110,7 @@ func _ready():
 			else:
 				# Fallback: attach to HUD to avoid losing the notification entirely
 				hud.add_child(quest_notification)
+	# Removed auto-alarm on start
 
 func _physics_process(_delta):
 	# Always update the raycast direction so interaction works while standing still.
@@ -181,6 +176,23 @@ func _input(event):
 						layer.visible = not layer.visible
 						break
 
+func set_sleep_pose() -> void:
+	var anim_player = get_node_or_null("AnimationPlayer") as AnimationPlayer
+	var sprite_node = get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
+
+	if anim_player:
+		anim_player.stop()
+
+	if sprite_node:
+		sprite_node.animation = "Sleep"
+		sprite_node.frame = 0
+		sprite_node.play()
+
+func play_idle_right() -> void:
+	var anim_player = get_node_or_null("AnimationPlayer") as AnimationPlayer
+
+	if anim_player:
+		anim_player.play("IdleRight")
 
 # Fungsi ini dipanggil oleh RayCast (Manual) DAN oleh QuestItem (Otomatis Injak)
 func try_collect_item(item_node) -> void:
@@ -333,10 +345,8 @@ func _on_quest_tracker_button_pressed() -> void:
 	update_quest_tracker(null)
 
 func play_shower_cutscene() -> void:
-	can_move = false
 	if shower_particles:
 		shower_particles.emitting = true
 	await get_tree().create_timer(5.0).timeout
 	shower_particles.emitting = false
-	await get_tree().create_timer(0.3).timeout
-	can_move = true
+	

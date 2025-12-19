@@ -1,14 +1,23 @@
+label Door
+if {} == false:
+	Indra: Masa mau ke kampus masih bau dan berantakan gini sih? Siap-siap dulu lah
+else:
+	Indra: Oke dah siap semua, gas berangkat!
 label bucket
 Mau mandi?
 - Ya
 	[signal arg="bucket_yes"]
 	[wait time="5.0"]
+	Indra: Brrr dingin banget.
+	Indra: Malesnya mandi pagi gini nih.
+	Indra: Pasti selalu aja kedinginan.
 - Nanti dulu
 [end_timeline]
 label cupboard
 Mau ganti baju?
 - Ya
 	[signal arg="cupboard_yes"]
+	Indra: Pake baju yang mana ya? Ah, kemeja ijo lagi dah. Bodo amat, dosen juga nggak bakal notice gue pake baju apa.
 - Nanti dulu
 [end_timeline]
 label desk
