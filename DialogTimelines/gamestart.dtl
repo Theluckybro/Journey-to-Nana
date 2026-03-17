@@ -10,9 +10,8 @@ Indra: Brisik banget...
 [signal arg="wake_up"]
 
 Indra: Satu hari lagi. Panas lagi. Kuliah lagi.
-
 Indra: Males banget mandi, tapi mau gimana lagi.
-Indra: Yok harus siap-siap!
+Indra: Yok, harus siap-siap.
 
 [signal arg="get_ready"]
 [end_timeline]

@@ -1,9 +1,9 @@
-label start
+label npc_3_1_start
 This is a short linear dialog. Press Continue to move on.
 [n]
-label middle
+label npc_3_1_middle
 The story continues without choices.
 [n]
-label end
+label npc_3_1_end
 Thanks for listening!
 [end_timeline]

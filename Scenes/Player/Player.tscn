@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bvg5dny32iw0x"]
 
 [ext_resource type="Script" uid="uid://tebhoiujprhs" path="res://Scenes/Player/Scripts/PlayerMain.gd" id="1_y5oq4"]
-[ext_resource type="SpriteFrames" uid="uid://b7j4vcwk0k2pt" path="res://new_sprite_frames.tres" id="2_ji083"]
+[ext_resource type="SpriteFrames" uid="uid://c6nlvbg06ojr5" path="res://new_sprite_frames.tres" id="2_ji083"]
 [ext_resource type="AnimationLibrary" uid="uid://bunbktxkg2psn" path="res://Scenes/Player/Scripts/States/Global.res" id="8_0kmp4"]
 [ext_resource type="Animation" uid="uid://cu81avc85qpsf" path="res://Scenes/Player/Scripts/States/float.res" id="11_0kmp4"]
 [ext_resource type="Script" uid="uid://dms7xl2rcp1ir" path="res://Scenes/Player/Scripts/animated_sprite_2d.gd" id="21_7xdrn"]
@@ -21,6 +21,9 @@ light_mode = 1
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_g7gci"]
 shader = ExtResource("22_wid83")
 shader_parameter/silhouette_color = Color(0, 0, 0, 0.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_interact"]
+radius = 26.0
 
 [sub_resource type="Animation" id="Animation_ji083"]
 length = 0.001
@@ -53,6 +56,8 @@ texture_filter = 1
 floor_stop_on_slope = false
 floor_block_on_wall = false
 script = ExtResource("1_y5oq4")
+interact_target_prompt_offset = Vector2(0, 0)
+interact_outline_color = Color(0, 0, 0, 1)
 
 [node name="BodyCollisionShape" type="CollisionShape2D" parent="." unique_id=1931361360]
 shape = SubResource("CircleShape2D_7m131")
@@ -65,7 +70,8 @@ offset = Vector2(0, -10)
 script = ExtResource("21_7xdrn")
 
 [node name="SilhouetteSprite" type="Sprite2D" parent="AnimatedSprite2D" unique_id=1257805627]
-z_index = 100
+show_behind_parent = true
+z_index = -1
 material = SubResource("ShaderMaterial_g7gci")
 
 [node name="FSM" type="Node" parent="." unique_id=569658864 node_paths=PackedStringArray("initial_state")]
@@ -88,8 +94,10 @@ position_smoothing_speed = 15.0
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=295367444]
 libraries/ = ExtResource("8_0kmp4")
 
-[node name="RayCast2D" type="RayCast2D" parent="." unique_id=700512307]
-collide_with_areas = true
+[node name="InteractArea" type="Area2D" parent="." unique_id=906518099]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea" unique_id=2028217932]
+shape = SubResource("CircleShape2D_interact")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=790399149]
 
@@ -127,6 +135,17 @@ grow_horizontal = 0
 grow_vertical = 2
 theme_override_font_sizes/font_size = 36
 text = "0"
+
+[node name="Clock" type="Label" parent="HUD" unique_id=2008924533]
+offset_left = 18.0
+offset_top = 18.0
+offset_right = 108.0
+offset_bottom = 50.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 24
+text = "06:30"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="QuestTracker" type="ColorRect" parent="HUD" unique_id=225377591]
 visible = false
@@ -177,7 +196,7 @@ offset_bottom = 40.0
 visible = false
 top_level = true
 z_index = 10
-position = Vector2(0, 5)
+position = Vector2(0, -28)
 
 [node name="Label" type="Label" parent="InteractPrompt" unique_id=182415448]
 offset_top = 5.0

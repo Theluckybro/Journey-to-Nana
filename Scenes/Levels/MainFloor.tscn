@@ -145,7 +145,13 @@ item_icon = ExtResource("19_gt5fq")
 
 [node name="Door" type="Area2D" parent="Scene"]
 script = ExtResource("6_rcobd")
-destination_scene = "Classroom"
+destination_scene = "day1_campus_timeskip"
+required_completed_flag = "get_ready_001_completed"
+blocked_timeline_name = "interactables"
+blocked_timeline_label = "door_blocked"
+play_success_timeline_before_transition = true
+success_timeline_name = "interactables"
+success_timeline_label = "door_ready"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Scene/Door"]
 position = Vector2(192, 227)
@@ -231,8 +237,8 @@ y_sort_enabled = true
 script = ExtResource("18_gmoma")
 interaction_id = "desk"
 interaction_type = "action"
+timeline_name = "desk_letters"
 timeline_label = "desk"
-confirm_signal = "desk_yes"
 
 [node name="Sprite2D" type="Sprite2D" parent="Scene/Objects/Desk"]
 position = Vector2(184, 142)
@@ -246,9 +252,6 @@ position = Vector2(196, 151.5)
 shape = SubResource("RectangleShape2D_rcobd")
 
 [node name="Spawn" type="Node2D" parent="Scene"]
-
-[node name="Classroom" type="Marker2D" parent="Scene/Spawn"]
-position = Vector2(192, 216)
 
 [node name="SleepSpot" type="Marker2D" parent="Scene/Spawn"]
 position = Vector2(44, 208)

@@ -8,8 +8,9 @@ extends CharacterBody2D
 # Dialog vars
 @onready var dialog_manager = $DialogManager
 @export var dialog_resource: Dialog
-var current_state = "start"
-var current_branch_index = 0
+@export var dialogic_timeline_name: String = ""
+var current_state: String = "start"
+var current_branch_index: int = 0
 
 # Quest vars
 @export var quests: Array[Quest] = []
@@ -17,24 +18,73 @@ var quest_manager: Node = null
 
 
 func _ready():
-	# Load dialog data
-	dialog_resource.load_from_json("res://Resources/Dialog/dialog_data.json")
-	# Initialize npc ref
-	dialog_manager.npc = self
+	if dialog_resource:
+		dialog_resource.load_from_json("res://Resources/Dialog/dialog_data.json")
+	if dialog_manager:
+		dialog_manager.npc = self
+	if not Dialogic.signal_event.is_connected(Callable(self, "_on_dialogic_signal")):
+		Dialogic.signal_event.connect(_on_dialogic_signal)
 	if Global.player:
 		quest_manager = Global.player.quest_manager
 	else:
 		print("Warning: Global.player is nil in NPC._ready(); quest_manager will be nil until player exists")
 	
 func start_dialog():
-	var npc_dialogs = dialog_resource.get_npc_dialog(npc_id)
-	if npc_dialogs.is_empty():
+	if _get_current_branch_id().is_empty():
 		return
-	dialog_manager.show_dialog(self)
+
+	var quest_dialog = get_quest_dialog()
+	if quest_dialog["text"] != "" and dialog_manager:
+		dialog_manager.show_one_shot_dialog(npc_name, quest_dialog["text"], Callable(self, "_start_dialogic_branch"))
+		return
+
+	_start_dialogic_branch()
+
+func _start_dialogic_branch() -> void:
+	var branch_id := _get_current_branch_id()
+	if branch_id.is_empty():
+		return
+
+	current_state = "start"
+	Dialogic.start(_get_dialogic_timeline_name(), branch_id + "_start")
+
+func _get_dialogic_timeline_name() -> String:
+	if dialogic_timeline_name.strip_edges() != "":
+		return dialogic_timeline_name.strip_edges()
+	return npc_id
+
+func _get_dialog_branches() -> Array:
+	if dialog_resource == null:
+		return []
+	return dialog_resource.get_npc_dialog(npc_id)
+
+func _get_current_branch_id() -> String:
+	var npc_dialogs := _get_dialog_branches()
+	if npc_dialogs.is_empty():
+		return ""
+	var branch_index: int = clamp(current_branch_index, 0, npc_dialogs.size() - 1)
+	return str(npc_dialogs[branch_index].get("branch_id", ""))
+
+func _on_dialogic_signal(argument: Variant) -> void:
+	if typeof(argument) != TYPE_STRING:
+		return
+
+	var parts := String(argument).split("|")
+	if parts.size() < 3:
+		return
+	if parts[0] != "npc" or parts[1] != npc_id:
+		return
+
+	match parts[2]:
+		"offer":
+			if parts.size() >= 4:
+				offer_quests_for_branch(parts[3])
+		"advance":
+			_advance_dialog_branch()
 
 # Get current branch dialog
-func  get_current_dialog():
-	var npc_dialogs = dialog_resource.get_npc_dialog(npc_id) 
+func get_current_dialog():
+	var npc_dialogs = _get_dialog_branches()
 	if current_branch_index < npc_dialogs.size():
 		for dialog in npc_dialogs[current_branch_index]["dialogs"]:
 			if dialog["state"] == current_state:
@@ -49,6 +99,28 @@ func set_dialog_tree(branch_index):
 # Update dialog state
 func set_dialog_state(state):
 	current_state = state
+
+func _advance_dialog_branch() -> void:
+	var npc_dialogs := _get_dialog_branches()
+	if current_branch_index < npc_dialogs.size() - 1:
+		set_dialog_tree(current_branch_index + 1)
+
+func offer_quests_for_branch(branch_id: String) -> void:
+	if branch_id == "npc_default":
+		offer_remaining_quests()
+		return
+
+	for quest in quests:
+		var can_offer := false
+		if quest.state == "not_started":
+			can_offer = quest.unlock_points.is_empty() or branch_id in quest.unlock_points
+			if can_offer:
+				offer_quest(quest.quest_id)
+
+func offer_remaining_quests() -> void:
+	for quest in quests:
+		if quest.state == "not_started":
+			offer_quest(quest.quest_id)
 
 # Offer quest at required branch
 func offer_quest(quest_id: String):

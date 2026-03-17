@@ -53,6 +53,10 @@ scene = ExtResource("6_j0sgw")
 [sub_resource type="Resource" id="Resource_j0sgw"]
 script = ExtResource("2_bcfx6")
 scene = ExtResource("7_ss0rn")
+overrides = {
+"font_size_custom": "24",
+"font_size_use_global": "false"
+}
 
 [sub_resource type="Resource" id="Resource_hvi7u"]
 script = ExtResource("2_bcfx6")

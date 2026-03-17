@@ -1,0 +1,51 @@
+label npc_2_1_start
+Greetings, traveler! How can I assist you?
+- Ask About Forest
+	jump npc_2/npc_2_1_in_progress
+- Receive Quests
+	jump npc_2/npc_2_1_give_quests
+- Say Goodbye
+	jump npc_2/npc_2_1_exit
+
+label npc_2_1_in_progress
+The forest is home to many mystical creatures.
+- Go Back
+	jump npc_2/npc_2_1_start
+- Say Goodbye
+	jump npc_2/npc_2_1_end
+
+label npc_2_1_give_quests
+[signal arg="npc|npc_2|offer|npc_2_1"]
+Okay. I've updated your quest log with things I need done.
+- Go Back
+	jump npc_2/npc_2_1_start
+- Say Goodbye
+	jump npc_2/npc_2_1_exit
+
+label npc_2_1_end
+Farewell, traveler!
+[signal arg="npc|npc_2|advance"]
+[end_timeline]
+
+label npc_2_1_exit
+Come back soon!
+[end_timeline]
+
+label npc_default_start
+I wonder why Bobby is always smelling me...
+- Receive Quests
+	jump npc_2/npc_default_give_quests
+- Say Goodbye
+	jump npc_2/npc_default_exit
+
+label npc_default_give_quests
+[signal arg="npc|npc_2|offer|npc_default"]
+Okay. I've updated your quest log with things I need done.
+- Go Back
+	jump npc_2/npc_default_start
+- Say Goodbye
+	jump npc_2/npc_default_exit
+
+label npc_default_exit
+Come back soon!
+[end_timeline]

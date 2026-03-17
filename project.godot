@@ -18,7 +18,7 @@ config/name="Journey To Nanas"
 config/description="This 2D Pixelart, TopDown action Starter Project include all the basics you need to get started creating a game."
 config/version="1.5"
 run/main_scene="uid://c3v3oyal32qg4"
-config/features=PackedStringArray("4.5", "Forward Plus")
+config/features=PackedStringArray("4.6", "Forward Plus")
 boot_splash/use_filter=false
 boot_splash/image="res://Art/Icons/icon.png"
 config/icon="res://Art/Icons/icon.png"
@@ -37,6 +37,7 @@ QuestSpawner="*res://Scripts/Quest/QuestSpawner.gd"
 SceneHistory="*res://Scripts/SceneHistory.gd"
 SceneTransition="*res://Scenes/Levels/SceneTransition.tscn"
 SaveLoad="*res://Scripts/Managers/SaveLoad.gd"
+TimeskipManager="*res://Scripts/Managers/TimeskipManager.gd"
 
 [dialogic]
 
@@ -46,14 +47,13 @@ directories/dch_directory={
 "surat": "res://Art/Sprites/Surat/surat.dch"
 }
 directories/dtl_directory={
+"day1_classroom_intro": "res://DialogTimelines/day1_classroom_intro.dtl",
+"desk_letters": "res://DialogTimelines/desk_letters.dtl",
 "gamestart": "res://DialogTimelines/gamestart.dtl",
 "interactables": "res://DialogTimelines/interactables.dtl",
-"npc_1_1": "res://DialogTimelines/npc_1_1.dtl",
-"npc_1_2": "res://DialogTimelines/npc_1_2.dtl",
-"npc_1_default": "res://DialogTimelines/npc_1_default.dtl",
-"npc_2_1": "res://DialogTimelines/npc_2_1.dtl",
-"npc_2_default": "res://DialogTimelines/npc_2_default.dtl",
-"npc_3_1": "res://DialogTimelines/npc_3_1.dtl"
+"npc_1": "res://DialogTimelines/npc_1.dtl",
+"npc_2": "res://DialogTimelines/npc_2.dtl",
+"npc_3": "res://DialogTimelines/npc_3.dtl"
 }
 layout/style_directory={
 "": "res://Art/Layouts/DialogStyle.tres",
@@ -136,6 +136,7 @@ folder_colors={
 [gui]
 
 theme/default_font_multichannel_signed_distance_field=true
+theme/custom="res://Resources/GameTheme.tres"
 
 [input]
 
@@ -211,6 +212,11 @@ dialogic_default_action={
 hide_interface={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":72,"key_label":0,"unicode":104,"location":0,"echo":false,"script":null)
+]
+}
+ui_phone={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":80,"key_label":0,"unicode":112,"location":0,"echo":false,"script":null)
 ]
 }
 

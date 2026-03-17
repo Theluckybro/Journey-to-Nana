@@ -1,0 +1,84 @@
+label npc_1_1_start
+Hello, adventurer! What do you need?
+- Ask About Town
+	jump npc_1/npc_1_1_in_progress
+- Receive Quests
+	jump npc_1/npc_1_1_give_quests
+- Say Goodbye
+	jump npc_1/npc_1_1_exit
+
+label npc_1_1_in_progress
+This town is known for its beautiful gardens and not so friendly NPC's.
+- Go Back
+	jump npc_1/npc_1_1_start
+- Say Goodbye
+	jump npc_1/npc_1_1_end
+
+label npc_1_1_give_quests
+[signal arg="npc|npc_1|offer|npc_1_1"]
+Sure! If I have anything, you can find it in your Quest Log.
+- Go Back
+	jump npc_1/npc_1_1_start
+- Say Goodbye
+	jump npc_1/npc_1_1_exit
+
+label npc_1_1_end
+Goodbye, adventurer!
+[signal arg="npc|npc_1|advance"]
+[end_timeline]
+
+label npc_1_1_exit
+Come back soon adventurer!
+[end_timeline]
+
+label npc_1_2_start
+Hey adventurer! Back so soon?
+- Continue Asking About Town
+	jump npc_1/npc_1_2_in_progress
+- Receive Quests
+	jump npc_1/npc_1_2_give_quests
+- Say Goodbye
+	jump npc_1/npc_1_2_exit
+
+label npc_1_2_in_progress
+I heard that Carl over there makes a mean cat-eye soup.
+- Go Back
+	jump npc_1/npc_1_2_start
+- Say Goodbye
+	jump npc_1/npc_1_2_end
+
+label npc_1_2_give_quests
+[signal arg="npc|npc_1|offer|npc_1_2"]
+Sure! If I have anything, you can find it in your Quest Log.
+- Go Back
+	jump npc_1/npc_1_2_start
+- Say Goodbye
+	jump npc_1/npc_1_2_exit
+
+label npc_1_2_end
+Goodbye, adventurer!
+[signal arg="npc|npc_1|advance"]
+[end_timeline]
+
+label npc_1_2_exit
+Come back soon!
+[end_timeline]
+
+label npc_default_start
+Hey adventurer! Thanks again for helping me.
+- Receive Quests
+	jump npc_1/npc_default_give_quests
+- Say Goodbye
+	jump npc_1/npc_default_exit
+
+label npc_default_give_quests
+[signal arg="npc|npc_1|offer|npc_default"]
+Sure! If I have anything, you can find it in your Quest Log.
+- Go Back
+	jump npc_1/npc_default_start
+- Say Goodbye
+	jump npc_1/npc_default_exit
+
+label npc_default_exit
+Come back soon adventurer!
+[end_timeline]

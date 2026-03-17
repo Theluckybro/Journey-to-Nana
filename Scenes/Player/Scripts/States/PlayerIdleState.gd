@@ -1,7 +1,7 @@
 extends State
 class_name PlayerIdle
 
-@export var animator : AnimationPlayer
+@export var animator: AnimationPlayer
 
 var player : PlayerMain
 
@@ -20,5 +20,5 @@ func Enter():
 	
 func Update(_delta : float):
 	if player.can_move:
-		if(Input.get_vector("MoveLeft", "MoveRight", "MoveUp", "MoveDown").normalized()):
+		if Input.get_vector("MoveLeft", "MoveRight", "MoveUp", "MoveDown") != Vector2.ZERO:
 			state_transition.emit(self, "Moving")

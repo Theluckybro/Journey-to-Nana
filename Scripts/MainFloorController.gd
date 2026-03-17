@@ -10,6 +10,7 @@ func _ready():
 	setup_level()
 
 	if play_intro:
+		SaveLoad.set_time(6, 30)
 		_prepare_intro_cutscene()
 
 		if not Dialogic.signal_event.is_connected(Callable(self, "_on_dialogic_signal")):
@@ -35,6 +36,8 @@ func _on_dialogic_signal(argument: Variant) -> void:
 		"wake_up":
 			_wake_player_from_bed()
 		"get_ready":
+			if SaveLoad.check_flag("get_ready_001_completed") or SaveLoad.check_flag("get_ready_001_taken"):
+				return
 			if quest_spawner:
 				quest_spawner.spawn_quest_by_id("get_ready_001")
 			else:
@@ -46,7 +49,7 @@ func _prepare_intro_cutscene() -> void:
 
 	player.can_move = false
 	player.velocity = Vector2.ZERO
-	player.face_direction = Vector2.DOWN
+	player.face_direction = Vector2.UP
 
 	if sleep_spot:
 		player.global_position = sleep_spot.global_position
@@ -68,6 +71,8 @@ func _wake_player_from_bed() -> void:
 
 	var sprite = player.get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
 
+	if sprite:
+		sprite.flip_v = false
 	player.play_idle_right()
 
 	var tween := create_tween()

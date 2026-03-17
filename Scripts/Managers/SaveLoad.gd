@@ -1,6 +1,10 @@
 extends Node
 
+signal game_time_changed(hour: int, minute: int, formatted_time: String)
+
 const save_location = "user://SaveFile.tres"
+const DEFAULT_START_HOUR: int = 6
+const DEFAULT_START_MINUTE: int = 30
 
 var SaveFileData: SaveDataResource = SaveDataResource.new()
 
@@ -41,6 +45,8 @@ func load_game() -> bool:
 			print("Save file was not a SaveDataResource: ", save_location)
 			return false
 
+		_ensure_time_initialized(false)
+
 		if Dialogic.VAR:
 			Dialogic.VAR.set_variable("affection", SaveFileData.affection)
 		call_deferred("_switch_to_loaded_scene")
@@ -54,9 +60,45 @@ func _switch_to_loaded_scene() -> void:
 
 func new_game() -> void:
 	SaveFileData = SaveDataResource.new()
+	set_time(DEFAULT_START_HOUR, DEFAULT_START_MINUTE, false)
 	var starting_scene = "res://Scenes/Levels/MainFloor.tscn"
 	get_tree().change_scene_to_file(starting_scene)
 	print("Starting new game at ", starting_scene)
+
+func get_time_total_minutes() -> int:
+	return (SaveFileData.current_hour * 60) + SaveFileData.current_minute
+
+func get_time_string() -> String:
+	return "%02d:%02d" % [SaveFileData.current_hour, SaveFileData.current_minute]
+
+func set_time(hour: int, minute: int, emit_signal_event: bool = true) -> void:
+	var total_minutes: int = (hour * 60) + minute
+	set_time_from_total_minutes(total_minutes, emit_signal_event)
+
+func set_time_from_total_minutes(total_minutes: int, emit_signal_event: bool = true) -> void:
+	var day_minutes: int = 24 * 60
+	var wrapped: int = ((total_minutes % day_minutes) + day_minutes) % day_minutes
+
+	SaveFileData.current_hour = int(wrapped / 60)
+	SaveFileData.current_minute = wrapped % 60
+
+	if emit_signal_event:
+		game_time_changed.emit(SaveFileData.current_hour, SaveFileData.current_minute, get_time_string())
+
+func add_minutes(minutes: int, emit_signal_event: bool = true) -> void:
+	set_time_from_total_minutes(get_time_total_minutes() + minutes, emit_signal_event)
+
+func _ensure_time_initialized(emit_signal_event: bool = false) -> void:
+	if SaveFileData.current_hour < 0 or SaveFileData.current_hour > 23:
+		set_time(DEFAULT_START_HOUR, DEFAULT_START_MINUTE, emit_signal_event)
+		return
+
+	if SaveFileData.current_minute < 0 or SaveFileData.current_minute > 59:
+		set_time(DEFAULT_START_HOUR, DEFAULT_START_MINUTE, emit_signal_event)
+		return
+
+	if emit_signal_event:
+		game_time_changed.emit(SaveFileData.current_hour, SaveFileData.current_minute, get_time_string())
 
 func check_flag(flag_name: String) -> bool:
 	if SaveFileData.flags.has(flag_name):

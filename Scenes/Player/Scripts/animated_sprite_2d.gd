@@ -3,6 +3,9 @@ extends AnimatedSprite2D
 @onready var _silhouette_sprite: Sprite2D = $SilhouetteSprite
 
 func _ready() -> void:
+	animation_changed.connect(_update_silhouette_texture)
+	frame_changed.connect(_update_silhouette_texture)
+
 	# These properties DO exist on AnimatedSprite2D
 	_silhouette_sprite.offset = self.offset
 	_silhouette_sprite.flip_h = self.flip_h

@@ -1,0 +1,8 @@
+Narasi: 07:00 AM - Kampus
+[wait time="0.6"]
+Narasi: Dosen menjelaskan teori yang entah kapan akan dipakai.
+[wait time="1.0"]
+Indra: (Duduk, layar statis sejenak.)
+[wait time="0.8"]
+Indra: Bosan.
+[end_timeline]

@@ -26,8 +26,13 @@ func interact(by_player: PlayerMain) -> void:
 		Dialogic.start(timeline_name, timeline_label)
 	else:
 		Dialogic.start(timeline_name)
-		
-	# Sambungkan signal listener hanya jika belum tersambung
+
+	if confirm_signal == "":
+		if Dialogic.signal_event.is_connected(_on_dialogic_signal):
+			Dialogic.signal_event.disconnect(_on_dialogic_signal)
+		return
+
+	# Sambungkan signal listener hanya jika objek memang butuh konfirmasi.
 	if not Dialogic.signal_event.is_connected(_on_dialogic_signal):
 		Dialogic.signal_event.connect(_on_dialogic_signal)
 
@@ -42,4 +47,5 @@ func _on_dialogic_signal(argument: String):
 				await _initiating_player.play_shower_cutscene()
 			_initiating_player.check_quest_objectives(interaction_id, interaction_type, interaction_quantity)
 		
-		Dialogic.signal_event.disconnect(_on_dialogic_signal)
+		if Dialogic.signal_event.is_connected(_on_dialogic_signal):
+			Dialogic.signal_event.disconnect(_on_dialogic_signal)

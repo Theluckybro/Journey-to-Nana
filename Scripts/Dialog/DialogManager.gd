@@ -18,6 +18,9 @@ func show_dialog(target_npc, text = "", options = {}):
 				return
 			dialog_ui.show_dialog(npc.npc_name, dialog["text"], dialog["options"])
 
+func show_one_shot_dialog(speaker: String, text: String, on_continue: Callable = Callable()) -> void:
+	dialog_ui.show_dialog(speaker, text, {}, on_continue)
+
 # Hide dialog
 func hide_dialog():
 	dialog_ui.hide_dialog()

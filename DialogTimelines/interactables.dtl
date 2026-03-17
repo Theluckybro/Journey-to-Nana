@@ -1,18 +1,27 @@
-label Door
-if {} == false:
-	Indra: Masa mau ke kampus masih bau dan berantakan gini sih? Siap-siap dulu lah
-else:
-	Indra: Oke dah siap semua, gas berangkat!
+label door_blocked
+Indra: Keluar dengan muka bantal dan bau acem begini?
+Indra: Bisa di-roasting ibu kos nanti. Mandi dulu lah.
+[end_timeline]
+
+label door_ready
+Indra: Oke dah siap semua, gas berangkat!
+[end_timeline]
+
+label door_after_campus
+Indra: Baru juga pulang dari kampus.
+Indra: Nanti aja keluar lagi.
+[end_timeline]
+
 label bucket
 Mau mandi?
 - Ya
 	[signal arg="bucket_yes"]
 	[wait time="5.0"]
-	Indra: Brrr dingin banget.
-	Indra: Malesnya mandi pagi gini nih.
+	Indra: Brrr dingin banget. Malesnya mandi pagi gini nih.
 	Indra: Pasti selalu aja kedinginan.
 - Nanti dulu
 [end_timeline]
+
 label cupboard
 Mau ganti baju?
 - Ya
@@ -20,72 +29,21 @@ Mau ganti baju?
 	Indra: Pake baju yang mana ya? Ah, kemeja ijo lagi dah. Bodo amat, dosen juga nggak bakal notice gue pake baju apa.
 - Nanti dulu
 [end_timeline]
-label desk
-Di ujung meja terdapat tumpukan surat yang belum dibuka.
-label letter_choices
-Mau baca surat yang mana?
-- Surat Warna Merah
-	join surat (merah) center
-	Indra: [i](Ini... surat Valentine dari dia waktu itu. Aku masih inget banget pas dia ngasih ini.)[/i]
-	Nana: HEPI VALENTINE TO THE MAN I LOVE! ❤️
-	Nana: aaaaa >< i'm sooooo... grateful you've come to my world \:0
-	Indra: [i](Justru aku yang beruntung kamu masuk ke duniaku, Na.)[/i]
-	Nana: Thankyou udah baik dan tulus banget sama nana \:3
-	Nana: Thankyou for manage urtime for me x3
-	Nana: Thankyou udah main sama aku even when I'm bad in any games T_T
-	Indra: [i](Padahal aku nggak pernah peduli menang atau kalah. Asal main sama kamu, itu udah cukup.)[/i]
-	Nana: Thankyou 4 always support me when I'm at my lowest.
-	Nana: Makasih udah nerima semua kekuranganku yaa Indra >w<
-	Nana: Makasi uda bayarin aku, kek makanan, minuman, PiEs \:P maap ya lop[font_size=15]epe[/font_size]lop <3
-	Indra: [i](Dasar... padahal aku seneng ngelakuin itu semua buat kamu.)[/i]
-	Nana: You will always be the [shake rate=20 level=10]most in...[/shake] eh salah njir...
-	Indra: [i](Hahaha. Bagian ini dicoret-coret... Ceroboh banget sih, tapi lucu.)[/i]
-	Nana: You will always be the PERSON I LOVE THE MOST!
-	Nana: & I'm grateful everyday that i can call you mine! >W<
-	Indra: [i](I'm grateful too, Na. Happy Valentine, my love.)[/i]
-	leave surat
-	do SaveLoad.add_affection_once("read_letter_red", 5)
-	jump interactables/letter_choices
-- Surat Warna Krem
-	join surat (krem) center
-	Indra: [i](Ada sisa tiket Fun World dan foto photobox kita...)[/i]
-	Indra: [i](Dan sketsa aku minum matcha ini...)[/i]
-	Indra: [i](Haha... lucu. Tapi kok rasanya sesak ya liat ini sekarang?)[/i]
-	Nana: Dear Indra...
-	Nana: Thankyou udah mau balik ke Jogja to see me. for 1 month T_T
-	Indra: [i](Sebulan itu rasanya cepet banget, Na. Kayak baru kemarin kita seneng-seneng di Jogja.)[/i]
-	[wait time="1.0"]
-	Nana: Thankyou for your time ya dra...
-	Nana: Makasih untuk 1 bulan-nya. I'm going to miss you \:(
-	Indra: [i](Aku lebih kangen lagi. Rasanya berat banget harus ninggalin kamu sendirian di sana.)[/i]
-	Nana: Baik-baik ya dra disana...
-	Nana: Yang giat + semangat belajarnya.
-	Indra: [i](Iya... Aku bakal belajar keras di sini. Semua ini juga buat masa depan kita nanti.)[/i]
-	Nana: baibai dra \:(
-	[wait time="1.5"]
-	Indra: [i](...)[/i]
-	Indra: [i](Tunggu aku balik ya, Na. Aku janji bakal nemuin kamu lagi. Secepatnya.)[/i]
-	leave surat
-	do SaveLoad.add_affection_once("read_letter_cream", 5)
-	jump interactables/letter_choices
-- Surat Warna Hijau
-	join surat (hijau) center
-	Indra: [i](Ah... ini ucapan ulang tahunku yang ke-19. Dulu dia kirim ini secara online.)[/i]
-	Indra: [i](Liat deh gambarnya... ada tulisan 'nerd af' di sebelah mukaku. Lucu banget.)[/i]
-	Nana: HBD 2 my precious BF in the world \:3
-	Nana: Panjang umur & sehat slalu yayayaya.
-	Indra: [i](Yayayaya... kedengeran banget nada suaranya pas baca ini.)[/i]
-	Nana: Jangan pernah patah semangat yaw.
-	Nana: Semoga kamu bisa achieve semua impian kamu...
-	Nana: Dan semoga di umur kamu yg ke-19 ini dilancarin semua kesulitanmu... amiinn.
-	Indra: [i](Waktu itu emang lagi berat-beratnya... Doa kamu bener-bener jadi penguatku, Na.)[/i]
-	Nana: wishing u a lucky life in ur 19th bday
-	[wait time="1.0"]
-	Nana: ilobyo [shake rate=20 level=10]3000x[/shake] rill
-	Indra: [i](Hahaha. Ada aku sebagai Spiderman sama dia sebagai Wanda di pojoknya.)[/i]
-	Indra: [i](I love you too, 3000x... Rill no fek fek.)[/i]
-	leave surat
-	do SaveLoad.add_affection_once("read_letter_green", 5)
-	jump interactables/letter_choices
-- Sudahi membaca
-	[end_timeline]
+
+label phone_locked
+Indra: HP duluan? Fokus beresin urusan pagi dulu deh.
+[end_timeline]
+
+label phone_hotkey
+Indra: Cek HP dulu.
+UI HP\: Pilih Makanan.
+- Ayam Geprek (Lagi)
+	Indra: Ayam geprek lagi. Aman.
+	[signal arg="phone_order_geprek"]
+- Nanti dulu
+[end_timeline]
+
+label phone_repeat
+Indra: Notifikasi pesanan udah masuk.
+Indra: Bentar lagi tinggal ambil di pintu.
+[end_timeline]

@@ -17,3 +17,5 @@ class_name SaveDataResource
 @export_group("Game")
 @export var current_scene: String = ""
 @export var last_scene: String = ""
+@export var current_hour: int = 6
+@export var current_minute: int = 30

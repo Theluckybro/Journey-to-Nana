@@ -10,6 +10,13 @@ const ENEMY_HIT = preload("res://Art/Audio/Effects/Enemy_hit.ogg")
 const BLOODY_HIT = preload("res://Art/Audio/Effects/bloody_hit.ogg")
 const COIN_PICK = preload("res://Art/Audio/Effects/coin_pick.ogg")
 const ALARM_SOUND = preload("res://Art/Audio/Effects/AlarmAudio.mp3")
+const KEYBOARD_TYPING_SOUND = preload("res://Art/Audio/Effects/Keyboard_Typing.mp3")
+const MOUSE_CLICK_SOUND = preload("res://Art/Audio/Effects/Mouse_Click.mp3")
+const SHOPEE_BELL_SOUND = preload("res://Art/Audio/Effects/Shopee_Bell_Notif.mp3")
+const DISCORD_CALLING_SOUND = preload("res://Art/Audio/Effects/Discord_Calling.mp3")
+const DISCORD_NOTIFICATION_SOUND = preload("res://Art/Audio/Effects/Discord_Notification.mp3")
+const DISCORD_USER_JOINED_SOUND = preload("res://Art/Audio/Effects/Discord_User_Joined.mp3")
+const DISCORD_LEFT_SOUND = preload("res://Art/Audio/Effects/Discord_Left.mp3")
 
 #endregion
 
