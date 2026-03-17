@@ -4,6 +4,8 @@ extends "res://Scripts/LevelController.gd"
 @onready var sleep_spot: Marker2D = $Scene/Spawn/SleepSpot
 @onready var wake_up_spot: Marker2D = $Scene/Spawn/WakeUpSpot
 
+@export_range(0.2, 10.0, 0.1) var iris_reveal_duration: float = 2.8
+
 func _ready():
 	var play_intro := not SaveLoad.check_flag("gamestart_played")
 
@@ -33,6 +35,8 @@ func _on_dialogic_signal(argument: Variant) -> void:
 		return
 
 	match argument:
+		"start_alarm":
+			_start_intro_reveal()
 		"wake_up":
 			_wake_player_from_bed()
 		"get_ready":
@@ -42,6 +46,18 @@ func _on_dialogic_signal(argument: Variant) -> void:
 				quest_spawner.spawn_quest_by_id("get_ready_001")
 			else:
 				print("Error: Node QuestSpawner tidak ditemukan di Scene MainFloor")
+
+func _start_intro_reveal() -> void:
+	var transition_manager = get_node_or_null("/root/TransitionManager")
+	if transition_manager == null:
+		return
+
+	if transition_manager.has_method("has_pending_reveal") and not transition_manager.has_pending_reveal():
+		return
+
+	if transition_manager.has_method("start_iris_reveal"):
+		var viewport_center: Vector2 = get_viewport().get_visible_rect().size * 0.5 + Vector2(0, -18)
+		transition_manager.start_iris_reveal(viewport_center, iris_reveal_duration)
 
 func _prepare_intro_cutscene() -> void:
 	if not player:

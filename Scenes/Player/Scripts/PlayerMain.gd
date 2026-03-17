@@ -40,6 +40,7 @@ var coin_amount  = 0
 @export var interact_fill_strength: float = 0.4
 @export var interact_pulse_strength: float = 0.2
 @export var interact_pulse_speed: float = 6.0
+@export var iris_reveal_center_offset: Vector2 = Vector2.ZERO
 
 var _nearby_interact_targets: Array[Node2D] = []
 var _current_interact_target: Node2D = null
@@ -462,6 +463,19 @@ func play_idle_right() -> void:
 
 	if anim_player:
 		anim_player.play("IdleRight")
+
+func get_head_screen_position() -> Vector2:
+	var sprite_node = get_node_or_null("AnimatedSprite2D") as AnimatedSprite2D
+	if sprite_node:
+		var center: Vector2 = sprite_node.get_global_transform_with_canvas().origin + sprite_node.offset
+		return center + iris_reveal_center_offset
+
+	return get_global_transform_with_canvas().origin + iris_reveal_center_offset
+
+func trigger_intro_iris_reveal() -> void:
+	var transition_manager = get_node_or_null("/root/TransitionManager")
+	if transition_manager and transition_manager.has_method("start_iris_reveal"):
+		transition_manager.start_iris_reveal(get_head_screen_position())
 
 # Fungsi ini dipanggil oleh RayCast (Manual) DAN oleh QuestItem (Otomatis Injak)
 func try_collect_item(item_node) -> void:

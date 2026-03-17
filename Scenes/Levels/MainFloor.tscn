@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=4 uid="uid://dei3j88yw6omf"]
+[gd_scene format=4 uid="uid://dei3j88yw6omf"]
 
 [ext_resource type="Script" uid="uid://cb10ongwg7ld3" path="res://Scripts/MainFloorController.gd" id="1_scnhh"]
 [ext_resource type="PackedScene" uid="uid://bvg5dny32iw0x" path="res://Scenes/Player/Player.tscn" id="1_v023b"]
@@ -98,104 +98,101 @@ size = Vector2(24, 79)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rcobd"]
 size = Vector2(24, 49)
 
-[node name="MainFloor" type="Node2D"]
+[node name="MainFloor" type="Node2D" unique_id=1938554459]
 process_mode = 3
 y_sort_enabled = true
 texture_filter = 1
 script = ExtResource("1_scnhh")
+iris_reveal_duration = 5.0
 
-[node name="Scene" type="Node2D" parent="."]
+[node name="Scene" type="Node2D" parent="." unique_id=167653504]
 process_mode = 1
 y_sort_enabled = true
 
-[node name="TileMap" type="TileMap" parent="Scene"]
+[node name="TileMap" type="TileMap" parent="Scene" unique_id=1637218022]
 y_sort_enabled = true
 tile_set = ExtResource("7_n5jbx")
 format = 2
 
-[node name="FloorLayer" type="TileMapLayer" parent="Scene/TileMap"]
+[node name="FloorLayer" type="TileMapLayer" parent="Scene/TileMap" unique_id=70429534]
 z_index = -1
 texture_filter = 1
 tile_map_data = PackedByteArray("AAABAAIAAQAIACAAAAABAAMAAQAIACEAAAABAAQAAQAIACEAAAABAAUAAQAIACEAAAABAAYAAQAIACEAAAABAAcAAQAIACEAAAABAAkAAQAIACEAAAABAAoAAQAIACEAAAABAAsAAQAIACEAAAABAAwAAQAIACEAAAACAAIAAQAJACAAAAACAAMAAQAKACEAAAACAAQAAQAKACEAAAACAAUAAQAKACEAAAACAAYAAQAKACEAAAACAAcAAQAKACEAAAACAAgAAQAKACEAAAACAAkAAQAKACEAAAACAAoAAQAKACEAAAACAAsAAQAKACEAAAACAAwAAQAKACEAAAADAAIAAQAJACAAAAADAAMAAQAKACEAAAADAAQAAQAKACEAAAADAAUAAQAKACEAAAADAAYAAQAKACEAAAADAAcAAQAKACEAAAADAAgAAQAKACEAAAADAAkAAQAKACEAAAADAAoAAQAKACEAAAADAAsAAQAKACEAAAADAAwAAQAKACEAAAAEAAIAAQAJACAAAAAEAAMAAQAKACEAAAAEAAQAAQAKACEAAAAEAAUAAQAKACEAAAAEAAYAAQAKACEAAAAEAAcAAQAKACEAAAAEAAgAAQAKACEAAAAEAAkAAQAKACEAAAAEAAoAAQAKACEAAAAEAAsAAQAKACEAAAAEAAwAAQAKACEAAAAFAAIAAQAJACAAAAAFAAMAAQAKACEAAAAFAAQAAQAKACEAAAAFAAUAAQAKACEAAAAFAAYAAQAKACEAAAAFAAcAAQAKACEAAAAFAAgAAQAKACEAAAAFAAkAAQAKACEAAAAFAAoAAQAKACEAAAAFAAsAAQAKACEAAAAFAAwAAQAKACEAAAAGAAIAAQAJACAAAAAGAAMAAQAKACEAAAAGAAQAAQAKACEAAAAGAAUAAQAKACEAAAAGAAYAAQAKACEAAAAGAAcAAQAKACEAAAAGAAgAAQAKACEAAAAGAAkAAQAKACEAAAAGAAoAAQAKACEAAAAGAAsAAQAKACEAAAAGAAwAAQAKACEAAAAHAAIAAQAJACAAAAAHAAMAAQAKACEAAAAHAAQAAQAKACEAAAAHAAUAAQAKACEAAAAHAAYAAQAKACEAAAAHAAcAAQAKACEAAAAHAAgAAQAKACEAAAAHAAkAAQAKACEAAAAHAAoAAQAKACEAAAAHAAsAAQAKACEAAAAHAAwAAQAKACEAAAAIAAIAAQAFAAIAAAAIAAMAAQAFAAMAAAAIAAQAAQAFAAMAAAAIAAUAAQAFAAMAAAAIAAYAAQAFAAMAAAAIAAcAAQAKACEAAAAIAAgAAQAKACEAAAAIAAkAAQAKACEAAAAIAAoAAQAKACEAAAAIAAsAAQAKACEAAAAIAAwAAQAKACEAAAAJAAIAAQAFAAIAAAAJAAMAAQAFAAMAAAAJAAQAAQAFAAMAAAAJAAUAAQAFAAMAAAAJAAYAAQAFAAMAAAAJAAcAAQAKACEAAAAJAAgAAQAKACEAAAAJAAkAAQAKACEAAAAJAAoAAQAKACEAAAAJAAsAAQAKACEAAAAJAAwAAQAKACEAAAAKAAIAAQAFAAIAAAAKAAMAAQAFAAMAAAAKAAQAAQAFAAMAAAAKAAUAAQAFAAMAAAAKAAYAAQAFAAMAAAAKAAcAAQAKACEAAAAKAAgAAQAKACEAAAAKAAkAAQAKACEAAAAKAAoAAQAKACEAAAAKAAsAAQAKACEAAAAKAAwAAQAKACEAAAALAAIAAQAFAAIAAAALAAMAAQAFAAMAAAALAAQAAQAFAAMAAAALAAUAAQAFAAMAAAALAAYAAQAFAAMAAAALAAcAAQAKACEAAAALAAgAAQAKACEAAAALAAkAAQAKACEAAAALAAoAAQAKACEAAAALAAsAAQAKACEAAAALAAwAAQAKACEAAAAMAAIAAQAFAAIAAAAMAAMAAQAFAAMAAAAMAAQAAQAFAAMAAAAMAAUAAQAFAAMAAAAMAAYAAQAFAAMAAAAMAAcAAQAKACEAAAAMAAgAAQAKACEAAAAMAAkAAQAKACEAAAAMAAoAAQAKACEAAAAMAAsAAQAKACEAAAAMAAwAAQAKACEAAAABAAgAAQAIACEAAAABAA0AAQAIACEAAAACAA0AAQAKACEAAAADAA0AAQAKACEAAAAEAA0AAQAKACEAAAAFAA0AAQAKACEAAAAGAA0AAQAKACEAAAAHAA0AAQAKACEAAAAIAA0AAQAKACEAAAAJAA0AAQAKACEAAAAKAA0AAQAKACEAAAALAA0AAQAKACEAAAAMAA0AAQAKACEAAAANAAQAAgAFAAUAAAANAAUAAgAFAAYAAAA=")
 tile_set = ExtResource("7_n5jbx")
 
-[node name="WallLayer" type="TileMapLayer" parent="Scene/TileMap"]
+[node name="WallLayer" type="TileMapLayer" parent="Scene/TileMap" unique_id=1400823789]
 y_sort_enabled = true
 texture_filter = 1
 tile_map_data = PackedByteArray("AAABAAAAAAATABcAAAABAAEAAAATABgAAAACAAAAAAATABcAAAACAAEAAAATABgAAAADAAAAAAATABcAAAADAAEAAAATABgAAAAEAAAAAAATABcAAAAEAAEAAAATABgAAAAFAAAAAAATABcAAAAFAAEAAAATABgAAAAGAAAAAAATABcAAAAGAAEAAAATABgAAAAHAAAAAAASABcAAAAHAAEAAAASABgAAAAIAAAAAAATABcAAAAIAAEAAAATABgAAAAJAAAAAAATABcAAAAJAAEAAAATABgAAAAKAAAAAAATABcAAAAKAAEAAAATABgAAAALAAAAAAATABcAAAALAAEAAAATABgAAAAMAAAAAAATABcAAAAMAAEAAAATABgAAAAAAAAAAAASABUAAAAAAAEAAAATABYAAAAAAAIAAAARABoAAAAAAAMAAAARABoAAAAAAAQAAAARABoAAAAAAAUAAAARABoAAAAAAAYAAAARABoAAAAAAAcAAAARABoAAAAAAAgAAAARABoAAAAAAAkAAAARABoAAAAAAAoAAAARABoAAAAAAAsAAAARABoAAAAAAAwAAAARABoAAAANAAQAAAAWABoAAAANAAUAAAAWABoAAAANAAYAAAAUABUAAAANAAcAAAAUABYAAAANAAgAAAAWABoAAAANAAkAAAAWABoAAAANAAoAAAAWABoAAAANAAsAAAAWABoAAAANAAwAAAAWABoAAAANAAIAAAAWABoAAAANAAMAAAAWABoAAAANAAEAAAAUABYAAAANAAAAAAAVABUAAAAHAAIAAAAVABkAAAAHAAMAAAAVABkAAAAIAAcAAAATABgAAAAJAAcAAAATABgAAAAKAAcAAAATABgAAAALAAcAAAATABgAAAAMAAcAAAATABgAAAAHAAcAAAAVABgAAAAHAAQAAAAVABkAAAAHAAYAAAAVABcAAAAIAAYAAAATABcAAAAJAAYAAAATABcAAAAKAAYAAAATABcAAAALAAYAAAATABcAAAAMAAYAAAATABcAAAAAAA0AAAARABoAAAAAAA4AAAASABoAAAABAA4AAAATABoAAAACAA4AAAATABoAAAADAA4AAAATABoAAAAEAA4AAAATABoAAAAFAA4AAAATABoAAAAGAA4AAAATABoAAAAHAA4AAAATABoAAAAIAA4AAAATABoAAAAJAA4AAAATABoAAAAKAA4AAAATABoAAAANAA4AAAAVABoAAAANAA0AAAAWABoAAAA=")
 tile_set = ExtResource("7_n5jbx")
 
-[node name="InteriorLayer" type="TileMapLayer" parent="Scene/TileMap"]
+[node name="InteriorLayer" type="TileMapLayer" parent="Scene/TileMap" unique_id=944830514]
 tile_map_data = PackedByteArray("AAAFAAkAAgAAAAYAAAAFAAoAAgAAAAcAAAAFAAsAAgAAAAgAAAAFAAwAAgAAAAkAAAAGAAkAAgABAAYAAAAGAAoAAgABAAcAAAAGAAsAAgABAAgAAAAGAAwAAgABAAkAAAAHAAkAAgACAAYAAAAHAAoAAgACAAcAAAAHAAsAAgACAAgAAAAHAAwAAgACAAkAAAAIAAkAAgADAAYAAAAIAAoAAgADAAcAAAAIAAsAAgADAAgAAAAIAAwAAgADAAkAAAAMAAUAAgAEAAYAAAA=")
 tile_set = ExtResource("7_n5jbx")
 
-[node name="WallDecorLayer" type="TileMapLayer" parent="Scene/TileMap"]
+[node name="WallDecorLayer" type="TileMapLayer" parent="Scene/TileMap" unique_id=2080822793]
 z_index = 1
 tile_map_data = PackedByteArray("AAAIAAAAAgAAAAAAAAAIAAEAAgAAAAEAAAAJAAAAAgABAAAAAAAJAAEAAgABAAEAAAAKAAAAAgAGAAUAAAAKAAEAAgAGAAYAAAANAAQAAgAFAAUAAAANAAUAAgAFAAYAAAA=")
 tile_set = ExtResource("7_n5jbx")
 
-[node name="QuestItem" type="Node2D" parent="Scene"]
+[node name="QuestItem" type="Node2D" parent="Scene" unique_id=973776613]
 y_sort_enabled = true
 
-[node name="QuestItem" parent="Scene/QuestItem" instance=ExtResource("3_gmoma")]
+[node name="QuestItem" parent="Scene/QuestItem" unique_id=1652741038 instance=ExtResource("3_gmoma")]
 position = Vector2(176, 51)
 item_id = "item_potion"
 item_quantity = 10
 item_icon = ExtResource("19_gt5fq")
 
-[node name="Door" type="Area2D" parent="Scene"]
+[node name="Door" type="Area2D" parent="Scene" unique_id=1685222248]
 script = ExtResource("6_rcobd")
 destination_scene = "day1_campus_timeskip"
 required_completed_flag = "get_ready_001_completed"
-blocked_timeline_name = "interactables"
-blocked_timeline_label = "door_blocked"
 play_success_timeline_before_transition = true
-success_timeline_name = "interactables"
-success_timeline_label = "door_ready"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Scene/Door"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Scene/Door" unique_id=1564070294]
 position = Vector2(192, 227)
 shape = SubResource("RectangleShape2D_21iup")
 
-[node name="Characters" type="Node2D" parent="Scene"]
+[node name="Characters" type="Node2D" parent="Scene" unique_id=858217780]
 y_sort_enabled = true
 
-[node name="Player" parent="Scene/Characters" instance=ExtResource("1_v023b")]
+[node name="Player" parent="Scene/Characters" unique_id=2112343425 instance=ExtResource("1_v023b")]
 position = Vector2(64, 64)
 
-[node name="NPC_dummy" parent="Scene/Characters" instance=ExtResource("2_rcobd")]
+[node name="NPC_dummy" parent="Scene/Characters" unique_id=1386553663 instance=ExtResource("2_rcobd")]
 position = Vector2(112, 50)
 dialog_resource = SubResource("Resource_gt5fq")
 quests = Array[ExtResource("18_21iup")]([SubResource("Resource_yf8yh")])
 
-[node name="NPC_dummy2" parent="Scene/Characters" instance=ExtResource("2_rcobd")]
+[node name="NPC_dummy2" parent="Scene/Characters" unique_id=702048428 instance=ExtResource("2_rcobd")]
 position = Vector2(52, 130)
 npc_id = "npc_2"
 npc_name = "Bagus"
 dialog_resource = SubResource("Resource_gmoma")
 quests = Array[ExtResource("18_21iup")]([SubResource("Resource_gfc1x")])
 
-[node name="NPC_dummy3" parent="Scene/Characters" instance=ExtResource("2_rcobd")]
+[node name="NPC_dummy3" parent="Scene/Characters" unique_id=1434007850 instance=ExtResource("2_rcobd")]
 position = Vector2(160, 170)
 npc_id = "npc_3"
 
-[node name="Objects" type="Node2D" parent="Scene"]
+[node name="Objects" type="Node2D" parent="Scene" unique_id=408295119]
 y_sort_enabled = true
 
-[node name="Bed" parent="Scene/Objects" instance=ExtResource("15_bkbvh")]
+[node name="Bed" parent="Scene/Objects" unique_id=2012783914 instance=ExtResource("15_bkbvh")]
 position = Vector2(48, 176)
 
-[node name="Toilet" parent="Scene/Objects" instance=ExtResource("19_gmoma")]
+[node name="Toilet" parent="Scene/Objects" unique_id=425310573 instance=ExtResource("19_gmoma")]
 position = Vector2(200, 56)
 
-[node name="DeskItem" type="Sprite2D" parent="Scene/Objects"]
+[node name="DeskItem" type="Sprite2D" parent="Scene/Objects" unique_id=737838319]
 position = Vector2(177, 143)
 texture = ExtResource("10_rdp63")
 offset = Vector2(7, 9)
 region_enabled = true
 region_rect = Rect2(0, 48, 48, 48)
 
-[node name="Bucket" type="StaticBody2D" parent="Scene/Objects" groups=["Interactable"]]
+[node name="Bucket" type="StaticBody2D" parent="Scene/Objects" unique_id=780853061 groups=["Interactable"]]
 y_sort_enabled = true
 position = Vector2(143, 45)
 script = ExtResource("18_gmoma")
@@ -204,15 +201,15 @@ interaction_type = "action"
 timeline_label = "bucket"
 confirm_signal = "bucket_yes"
 
-[node name="Sprite2D" type="Sprite2D" parent="Scene/Objects/Bucket"]
+[node name="Sprite2D" type="Sprite2D" parent="Scene/Objects/Bucket" unique_id=716111905]
 texture = ExtResource("10_rdp63")
 region_enabled = true
 region_rect = Rect2(48, 0, 32, 32)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Scene/Objects/Bucket"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Scene/Objects/Bucket" unique_id=1287329537]
 shape = SubResource("CircleShape2D_rcobd")
 
-[node name="Cupboard" type="StaticBody2D" parent="Scene/Objects" groups=["Interactable"]]
+[node name="Cupboard" type="StaticBody2D" parent="Scene/Objects" unique_id=811324802 groups=["Interactable"]]
 y_sort_enabled = true
 position = Vector2(29, 49)
 script = ExtResource("18_gmoma")
@@ -221,18 +218,18 @@ interaction_type = "action"
 timeline_label = "cupboard"
 confirm_signal = "cupboard_yes"
 
-[node name="Sprite2D" type="Sprite2D" parent="Scene/Objects/Cupboard"]
+[node name="Sprite2D" type="Sprite2D" parent="Scene/Objects/Cupboard" unique_id=81109891]
 position = Vector2(0, 49)
 texture = ExtResource("10_rdp63")
 offset = Vector2(3, -26)
 region_enabled = true
 region_rect = Rect2(80, 0, 32, 80)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Scene/Objects/Cupboard"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Scene/Objects/Cupboard" unique_id=568950289]
 position = Vector2(-1, 23)
 shape = SubResource("RectangleShape2D_rdp63")
 
-[node name="Desk" type="StaticBody2D" parent="Scene/Objects" groups=["Interactable"]]
+[node name="Desk" type="StaticBody2D" parent="Scene/Objects" unique_id=285247536 groups=["Interactable"]]
 y_sort_enabled = true
 script = ExtResource("18_gmoma")
 interaction_id = "desk"
@@ -240,41 +237,41 @@ interaction_type = "action"
 timeline_name = "desk_letters"
 timeline_label = "desk"
 
-[node name="Sprite2D" type="Sprite2D" parent="Scene/Objects/Desk"]
+[node name="Sprite2D" type="Sprite2D" parent="Scene/Objects/Desk" unique_id=1085248816]
 position = Vector2(184, 142)
 texture = ExtResource("10_rdp63")
 offset = Vector2(8, 10)
 region_enabled = true
 region_rect = Rect2(176, 0, 32, 48)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Scene/Objects/Desk"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Scene/Objects/Desk" unique_id=1438712012]
 position = Vector2(196, 151.5)
 shape = SubResource("RectangleShape2D_rcobd")
 
-[node name="Spawn" type="Node2D" parent="Scene"]
+[node name="Spawn" type="Node2D" parent="Scene" unique_id=2042188150]
 
-[node name="SleepSpot" type="Marker2D" parent="Scene/Spawn"]
+[node name="SleepSpot" type="Marker2D" parent="Scene/Spawn" unique_id=1394780186]
 position = Vector2(44, 208)
 
-[node name="WakeUpSpot" type="Marker2D" parent="Scene/Spawn"]
+[node name="WakeUpSpot" type="Marker2D" parent="Scene/Spawn" unique_id=1175949840]
 position = Vector2(81, 208)
 
-[node name="QuestSpawner" type="Node2D" parent="Scene"]
+[node name="QuestSpawner" type="Node2D" parent="Scene" unique_id=556930810]
 script = ExtResource("18_gt5fq")
 available_quests = Array[ExtResource("18_21iup")]([ExtResource("19_bolhi")])
 
-[node name="Node2D" type="Node2D" parent="Scene"]
+[node name="Node2D" type="Node2D" parent="Scene" unique_id=1834811630]
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Scene/Node2D"]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Scene/Node2D" unique_id=806982846]
 stream = ExtResource("12_87j7f")
 volume_db = -1.0
 autoplay = true
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="." unique_id=719050365]
 process_mode = 3
 layer = 2
 
-[node name="PauseMenu" parent="UI" instance=ExtResource("25_0ipvf")]
+[node name="PauseMenu" parent="UI" unique_id=2125247565 instance=ExtResource("25_0ipvf")]
 visible = false
 
 [connection signal="body_entered" from="Scene/Door" to="Scene/Door" method="_on_body_entered"]

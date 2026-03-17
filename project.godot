@@ -38,6 +38,7 @@ SceneHistory="*res://Scripts/SceneHistory.gd"
 SceneTransition="*res://Scenes/Levels/SceneTransition.tscn"
 SaveLoad="*res://Scripts/Managers/SaveLoad.gd"
 TimeskipManager="*res://Scripts/Managers/TimeskipManager.gd"
+TransitionManager="*res://Scenes/UI/TransitionManager.tscn"
 
 [dialogic]
 

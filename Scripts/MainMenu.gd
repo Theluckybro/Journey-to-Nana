@@ -5,6 +5,9 @@ func _ready() -> void:
 		%Continue.disabled = true
 
 func _on_new_game_pressed() -> void:
+	var transition_manager = get_node_or_null("/root/TransitionManager")
+	if transition_manager and transition_manager.has_method("prepare_new_game_blackout"):
+		transition_manager.prepare_new_game_blackout()
 	SaveLoad.new_game()
 
 

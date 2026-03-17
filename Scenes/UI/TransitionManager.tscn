@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Managers/TransitionManager.gd" id="1_vxo5q"]
+[ext_resource type="Shader" path="res://Shader/IrisReveal.gdshader" id="2_qm1ov"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ihc3w"]
+shader = ExtResource("2_qm1ov")
+shader_parameter/center_position = Vector2(320, 180)
+shader_parameter/circle_radius = 0.0
+shader_parameter/edge_softness = 0.0
+
+[node name="TransitionManager" type="CanvasLayer"]
+layer = 0
+script = ExtResource("1_vxo5q")
+
+[node name="Overlay" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_ihc3w")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0, 0, 0, 1)

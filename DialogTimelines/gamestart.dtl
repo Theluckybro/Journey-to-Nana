@@ -1,6 +1,7 @@
 Indra: Z[pause=0.3]z[pause=0.3]z[pause=0.3]... [aa=0.5]
 Indra: Z[pause=0.3]z[pause=0.3]z[pause=0.3]... [aa=0.5]
 Indra: Z[pause=0.3]z[pause=0.3]z[pause=0.3]... [aa=0.5]
+[signal arg="start_alarm"]
 audio "res://Art/Audio/Effects/AlarmAudio.mp3"
 [wait time="6.12"]
 
