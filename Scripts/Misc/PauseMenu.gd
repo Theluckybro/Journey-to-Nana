@@ -45,7 +45,7 @@ func _on_resume_pressed() -> void:
 
 func _on_save_pressed() -> void:
 	SaveLoad.save_game()
-	
+		
 
 func _on_settings_pressed() -> void:
 	$Panel/CenterContainer/MainButtons.visible = false

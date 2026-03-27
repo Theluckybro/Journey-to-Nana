@@ -20,7 +20,6 @@ func _ready():
 
 		Dialogic.start("gamestart")
 		SaveLoad.set_flag("gamestart_played", true)
-	
 
 func _on_gamestart_ended():
 	if Engine.has_singleton("QuestSpawner"):
@@ -56,8 +55,13 @@ func _start_intro_reveal() -> void:
 		return
 
 	if transition_manager.has_method("start_iris_reveal"):
-		var viewport_center: Vector2 = get_viewport().get_visible_rect().size * 0.5 + Vector2(0, -18)
-		transition_manager.start_iris_reveal(viewport_center, iris_reveal_duration)
+		var iris_pos: Vector2 = Vector2.ZERO
+		if player and player.has_method("get_head_screen_position"):
+			iris_pos = player.get_head_screen_position()
+		else:
+			# fallback ke tengah viewport jika player tidak ditemukan
+			iris_pos = get_viewport().get_visible_rect().size * 0.5 + Vector2(0, -18)
+		transition_manager.start_iris_reveal(iris_pos, iris_reveal_duration)
 
 func _prepare_intro_cutscene() -> void:
 	if not player:
@@ -71,7 +75,7 @@ func _prepare_intro_cutscene() -> void:
 		player.global_position = sleep_spot.global_position
 
 	player.set_sleep_pose()
-	
+
 func _wake_player_from_bed() -> void:
 	if not player:
 		return
